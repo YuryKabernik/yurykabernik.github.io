@@ -3,8 +3,9 @@
 - type: github
   icon: "fab fa-github"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
+- type: linkedin
+  icon: "fab fa-linkedin" # icons powered by <https://fontawesome.com/>
+  url: "https://www.linkedin.com/in/yury-kabernik-berazouski-700100149/" # Fill with your Linkedin homepage
 
 - type: email
   icon: "fas fa-envelope"
@@ -38,3 +39,7 @@
 # - type: threads
 #   icon: 'fa-brands fa-threads'
 #   url: ''                   # Fill with your Threads profile link
+
+# - type: twitter
+#   icon: "fa-brands fa-x-twitter"
+
