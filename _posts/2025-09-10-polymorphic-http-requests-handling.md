@@ -37,64 +37,108 @@ components:
           enum: [read, write]
           description: Access rule for the shared document
         audience:
-          oneOf:
-            - $ref: '#/components/schemas/CompanyAudience'
-            - $ref: '#/components/schemas/GroupsAudience'
-            - $ref: '#/components/schemas/ContactsAudience'
-          discriminator:
-            propertyName: type
-            mapping:
-              company: '#/components/schemas/CompanyAudience'
-              groups: '#/components/schemas/GroupsAudience'
-              contacts: '#/components/schemas/ContactsAudience'
+          type: array
+          description: List of audiences to share the document with
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/CompanyAudience'
+              - $ref: '#/components/schemas/GroupsAudience'
+              - $ref: '#/components/schemas/ContactsAudience'
+            discriminator:
+              propertyName: type
+              mapping:
+                company: '#/components/schemas/CompanyAudience'
+                groups: '#/components/schemas/GroupsAudience'
+                contacts: '#/components/schemas/ContactsAudience'
 ```
 
-The value under `propertyName` is a name of a property presented in all components listed under `oneOf` composite keyword. It will be used to match a specific property value with the target dotnet type. The `mapping` keyword binds each supported value to a different schema component name explicitly defining the correlation of the type with the value.
+The `audience` property is defined as an array containing polymorphic objects, enabling a document to be shared with multiple audience types in a single request.
+
+The `propertyName` specified in the `discriminator` object refers to a property that must exist in each schema listed under `oneOf`. This property is used to determine which specific .NET type should be instantiated during deserialization. The `mapping` section explicitly associates each possible value of the discriminator property with a corresponding schema, declaring the correct type to be expected based on the provided value.
+
 
 ```json
-[
-  {
-    "documentId": "11111111-1111-1111-1111-111111111111",
-    "ownerId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-    "access": "read",
-    "audience": {
+{
+  "documentId": "11111111-1111-1111-1111-111111111111",
+  "ownerId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+  "access": "read",
+  "audience": [
+    {
       "type": "company",
       "companyId": "123e4567-e89b-12d3-a456-426614174000"
-    }
-  },
-  {
-    "documentId": "22222222-2222-2222-2222-222222222222",
-    "ownerId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-    "access": "write",
-    "audience": {
+    },
+    {
       "type": "groups",
       "groupIds": [
         "987e6543-e21b-12d3-a456-426614174111",
         "987e6543-e21b-12d3-a456-426614174222"
       ]
-    }
-  },
-  {
-    "documentId": "33333333-3333-3333-3333-333333333333",
-    "ownerId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-    "access": "read",
-    "audience": {
+    },
+    {
       "type": "contacts",
       "contactIds": [
         "555e1234-e89b-12d3-a456-426614174999",
         "555e1234-e89b-12d3-a456-426614175000"
       ]
     }
-  }
-]
+  ]
+}
 ```
 
-The example JSON schema is an array of requests for sharing documents among different types of audience. Objects share an identical structure except for the 'audience' property, which varies in its required properties depending on the audience type. This way, the contract allows us to implement an endpoint accepting a set of commands for document processing and handle them polymorphically by audience real type.
+The example JSON schema is an array of requests for sharing documents among different types of audience. Objects share an identical structure except for the 'audience' property, which varies in its required properties depending on the audience type.
+
+This design allows you to handle multiple audience types in a single request, making batch operations straightforward. By using a discriminator property, you can easily extend the contract to support new audience types without breaking existing functionality. The polymorphic approach also helps keep your codebase clean and maintainable, as you only need to deal with specific audience details when necessary.
 
 ## On the backend side
 
-Starting with .NET 7, the `System.Text.Json` namespace provides functionality that supports polymorphic type hierarchy serialization and deserialization.
+Starting with .NET 7, the `System.Text.Json` namespace provides functionality that supports polymorphic type hierarchy serialization and deserialization with attribute annotations.
 
+
+```csharp
+// Abstract base class for audience types
+public abstract class Audience
+{
+    public string Type { get; set; }
+}
+
+// Concrete audience types
+public class CompanyAudience : Audience
+{
+    public Guid CompanyId { get; set; }
+}
+
+public class GroupsAudience : Audience
+{
+    public List<Guid> GroupIds { get; set; }
+}
+
+public class ContactsAudience : Audience
+{
+    public List<Guid> ContactIds { get; set; }
+}
+```
+
+With the provided contract, you can deserialize the `audience` array into a collection of strongly-typed objects, each deserialized under a different audience type and placed into the array of the common abstract class.
+
+```csharp
+public enum AudienceType
+{
+    None,
+    Company,
+    Group,
+    Contacts
+}
+
+[JsonPolymorphic(TypeDiscriminatorPropertyName = nameof(Audience.Type))]
+[JsonDerivedType(typeof(CompanyAudience), nameof(AudienceType.Company))]
+[JsonDerivedType(typeof(GroupsAudience), nameof(AudienceType.Group))]
+[JsonDerivedType(typeof(ContactsAudience), nameof(AudienceType.Contacts))]
+public abstract class Audience
+{
+    public string Type { get; set; }
+}
+
+```
 
 ## Solution
 
