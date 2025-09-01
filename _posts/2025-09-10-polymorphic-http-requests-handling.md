@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Polymorphic HTTP requests handling"
 date: 2025-09-10 00:00:01 -0200
-categories: dotnet aspnetcore csharp serialization openapi discriminator
+categories: Dotnet Serialization
+tags: dotnet aspnetcore csharp serialization openapi discriminator
 ---
 
 # .NET Serialization Polymorphism via Discriptor Object
@@ -11,7 +11,7 @@ categories: dotnet aspnetcore csharp serialization openapi discriminator
 
 There is a schema object in OpenAPI specification named Discriminator Object. It allows us to design an API data contract that could be serialized and deserialized polymorphically matching a named property value to a specific complex type.
 
-The discriminator is supported in schema definition only when using the composite keywords `oneOf`, `anyOf`, `allOf`.The basic implementation involves `oneOf`/`anyOf` neighboring `discriminator` keyword. First, we must explicitly reference all possible component schemas involved in the descrimination under `oneOf`/`anyOf`. Than the discriminator object provides details on the property name and a mapping between its value and expected schema.
+The discriminator is supported in schema definition only when using the composite keywords `oneOf`, `anyOf`, and `allOf`. The basic implementation involves `oneOf`/`anyOf` neighboring `discriminator` keyword. First, we must explicitly reference all component schemas involved in the descrimination under `oneOf`/`anyOf`. Than the discriminator object provides details on the property name and relation between its value and component schema.
 
 ```yaml
 components:
@@ -52,7 +52,7 @@ components:
                 contacts: '#/components/schemas/ContactsAudience'
 ```
 
-The `audience` property is defined as an array containing polymorphic objects, enabling a document to be shared with multiple audience types in a single request.
+The `audience` property is defined as an array of polymorphic objects, enabling a document to be shared in a single request with multiple audience types.
 
 The `propertyName` specified in the `discriminator` object refers to a property that must exist in each schema listed under `oneOf`. This property is used to determine which specific .NET type should be instantiated during deserialization. The `mapping` section explicitly associates each possible value of the discriminator property with a corresponding schema, declaring the correct type to be expected based on the provided value.
 
