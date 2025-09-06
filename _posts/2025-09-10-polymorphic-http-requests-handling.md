@@ -11,9 +11,19 @@ With each update to .NET, developers gain access to powerful new features that s
 
 ## On the Contract Side
 
-The OpenAPI specification includes a powerful feature called the Discriminator Object. It allows API contracts to handle polymorphic data serialization and deserialization. This is especially useful when dealing with dynamic data structures.
+The OpenAPI specification includes a powerful feature called the **Discriminator Object**. It allows API contracts to handle polymorphic data serialization and deserialization. This is especially useful when dealing with dynamic data structures.
 
-The discriminator is supported in schema definition only when using the composite keywords `oneOf`, `anyOf`, and `allOf`. The basic implementation involves `oneOf`/`anyOf` neighboring `discriminator`.
+The discriminator is supported in schema definitions only when using the composite keywords `oneOf`, `anyOf`, and `allOf`.
+
+| Composite Keyword | Validation Behavior                                | Typical Use Case                                                                        |
+| ----------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `oneOf`           | Value must match **exactly one** subschema.        | Selects a single subtype for an object or array item.                                   |
+| `allOf`           | Value must match **all** subschemas.               | Combines multiple schemas; discriminator can help resolve type when subschemas overlap. |
+| `anyOf`           | Value must match **any (one or more)** subschemas. | Allows flexible matching; discriminator resolves which subtype applies for each item.   |
+
+The basic implementation involves placing the `discriminator` object alongside these keywords, allowing to determine the target schema to use during serialization and deserialization.
+
+This approach could be used for both single object properties and arrays. For single objects, it helps to selects the correct subtype of the property. For arrays, each item uses the discriminator to resolve its type, enabling to hold different subtypes within the same array definition.
 
 ```yaml
 components:
@@ -163,6 +173,8 @@ By weighing these benefits and drawbacks, you can determine whether the polymorp
 
 ## Useful Links
 
+- [OpenAPI Data Modeling Techniques](https://swagger.io/specification/#composition-and-inheritance-polymorphism): Composition and polymorphism in OpenAPI.
+- [OpenAPI Discriminator Object](https://swagger.io/specification/#discriminator-object): Details on using the discriminator object in OpenAPI schemas.
 - [System.Text.Json and Polymorphism](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism): Official documentation on polymorphic serialization in .NET.
 - [Custom Converter Patterns](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to#custom-converter-patterns): Guide to creating custom JSON converters.
 - [Polymorphic Deserialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to#support-polymorphic-deserialization): Techniques for handling polymorphic deserialization.
