@@ -1,7 +1,7 @@
 ---
 title: "Polymorphic HTTP Requests Handling"
 date: 2025-09-10 00:00:01 -0200
-categories: Dotnet Serialization
+categories: Dotnet Web
 tags: dotnet aspnetcore csharp serialization openapi discriminator
 ---
 
@@ -166,8 +166,9 @@ This design offers several significant benefits:
 
 However, this approach is not without its drawbacks:
 
-- **Increased Complexity in Schema Management:** The OpenAPI schema becomes more complex due to the use of the `discriminator` property and the need for precise mappings.
+- **Increased Complexity in Schema Management:** The OpenAPI schema becomes more complex due to the use of the `discriminator` property and the need for precise mappings on both sides.
 - **Runtime Deserialization Errors:** If the discriminator mapping is not implemented correctly or if there are mismatches in case sensitivity, deserialization errors can occur at runtime.
+- **Increased Learning Curve:** The broader use of abstractions brings a challenge for newcomers to understand the concept and start contributing into the system.
 
 By weighing these benefits and drawbacks, you can determine whether the polymorphic approach aligns with your project's requirements and priorities. While it simplifies handling polymorphic data and enhances code maintainability, careful attention must be given to schema accuracy and runtime behavior.
 
