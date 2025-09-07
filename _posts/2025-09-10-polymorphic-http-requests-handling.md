@@ -54,19 +54,21 @@ components:
           items:
             oneOf:
               - $ref: '#/components/schemas/CompanyAudience'
-              - $ref: '#/components/schemas/GroupsAudience'
-              - $ref: '#/components/schemas/ContactsAudience'
+              - $ref: '#/components/schemas/GroupAudience'
+              - $ref: '#/components/schemas/ContactAudience'
             discriminator:
               propertyName: type
               mapping:
                 company: '#/components/schemas/CompanyAudience'
-                groups: '#/components/schemas/GroupsAudience'
-                contacts: '#/components/schemas/ContactsAudience'
+                groups: '#/components/schemas/GroupAudience'
+                contacts: '#/components/schemas/ContactAudience'
 ```
 
-The `audience` property is defined as an array of polymorphic objects, enabling a document to be shared in a single request with multiple audience types.
+The `audience` property is defined as an array of polymorphic objects, where each array item can represent a different audience type, enabling a document to be shared in a single request with multiple audience types.
 
-The `propertyName` specified in the `discriminator` object refers to a property that must exist in each schema listed under `oneOf`. This property is used to determine which specific .NET type should be deserialized.
+The `propertyName` specified in the `discriminator` object refers to a property that is used to select the schemas listed under `oneOf`. By default, the value of the property is matched to a schema name from the list and defined under components/schemas.
+
+If a `mapping` is provided, it overrides the default behavior by mapping specific values to either a different schema name or a schema identified by a URI. If a mapping value could be interpreted as both a schema name and a URI, it’s up to the implementation to decide, but it’s recommended to treat it as a schema name.
 
 ```json
 {
@@ -79,14 +81,14 @@ The `propertyName` specified in the `discriminator` object refers to a property 
       "companyId": "123e4567-e89b-12d3-a456-426614174000"
     },
     {
-      "type": "groups",
+      "type": "group",
       "groupIds": [
         "987e6543-e21b-12d3-a456-426614174111",
         "987e6543-e21b-12d3-a456-426614174222"
       ]
     },
     {
-      "type": "contacts",
+      "type": "contact",
       "contactIds": [
         "555e1234-e89b-12d3-a456-426614174999",
         "555e1234-e89b-12d3-a456-426614175000"
@@ -96,7 +98,7 @@ The `propertyName` specified in the `discriminator` object refers to a property 
 }
 ```
 
-The example JSON schema represents an array of requests for sharing documents among different types of audience. Objects share an identical structure except for the `audience` property, which varies in its content.
+The example JSON schema represents a request for sharing a document with different types of audience. The polymorphism applies to the items within the `audience` array—each item can have a distinct structure according to its type.
 
 ## On the Backend Side
 
@@ -105,20 +107,20 @@ Starting with .NET 7, the `System.Text.Json` namespace provides functionality th
 ```csharp
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(CompanyAudience), nameof(AudienceType.Company))]
-[JsonDerivedType(typeof(GroupsAudience), nameof(AudienceType.Group))]
-[JsonDerivedType(typeof(ContactsAudience), nameof(AudienceType.Contacts))]
+[JsonDerivedType(typeof(GroupAudience), nameof(AudienceType.Group))]
+[JsonDerivedType(typeof(ContactAudience), nameof(AudienceType.Contact))]
 public abstract class Audience
 {
     [JsonPropertyName("type")]
     public AudienceType Type { get; set; } // discriminator property is optional
 }
 
-public enum AudienceType { None, Company, Group, Contacts }
+public enum AudienceType { None, Company, Group, Contact }
 ```
 
 Using the provided annotations, you can customize the discriminator name and declare mapping of the subtype to the discriminator value, just like in the contract definition.
 
-By default, the discriminator name is `$type`, and the base type is free to omit the matching property. Ensure parameter values in attributes are case-sensitive to avoid runtime errors.
+By default, the discriminator name is `$type`, and the base type may omit the matching property. Parameter values in attributes are case-sensitive, and the discriminator value can be either an integer or a string. Mixing both types is technically allowed but not recommended, as it can lead to confusion and potential deserialization issues.
 
 ```csharp
 public class CompanyAudience : Audience
@@ -130,7 +132,7 @@ public class CompanyAudience : Audience
         service.GetCompanyType(CompanyId) is CompanyType.Subsidiary or CompanyType.Parent;
 }
 
-public class GroupsAudience : Audience
+public class GroupAudience : Audience
 {
     public List<Guid> GroupIds { get; set; }
 
@@ -139,7 +141,7 @@ public class GroupsAudience : Audience
         GroupIds.All(id => infoService.GetGroupVisibility(id) == GroupVisibility.Private);
 }
 
-public class ContactsAudience : Audience
+public class ContactAudience : Audience
 {
     public List<Guid> ContactIds { get; set; }
 
@@ -151,9 +153,42 @@ public class ContactsAudience : Audience
 
 Each derived type is expected to have its own implementation with properties, methods, and any other business logic to maintain single responsibility of your code.
 
-An alternative design, not leveraging polymorphic serialization, would require implementing a custom JSON converter for the base type or working around with exposing a single raw JSON property. This complicates request validation and increases the need for conditional checks.
+```csharp
+public interface ICommandHandler<T>
+{
+    Task HandleAsync(Guid document, T audience, CancellationToken cancellationToken);
+}
+
+public class DocumentShareDispatcher(IServiceProvider serviceProvider)
+{
+    public async Task DispatchShareRequest(ShareDocumentRequest request, CancellationToken cancellationToken = default)
+    {
+        foreach (var audience in request.Audience)
+        {
+            await (audience switch
+            {
+                CompanyAudience company => serviceProvider
+                    .GetService<ICommandHandler<CompanyAudience>>()!
+                    .HandleAsync(request.DocumentId, company, cancellationToken),
+                
+                GroupAudience group => serviceProvider
+                    .GetService<ICommandHandler<GroupAudience>>()!
+                    .HandleAsync(request.DocumentId, group, cancellationToken),
+                
+                ContactAudience contact => serviceProvider
+                    .GetService<ICommandHandler<ContactAudience>>()!
+                    .HandleAsync(request.DocumentId, contact, cancellationToken),
+                
+                _ => throw new InvalidOperationException("Unknown audience type.")
+            });
+        }
+    }
+}
+```
 
 With polymorphic serialization, you can deserialize the `audience` array into a collection of strongly-typed objects, each deserialized to a dedicated audience type and processed by a command handler.
+
+An alternative design, not leveraging polymorphic serialization, would require implementing a custom JSON converter for the base type or working around with exposing a single raw JSON property. This complicates request validation and increases the need for conditional checks.
 
 ## Conclusion
 
