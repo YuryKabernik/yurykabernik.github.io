@@ -2,18 +2,18 @@
 title: "Polymorphic HTTP Requests Handling"
 date: 2025-09-10 00:00:01 -0200
 categories: Dotnet Web
-tags: dotnet aspnetcore csharp serialization openapi discriminator
+tags: dotnet openapi discriminator aspnetcore webapi csharp serialization
 ---
 
 # Simplifying Polymorphic HTTP Request Handling in .NET
 
-With each update to .NET, developers gain access to powerful new features that streamline complex tasks. One such feature is the ability to handle polymorphic HTTP requests—an essential capability for dynamic APIs. This article explores how to achieve this using OpenAPI Discriminator Objects and .NET's `System.Text.Json` library.
+With each new version of .NET, developers gain access to more powerful new features that streamline complex tasks. One such feature is the ability to handle polymorphic data in HTTP requests for dynamic APIs. Here we explore how to achieve this using OpenAPI Discriminator Objects and .NET's `System.Text.Json` library.
 
 ## On the Contract Side
 
-The OpenAPI specification includes a powerful feature called the **Discriminator Object**. It allows API contracts to handle polymorphic data serialization and deserialization. This is especially useful when dealing with dynamic data structures.
+The OpenAPI specification includes a powerful feature called **Discriminator Object**. It helps to describe complex API contracts with more than one of the component schemas and associate the possible values of a named property with alternative schemas. This is especially useful when dealing with dynamic data structures for serialization and deserialization.
 
-The discriminator is supported in schema definitions only when using the composite keywords `oneOf`, `anyOf`, and `allOf`.
+The `discriminator` is supported in schema definitions only when using the composite keywords `oneOf`, `anyOf`, and `allOf`.
 
 | Composite Keyword | Validation Behavior                                | Typical Use Case                                                                        |
 | ----------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -23,7 +23,7 @@ The discriminator is supported in schema definitions only when using the composi
 
 The basic implementation involves placing the `discriminator` object alongside these keywords, allowing to determine the target schema to use during serialization and deserialization.
 
-This approach could be used for both single object properties and arrays. For single objects, it helps to selects the correct subtype of the property. For arrays, each item uses the discriminator to resolve its type, enabling to hold different subtypes within the same array definition.
+This approach could be useful for both single object properties and arrays. For single objects, it helps to selects the correct subtype of the property. For arrays, each item uses the discriminator to resolve its type, enabling to hold different subtypes within the same array definition.
 
 ```yaml
 components:
@@ -98,7 +98,7 @@ If a `mapping` is provided, it overrides the default behavior by mapping specifi
 }
 ```
 
-The example JSON schema represents a request for sharing a document with different types of audience. The polymorphism applies to the items within the `audience` array—each item can have a distinct structure according to its type.
+The example JSON schema represents a request for sharing a document with different types of audience. The polymorphism applies to the items within the `audience` array where each item can have a distinct structure according to its type.
 
 ## On the Backend Side
 
@@ -118,9 +118,9 @@ public abstract class Audience
 public enum AudienceType { None, Company, Group, Contact }
 ```
 
-Using the provided annotations, you can customize the discriminator name and declare mapping of the subtype to the discriminator value, just like in the contract definition.
+Using the provided annotations, you can customize the discriminator name and declare mapping of the subtype to the discriminator property key value, just like in the contract definition.
 
-By default, the discriminator name is `$type`, and the base type may omit the matching property. Parameter values in attributes are case-sensitive, and the discriminator value can be either an integer or a string. Mixing both types is technically allowed but not recommended, as it can lead to confusion and potential deserialization issues.
+By default, the discriminator name is `$type`, and the base type may omit the matching property. Parameter values in attributes are case-sensitive, and the discriminator value can be either an integer or a string. Mixing both types is technically possible but not recommended, as it can lead to confusion and potential deserialization issues.
 
 ```csharp
 public class CompanyAudience : Audience
@@ -151,7 +151,7 @@ public class ContactAudience : Audience
 }
 ```
 
-Each derived type is expected to have its own implementation with properties, methods, and any other business logic to maintain single responsibility of your code.
+Each derived type might implement its own properties, methods, and business logic required to fulfill the requirements and ensure single responsibility of your code. With polymorphic serialization, you can deserialize the `audience` array into a collection of strongly-typed objects, each casted to a dedicated audience type and processed by a command handler.
 
 ```csharp
 public interface ICommandHandler<T>
@@ -161,7 +161,9 @@ public interface ICommandHandler<T>
 
 public class DocumentShareDispatcher(IServiceProvider serviceProvider)
 {
-    public async Task DispatchShareRequest(ShareDocumentRequest request, CancellationToken cancellationToken = default)
+    public async Task DispatchShareRequest(
+      ShareDocumentRequest request,
+      CancellationToken cancellationToken = default)
     {
         foreach (var audience in request.Audience)
         {
@@ -186,9 +188,56 @@ public class DocumentShareDispatcher(IServiceProvider serviceProvider)
 }
 ```
 
-With polymorphic serialization, you can deserialize the `audience` array into a collection of strongly-typed objects, each deserialized to a dedicated audience type and processed by a command handler.
+An alternative design, not leveraging polymorphic serialization attributes, would require implementing a custom JSON converter for the base type or working around with exposing a single raw JSON property. This complicates request validation and increases the need for boilerplate code.
 
-An alternative design, not leveraging polymorphic serialization, would require implementing a custom JSON converter for the base type or working around with exposing a single raw JSON property. This complicates request validation and increases the need for conditional checks.
+```csharp
+// ...existing code...
+public enum AudienceType { None, Company, Group, Contact }
+
+public class AudienceJsonConverter : JsonConverter<Audience>
+{
+    public override Audience? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        using var doc = JsonDocument.ParseValue(ref reader);
+        var root = doc.RootElement;
+        var type = root.GetProperty("type").GetString();
+
+        return type switch
+        {
+            nameof(AudienceType.Company) => JsonSerializer.Deserialize<CompanyAudience>(root, options),
+            nameof(AudienceType.Group)   => JsonSerializer.Deserialize<GroupAudience>(root, options),
+            nameof(AudienceType.Contact) => JsonSerializer.Deserialize<ContactAudience>(root, options),
+            _ => throw new JsonException($"Unknown audience type: {type}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Audience value, JsonSerializerOptions options)
+    {
+        switch (value)
+        {
+            case CompanyAudience company:
+                JsonSerializer.Serialize(writer, company, options);
+                break;
+            case GroupAudience group:
+                JsonSerializer.Serialize(writer, group, options);
+                break;
+            case ContactAudience contact:
+                JsonSerializer.Serialize(writer, contact, options);
+                break;
+            default:
+                throw new JsonException($"Unknown audience type: {value?.GetType().Name}");
+        }
+    }
+}
+
+// Register the converter in your options
+var options = new JsonSerializerOptions {
+    Converters = { new AudienceJsonConverter() }
+};
+
+// Usage example
+var audiences = JsonSerializer.Deserialize<List<Audience>>(json, options);
+```
 
 ## Conclusion
 
@@ -196,13 +245,13 @@ This design offers several significant benefits:
 
 - **Ease of Extensibility:** Supporting new audience types is straightforward. Developers can add a new derived class and update the OpenAPI schema without requiring significant refactoring.
 - **Cleaner Domain Model:** The use of polymorphism ensures that the domain model remains clean, making it easier to understand and maintain.
-- **Focus on Business Flow:** Developers can dedicate their efforts to implementing the business logic rather than spending time on data transfer object (DTO) mapping.
-- **Support for Batch Operations:** The polymorphic approach enables handling multiple audience types in a single request, simplifying batch operations and improving API usability.
+- **Focus on Business Flow:** Developers can dedicate their efforts to implementing the business logic rather than spending time on custom converters or manual data transfer object (DTO) mapping.
+- **Support for Batch Operations:** The polymorphic approach enables handling multiple audience types in a single request, simplifying batch operations and extending API capabilities.
 
 However, this approach is not without its drawbacks:
 
 - **Increased Complexity in Schema Management:** The OpenAPI schema becomes more complex due to the use of the `discriminator` property and the need for precise mappings on both sides.
-- **Runtime Deserialization Errors:** If the discriminator mapping is not implemented correctly or if there are mismatches in case sensitivity, deserialization errors can occur at runtime.
+- **Runtime Deserialization Errors:** If the discriminator mapping is not implemented correctly or if there are mismatches in case sensitivity, deserialization issues will occur only at runtime.
 - **Increased Learning Curve:** The broader use of abstractions brings a challenge for newcomers to understand the concept and start contributing into the system.
 
 By weighing these benefits and drawbacks, you can determine whether the polymorphic approach aligns with your project's requirements and priorities. While it simplifies handling polymorphic data and enhances code maintainability, careful attention must be given to schema accuracy and runtime behavior.
@@ -212,5 +261,6 @@ By weighing these benefits and drawbacks, you can determine whether the polymorp
 - [OpenAPI Data Modeling Techniques](https://swagger.io/specification/#composition-and-inheritance-polymorphism): Composition and polymorphism in OpenAPI.
 - [OpenAPI Discriminator Object](https://swagger.io/specification/#discriminator-object): Details on using the discriminator object in OpenAPI schemas.
 - [System.Text.Json and Polymorphism](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism): Official documentation on polymorphic serialization in .NET.
+- [Contract Model Configuration](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism#configure-polymorphism-with-the-contract-model): Configure polymorphism without attribute annotations using the contract model.
 - [Custom Converter Patterns](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to#custom-converter-patterns): Guide to creating custom JSON converters.
 - [Polymorphic Deserialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to#support-polymorphic-deserialization): Techniques for handling polymorphic deserialization.
