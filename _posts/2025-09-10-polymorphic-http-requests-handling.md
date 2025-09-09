@@ -1,11 +1,11 @@
 ---
-title: "Polymorphic HTTP Requests Handling"
-date: 2025-09-10 00:00:01 -0200
-categories: Dotnet Web
-tags: dotnet openapi discriminator aspnetcore webapi csharp serialization
+title: "Polymorphic Serialization in .NET: OpenAPI Discriminators in Action"
+date: 2025-09-09 00:00:01 -0200
+categories: .NET
+tags: dotnet openapi discriminator webapi csharp serialization
 ---
 
-# Simplifying Polymorphic HTTP Request Handling in .NET
+![Dotnet with OpenAPI Initiative](/assets/img/title/title-polymorphic-http-requests-handling.png)
 
 With each new version of .NET, developers gain access to more powerful new features that streamline complex tasks. One such feature is the ability to handle polymorphic data in HTTP requests for dynamic APIs. Here we explore how to achieve this using OpenAPI Discriminator Objects and .NET's `System.Text.Json` library.
 
