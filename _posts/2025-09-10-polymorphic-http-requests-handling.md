@@ -1,6 +1,6 @@
 ---
 title: "Polymorphic Serialization in .NET: OpenAPI Discriminators in Action"
-date: 2025-09-09 00:00:01 -0200
+date: 2025-09-10 00:00:01 -0200
 categories: .NET
 tags: dotnet openapi discriminator webapi csharp serialization
 ---
