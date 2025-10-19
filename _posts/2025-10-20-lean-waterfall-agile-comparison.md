@@ -13,9 +13,11 @@ In the ever-evolving landscape of software development, choosing the right metho
 
 The main idea behind Lean methodology is to maximize customer value while minimizing waste, ensuring that every step in the production or development process contributes meaningfully to the final product. Before Lean, manufacturing was dominated by Henry Ford’s flow production system. Ford’s approach revolutionized mass production with lined-up fabrication, but it lacked flexibility and resulted in a limited variety of products – making it difficult to rapidly adapt to changing customer needs.
 
-Lean originated in the 1950s from Toyota’s response to the limitations of Ford’s linear approach. Toyota reimagined manufacturing by shifting the focus from optimizing individual machines to optimizing the entire flow of products through the process. They pioneered innovations such as right-sizing machines for actual production volume, self-monitoring for quality, sequencing machines by process, enabling quick setups for small batches, and implementing pull-based production—where each process step signals the previous step for needed materials. Information management was introduced to ensure only necessary resources were consumed, reducing waste and simplifying the production chain. These changes enabled Toyota to achieve high efficiency, rapid response to market needs, low cost, high variety, and high quality, fundamentally improving flow production.
+Lean originated in the 1950s from Toyota’s response to the limitations of Ford’s linear approach. Toyota reimagined manufacturing by shifting the focus from optimizing individual machines to optimizing the entire flow of products through the process. They pioneered innovations such as right-sizing machines for actual production volume, self-monitoring for quality, sequencing machines by process, enabling quick setups for small batches, and implementing pull-based production — where each process step signals the previous step for needed materials. Information management was introduced to ensure only necessary resources were consumed, reducing waste and simplifying the production chain.
 
-Recognizing the universal value of these principles, Lean was eventually adapted for software development. In this context, Lean emphasizes delivering only features that create true customer value, eliminating unnecessary activities, and continuously improving processes. Its historical roots remain a guiding force, showing how a focus on flow, responsiveness, and waste reduction can revolutionize both manufacturing and digital product development.
+Self-monitoring for quality was implemented via Jidoka quality assurance, reducing the need for an engineer to manually track quality by introducing automation that would stop the line until the issue was fixed. This ensured that at each value-adding step, feedback on output quality was available at an early stage. Reviewing the quality of each step minimized issues in later stages and allowed teams to address them in a timely manner, mitigating the overrun costs of fixing them later. In software development, this is comparable to implementing unit, integration, and end-to-end (E2E) testing in CI/CD pipelines. These tests automate QA at the levels of writing code, integrating neighboring components, and validating full system operation when deployed together. This layering enables automatic, early quality feedback throughout the software development life cycle.
+
+These changes enabled Toyota to achieve high efficiency, rapid response to market needs, low cost, high variety, and high quality, fundamentally improving flow-based production.
 
 ### Core Principles
 
@@ -27,12 +29,12 @@ From the lessons learned in Toyota’s Lean manufacturing, five core principles 
 4. **Let customers pull value** from the next upstream activity as flow is introduced.
 5. **Repeat the process** until a state of perfection is reached, in which perfect value is created with no waste.
 
-In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value-adding steps from order to delivery (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvements.
+In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value-adding steps from identifuying rquirements to final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvements.
 
 In 2007, Womack and Jones simplified these principles into three key elements—**Purpose, Process, People**:
 
 - **Purpose**: Correctly specify the value that the customer seeks in order to cost-effectively solve their problems and identify the greatest value to provide. For software, this means prioritizing features that make a real difference for users.
-- **Process**: Once purpose is clarified, focus on the process (value stream) used to achieve the objective. Ensure every step adds customer-visible value and delivers high, durable quality. Remove rituals or meetings that disrupt rather than help the team achieve their goals.
+- **Process**: Once purpose is clarified, focus on the process (value stream) used to achieve the objective. Ensure every step adds customer-visible value and delivers high, durable quality. Remove rituals or steps that disrupt rather than help teams achieve their goals.
 - **People**: Assign responsibility for each value stream. Value-stream managers engage and align efforts across teams to move steadily toward the customer and elevate performance to ever-better states. In software, this could mean organizing teams around business domains, led by experts in both development and business for effective collaboration.
 
 ### Key Practices
@@ -62,6 +64,10 @@ Lean also presents explicit challenges that teams should be aware of:
 - **Manufacturing roots may not always fit software:** Lean was originally developed for manufacturing, where physical flow and inventory are key factors. In software, direct analogs may be harder to apply, and teams may struggle to interpret Lean concepts in a digital context. However, the methodology’s core principles can still help teams regain focus when they face inefficiency due to too many tasks or distractions.
 - **Requires cultural and process discipline:** Successful Lean adoption demands strong commitment across the organization. Teams must be disciplined in identifying and eliminating waste and in reflecting on their practices, which can be difficult to sustain—especially in fast-moving or poorly aligned environments.
 
+### Summary
+
+Recognizing the universal value of these principles, Lean was eventually adapted for software development. In this context, Lean emphasizes delivering only features that create true customer value, eliminating unnecessary activities, and continuously improving processes. Its historical roots remain a guiding force, showing how a focus on flow, responsiveness, and waste reduction can revolutionize both manufacturing and digital product development.
+
 ### References
 
 - [What is Lean?](https://www.lean.org/explore-lean/what-is-lean/)
@@ -70,7 +76,17 @@ Lean also presents explicit challenges that teams should be aware of:
 
 ## Waterfall Methodology
 
-Waterfall is one of the oldest and most traditional software development methodologies, following a linear and sequential approach where each phase must be completed before the next one begins. Like a waterfall, progress flows steadily downward through distinct stages: requirements, design, implementation, verification, and maintenance.
+Waterfall is one of the earliest formalized approaches to software and systems development. Often linked to Winston W. Royce’s 1970 paper "MANAGING THE DEVELOPMENT OF LARGE SOFTWARE SYSTEMS", Waterfall draws from traditional engineering disciplines where predictability, documentation, and phase gates mitigate risk in large, capital‑intensive initiatives (defense, aerospace, infrastructure) with clear goals and clear timelines.
+
+Most of the time it is described as a process of 5 sequential stages of gathering Requirements, Design, Develop, Test, and Deploy where each stage is required to be completed before the next stage could be started. This is true for the initial processes he presented as a common, but fundamentally flawed model which is risky and invites failure when feedback from subsequent stages is not shared to the previous ones. This is the diagram that was later named the "Waterfall Model".
+
+For the rest of the paper Royce actually advocates for an introduction of an iterative approach to this model with the preceding and succeeding steps cooperating in order to provide early feedback but not with more remote steps. It includes the famous feedback arrows going backwards from each step to the previous ones, and the crucial step of building a "Preliminary Program Design" before full-scale development. Nevertheless, introduction of an issue on the later stages succeeding developement might required to fallback to more remote steps like design changes. Design changes are likely to be so drammatic that the software requirements upon which the design is based and which provides the rationale for everything are violated. 
+
+The additional development steps are required, but none contribute as directly to the final product as analysis and coding, and all the rest drive up the development costs. Customer personnel typically would rather not pay for them, and development personnel would rather not implement them but steps are required to see flaws or address issues earlier in the product development cycle.
+
+It is assumed that collecting and clarifying requirements can be done once in a single phase to streamline further design and developemnt. At the same time design and development may require prototyping solution in order to test the concept on the smaller scale, challenge the idea by putting into it fewer resources and receive early feedback not on the entire project but a prototype.
+
+When all necessary requirements are collected it's time to design the future system before going further with coding. At this staege the entire sysytem is designed and important decisions are made about the adopted technologies, algorithms, and data sources.
 
 ### Core Principles
 
