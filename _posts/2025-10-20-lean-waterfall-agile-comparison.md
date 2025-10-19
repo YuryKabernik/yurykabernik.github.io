@@ -96,6 +96,20 @@ Waterfall methodology is built on the premise that thorough planning and documen
 
 The Waterfall approach begins with comprehensive requirements gathering where all stakeholder needs are documented in detail. This is followed by system and software design, where architecture and specifications are created. After design, development proceeds, followed by integration and testing, and finally deployment and maintenance.
 
+In his paper, Royce proposed five key augmentations (risk-reduction practices) to make the process safer and more reliable for large projects:
+
+1. **Design early**: Create a preliminary program design before completing full analysis. This upfront design work helps identify potential issues and clarify the system architecture before significant resources are committed to implementation.
+
+2. **Heavy documentation**: Maintain comprehensive documentation throughout all phases. This includes detailed requirements specifications, design documents, test plans, and operational manuals. Documentation serves as a critical communication tool across teams and provides a reference for future maintenance.
+
+3. **"Do it twice" / Build a pilot**: Develop a simulation or pilot version of the system to uncover issues early. This prototype approach allows teams to test concepts, validate assumptions, and identify problems on a smaller scale before committing to full-scale development.
+
+4. **Plan, control, and monitor testing carefully**: Involve test specialists from the beginning, implement visual inspection processes, and ensure full logic-path coverage. Testing should not be an afterthought but rather a carefully planned activity with dedicated resources and clear quality gates.
+
+5. **Involve the customer at several points**: Engage customers at key decision points throughout the project to lock in requirements, validate design decisions, and ensure the final product meets their needs. This customer involvement helps prevent costly rework and ensures alignment with business objectives.
+
+In his summary, Royce emphasized that although these augmentations add cost and complexity, they are necessary for large projects. He stated that simpler processes with minimal phases "never worked" for the large systems he experienced in defense and aerospace projects.
+
 ### Strengths and Benefits
 
 Waterfall's linear structure makes it easy to understand and manage, particularly for stakeholders unfamiliar with software development. The emphasis on documentation creates a clear paper trail and helps maintain accountability throughout the project lifecycle.
@@ -143,9 +157,19 @@ Understanding the differences between Lean, Waterfall, and Agile methodologies e
 As the software development landscape continues to evolve, staying informed about different methodologies and being willing to adapt your approach based on project needs is key to success. Whether you choose Lean, Waterfall, Agile, or a combination, the goal remains the same: delivering high-quality software that meets customer needs.
 
 ## Useful Links
-- [The Agile Manifesto](https://agilemanifesto.org/): The foundational document of Agile software development.
+
+### Lean Methodology
+- [What is Lean?](https://www.lean.org/explore-lean/what-is-lean/): Introduction to Lean principles and philosophy.
+- [Lean Thinking and Practice](https://www.lean.org/lexicon-terms/lean-thinking-and-practice/): Core concepts of Lean thinking.
+- [Value Stream Mapping](https://www.lean.org/lexicon-terms/value-stream-mapping/): Guide to mapping and optimizing value streams.
 - [Lean Software Development by Mary and Tom Poppendieck](https://www.oreilly.com/library/view/lean-software-development/0321150783/): Comprehensive guide to applying Lean principles in software development.
+
+### Waterfall Methodology
+- [Managing the Development of Large Software Systems (Royce 1970)](https://blog.jbrains.ca/assets/articles/royce1970.pdf): The original paper that defined the Waterfall model.
+- [Waterfall Methodology Guide](https://www.atlassian.com/agile/project-management/waterfall-methodology): Modern overview of Waterfall methodology and its applications.
+
+### Agile Methodology
+- [The Agile Manifesto](https://agilemanifesto.org/): The foundational document of Agile software development.
 - [Scrum Guide](https://scrumguides.org/): Official guide to the Scrum framework, one of the most popular Agile methodologies.
 - [Kanban Guide](https://kanbanguides.org/): Resources for understanding and implementing Kanban practices.
 - [Project Management Institute - Agile Practice Guide](https://www.pmi.org/pmbok-guide-standards/practice-guides/agile): Professional guide to Agile project management.
-- [Waterfall Model - Software Engineering](https://www.geeksforgeeks.org/software-engineering-classical-waterfall-model/): Detailed explanation of the Waterfall methodology.
