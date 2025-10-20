@@ -88,25 +88,41 @@ The intent is to uncover and resolve problems as early as possible by thoroughly
 
 In Royce’s model, “Waterfall” is phase-gated with deliberate feedback between neighboring stages and augmented by risk-reduction practices:
 
-- Feedback loops between stages: Each stages (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments suppose to collaborate in order to surface errors and correct them early with lower costs.
+- **Feedback loops between stages**: Each stage (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments are supposed to collaborate in order to surface errors and correct them early with lower costs.
 
-- Preliminary program design: Produce a high-level architecture, module decomposition, interfaces, data flow, and performance budgets before completing full analysis to validate feasibility and guide detailed work. int. The point here is to put preliminary constrains on the system and challenge these decisions at the analysis stage that proceeds in the succeeding phase. 
+- **Preliminary program design**: Produce a high-level architecture, module decomposition, interfaces, data flow, and performance budgets before completing full analysis to validate feasibility and guide detailed work. The point here is to put preliminary constraints on the system and challenge these decisions at the analysis stage that precedes the succeeding phase. 
 
-- Document the design: Maintain specification-driven artifacts like software requirements, software architecture, service-to-service contracts, test plans and schedules. It is suggested to produce as much documentation as possible which is eventually become the specification and the design for the entire project. It could be used by developement and quality assurance teams in later stages to know every aspect of the system and collaborate around it.
+- **Document the design**: Maintain specification-driven artifacts like software requirements, software architecture, service-to-service contracts, test plans, and schedules. It is suggested to produce as much documentation as possible, which eventually becomes the specification and the design for the entire project. It could be used by development and quality assurance teams in later stages to know every aspect of the system and collaborate around it.
 
-- “Do it twice”: Build a pilot/prototype/simulation to validate architecture, technology choices, throughput/latency, and critical algorithms before committing to a full-scale build. Today, we would call it a proof of concept, implementing the primary features and key selling points as a prototype first, and cancel the project if it doesn’t find an audience. This saves resources by not implementing projects that are unrealistic or not actually profitable to customers.
+- **"Do it twice"**: Build a pilot/prototype/simulation to validate architecture, technology choices, throughput/latency, and critical algorithms before committing to a full-scale build. Today, we would call it a proof of concept, implementing the primary features and key selling points as a prototype first, and cancel the project if it doesn’t find an audience. This saves resources by not implementing projects that are unrealistic or not actually profitable to customers.
 
-- Plan and control testing end-to-end: Independent test specialists, requirements-to-test traceability, logic-path/coverage goals, integration sequencing, realistic test data and environments, formal readiness/exit reviews.
+- **Plan and control testing end-to-end**: Independent test specialists, requirements-to-test traceability, logic-path/coverage goals, integration sequencing, realistic test data and environments, formal readiness/exit reviews.
 
-- Customer involvement at gates: Formal reviews (requirements, design, prototype demo, acceptance) to lock decisions, reduce ambiguity, and control scope with recorded approvals.
+- **Customer involvement at gates**: Formal reviews (requirements, design, prototype demo, acceptance) to lock decisions, reduce ambiguity, and control scope with recorded approvals.
 
 ### Strengths and Benefits
 
-Waterfall's linear structure makes it easy to understand and manage, particularly for stakeholders unfamiliar with software development. The emphasis on documentation creates a clear paper trail and helps maintain accountability throughout the project lifecycle.
+Based on the improvement suggestions by the author of the original paper, Waterfall methodology offers several key advantages:
+
+- **Separate Responsibility**: Clear separation of responsibilities into stages makes it easier to follow the process. Separate departments could be focused on their responsibilities and provide detailed feedback on work done by preceding stages.
+
+- **Iterative Feedback**: Each stage provides feedback on the outcome of the previous stage, allowing multiple teams to collaborate effectively, receive early feedback, and address issues at early stages.
+
+- **Comprehensive Documentation**: Each stage contributes to documentation; cumulative gathering of information about the project via documents allows sharing knowledge about the system across departments and specialists to reduce the risk of bus factor where one person is the only one to understand how the system actually works.
+
+- **Customer Involvement**: It is suggested to involve the end customer in the process to lock in requirements in order to make sure that these will not change at later stages.
 
 ### Challenges and Considerations
 
-The biggest challenge with Waterfall is its inflexibility to change. Once requirements are locked and development begins, making changes becomes costly and time-consuming. The methodology assumes that requirements are well-understood from the start, which is often not the case in dynamic environments.
+These challenges and drawbacks are based on suggestions from the author of the enhanced Waterfall methodology:
+
+- **Rigid Processes**: In spite of all the efforts to improve the original multistage process, it is still as rigid as before, and any severe changes in design or requirements at later stages will 100 percent increase the effort and resources needed to complete the project.
+
+- **Locked-In Requirements**: The process and suggested improvements are targeted to secure requirements early and foresee issues at early stages. Such an approach does not have agility to incorporate constantly changing customer needs and adapt accordingly.
+
+- **Monolithic Solutions**: The process suggests employing modeling and prototyping the solution, but still considers it as a whole complete program to be released. The process is still considered as a complete product to be released from requirements gathering to final delivery to the customer.
+
+- **Late Testing**: Feedback from quality assurance is provided at later stages and validates only the complete system over previously secured requirements. Any significant issue in system design, user experience, or infrastructure may not be considered before this stage. It is extremely challenging to foresee all problems at later stages and more challenging to adapt to changing customer expectations.
 
 ## Agile Methodology
 
