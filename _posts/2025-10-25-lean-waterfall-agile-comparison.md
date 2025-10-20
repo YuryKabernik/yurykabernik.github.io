@@ -59,8 +59,8 @@ Lean’s benefits are both practical and strategic:
 
 Lean also presents explicit challenges that teams should be aware of:
 
-- **Delayed customer engagement:** Although Lean values customer needs, the methodology is structured to complete the entire development cycle before presenting the product to the customer. This can mean there is little to show, and limited opportunity to engage customer feedback, until the product is finally delivered—potentially delaying crucial insights.
-- **Potential for over-emphasis on perfection:** Lean’s pursuit of perfection, while intended to ensure quality, can act as a bottleneck. Teams may feel blocked from moving forward unless every detail meets a high standard—even when such rigor might not be necessary for the context or stage of development.
+- **Delayed customer engagement:** Although Lean values customer needs, the methodology is structured to complete the entire development cycle before presenting the product to the customer. This can mean there is little to show and limited opportunity to gather customer feedback until the product is finally delivered—potentially delaying crucial insights.
+- **Potential for overemphasis on perfection:** Lean’s pursuit of perfection, while intended to ensure quality, can act as a bottleneck. Teams may feel blocked from moving forward unless every detail meets a high standard—even when such rigor might not be necessary for the context or stage of development.
 - **Manufacturing roots may not always fit software:** Lean was originally developed for manufacturing, where physical flow and inventory are key factors. In software, direct analogs may be harder to apply, and teams may struggle to interpret Lean concepts in a digital context. However, the methodology’s core principles can still help teams regain focus when they face inefficiency due to too many tasks or distractions.
 - **Requires cultural and process discipline:** Successful Lean adoption demands strong commitment across the organization. Teams must be disciplined in identifying and eliminating waste and in reflecting on their practices, which can be difficult to sustain—especially in fast-moving or poorly aligned environments.
 
@@ -88,7 +88,7 @@ The intent is to uncover and resolve problems as early as possible by thoroughly
 
 In Royce’s model, “Waterfall” is a phase‑gated process with constant feedback between neighboring stages and reinforced by risk‑reduction practices.
 
-1. **Feedback loops between stages**: Each stage (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments are supposed to collaborate in order to surface errors and correct them early with lower costs.
+1. **Feedback loops between stages**: Each stage (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments are supposed to collaborate to surface errors and correct them early at lower cost.
 
 2. **Preliminary program design**: Produce a high‑level architecture, module decomposition, interfaces, data flow, and performance budgets before completing full analysis to validate feasibility and guide detailed work. The point is to establish preliminary constraints and challenge them during analysis, which precedes the next phase. 
 
@@ -96,15 +96,15 @@ In Royce’s model, “Waterfall” is a phase‑gated process with constant fee
 
 4. **"Do it twice"**: Build a pilot/prototype/simulation to validate architecture, technology choices, throughput/latency, and critical algorithms before committing to a full‑scale build. Today, we would call it a proof of concept implementing the primary features and key selling points as a prototype first and cancel the project if it doesn’t find an audience. This saves resources by avoiding projects that are unrealistic or not actually valuable to customers.
 
-5. **Plan and control testing end-to-end**: Independent test specialists, requirements-to-test traceability, logic-path/coverage goals, integration sequencing, realistic test data and environments, formal readiness/exit reviews.
+5. **Plan, control, and monitor testing**: Start involving testing early, ideally by planning the test process alongside the design phase. Such an approach helps to ensure that every logic path in the software is tested at least once by specialists who could do it properly. Organizing autonomous test groups may help in defining whether the documentation is prepared well enough to follow and to properly test the working software against the collected requirements.
 
-6. **Customer involvement at gates**: Formal reviews (requirements, design, prototype demo, acceptance) to lock decisions, reduce ambiguity, and control scope with recorded approvals.
+6. **Involve the customer**: Make sure the customer is involved in the process at every key phase. The involvement can be formalized through a series of formal reviews during the design stage and requirements gathering, as well as prototype demos and the final acceptance review. This is intended to reduce ambiguity, avoid misunderstandings in requirements, and control scope with recorded approvals.
 
 ### Strengths and Benefits
 
 Based on the improvement suggestions by the author of the original paper, the Waterfall methodology offers several key advantages:
 
-- **Separate Responsibility**: Clear separation of responsibilities into stages makes it easier to follow the process. Separate departments can focus on their responsibilities and provide detailed feedback on work done by preceding stages.
+- **Separate Responsibility**: Clear separation of responsibilities into stages makes it easier to follow the process. Separate departments can focus on their responsibilities and provide detailed feedback on work done by preceding stages. This way, developers can provide detailed feedback on design decisions, and quality assurance can challenge the software implementation against detailed requirements.
 
 - **Iterative Feedback**: Each stage provides feedback on the outcome of the previous stage, allowing multiple teams to collaborate effectively, receive early feedback, and address issues at earlier stages.
 
