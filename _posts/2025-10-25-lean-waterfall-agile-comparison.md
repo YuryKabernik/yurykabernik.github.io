@@ -15,7 +15,7 @@ The main idea behind Lean methodology is to maximize customer value while minimi
 
 Lean originated in the 1950s from Toyota’s response to the limitations of Ford’s linear approach. Toyota reimagined manufacturing by shifting the focus from optimizing individual machines to optimizing the entire flow of products through the process. They pioneered innovations such as right-sizing machines for actual production volume, self-monitoring for quality, sequencing machines by process, enabling quick setups for small batches, and implementing pull-based production — where each process step signals the previous step for the needed materials. These innovations influenced software development, where production speed to release and responsiveness to customer needs are vital.
 
-Self-monitoring for quality was implemented via Jidoka, an automated mechanism that stops the line when a defect is detected, reducing the need for manual check. This approach allowed to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is multistage CI/CD testing, including unit, integration, and end to end checks which provide automated, early quality signals throughout the software development life cycle.
+Self-monitoring for quality was implemented via Jidoka, an automated mechanism that stops the line when a defect is detected, reducing the need for manual checks. This approach allowed teams to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is multi‑stage CI/CD testing, including unit, integration, and end‑to‑end checks, which provide automated, early quality signals throughout the software development life cycle.
 
 These changes enabled Toyota to achieve high efficiency, rapid response to market needs, low cost, high variety, and high quality, fundamentally improving flow-based production.
 
@@ -29,7 +29,7 @@ From the lessons learned in Toyota’s Lean manufacturing, five core principles 
 4. **Let customers pull value** from the next upstream activity as flow is introduced.
 5. **Repeat the process** until a state of perfection is reached, in which perfect value is created with no waste.
 
-In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value-adding steps from identifuying rquirements to final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvements.
+In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value‑adding steps from identifying requirements to the final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvement.
 
 In 2007, Womack and Jones simplified these principles into three key elements—**Purpose, Process, People**:
 
@@ -41,7 +41,7 @@ In 2007, Womack and Jones simplified these principles into three key elements—
 
 A cornerstone practice of Lean software development is **Value Stream Mapping**. This practice is central to continuous improvement: it is used before, during, and after a product release to identify waste and drive process improvements. By mapping the entire flow, teams can see the big picture of product development—revealing areas where, for example, issues in implementing certain requirements may cause other teams to adjust their plans, and what actions are needed to deliver the product.
 
-Value stream mapping typically begins with the creation of a **current state map**. This involves capturing the actual condition of the value stream’s material and information flow, providing an honest look at how work is currently done. Once the current state is visualized, the team develops a **future state map**—a target image of how material and information *should* flow through the value stream to achieve optimal efficiency and value delivery.
+Value Stream Mapping typically begins with the creation of a **current state map**. This involves capturing the actual condition of the value stream’s material and information flow, providing an honest look at how work is currently done. Once the current state is visualized, the team develops a **future state map**—a target image of how material and information *should* flow through the value stream to achieve optimal efficiency and value delivery.
 
 This iterative process—repeated over time—is one of the simplest and best ways to teach yourself and your team to truly see where value is created (or lost). Although most commonly associated with Lean manufacturing and Lean Thinking and Practice, value stream mapping can be applied in any industry. Managers and teams outside manufacturing can also benefit greatly from using it to optimize their workflows and collaboration.
 
@@ -74,55 +74,60 @@ Lean also presents explicit challenges that teams should be aware of:
 
 Waterfall is one of the earliest formalized approaches to software development. Often linked to Winston W. Royce’s 1970 paper "MANAGING THE DEVELOPMENT OF LARGE SOFTWARE SYSTEMS", Waterfall draws from traditional engineering disciplines where predictability, documentation, and phase gates mitigate risk in large, capital‑intensive initiatives (defense, aerospace, infrastructure) with clear goals and clear timelines.
 
-Most of the time it is described as a rigit process of 5 sequential stages of gathering Requirements, Design, Develop, Test, and Deploy where each stage is required to be completed before the next stage could be started. This is true for the initial processes he presented as a common but fundamentally flawed model which is risky and invites failure by its inability to address issues early. This is the diagram that was later named the "Waterfall Model".
+Most of the time it is described as a rigid process of five sequential stages: Requirements, Design, Development, Testing, and Deployment, where each stage must be completed before the next stage can be started. This is true for the initial process Royce presented as a common but fundamentally flawed model, which is risky and invites failure due to its inability to address issues early. This is the diagram that was later named the "Waterfall Model".
 
 ### Core Principles
 
-For the rest of the paper Royce actually advocates for an introduction of an iterative approach to this model with the preceding and succeeding stages cooperating in order to provide early feedback. It includes the famous feedback arrows going backwards from each step to the previous ones, collecting and clarifying requirements to streamline further design and developemnt, and the crucial step of building a "Preliminary Program Design" with substantial documentation before full-scale development. 
+For the rest of the paper, Royce actually advocates introducing an iterative approach to this model, with the preceding and succeeding stages cooperating to provide early feedback. It includes the famous feedback arrows going back from each step to the previous ones, collecting and clarifying requirements to streamline further design and development, and the crucial step of building a "Preliminary Program Design" with substantial documentation before full-scale development.
 
 It is often assumed that requirements can be collected and clarified once, in a dedicated phase, to streamline subsequent design and development. After the requirements are finalized, the team designs the target system before proceeding to coding. Design and development may include building prototypes to validate concepts at a smaller scale, challenge assumptions with fewer resources, and gather early feedback from stakeholders and end users. Prototyping also enables management to assess whether the allocated resources and schedule are sufficient to deliver the project within defined constraints. At this stage, the overall system is designed, and key decisions are made about technologies, algorithms, and data sources.
 
 The intent is to uncover and resolve problems as early as possible by thoroughly inspecting and planning the software before any coding begins. Ignoring these practices pushes defect discovery to later stages and forces costly backtracking to earlier stages such as requirements and design. The resulting design changes can be so dramatic that the original requirements are violated, causing significant losses of time and resources.
 
-### Key Principles
+### Key Practices
 
-In Royce’s model, “Waterfall” is phase-gated with deliberate feedback between neighboring stages and augmented by risk-reduction practices:
+In Royce’s model, “Waterfall” is a phase‑gated process with constant feedback between neighboring stages and reinforced by risk‑reduction practices.
 
-- **Feedback loops between stages**: Each stage (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments are supposed to collaborate in order to surface errors and correct them early with lower costs.
+1. **Feedback loops between stages**: Each stage (requirements, design, implementation, verification, operations) reviews outputs from the next and can send work back for correction. Teams and departments are supposed to collaborate in order to surface errors and correct them early with lower costs.
 
-- **Preliminary program design**: Produce a high-level architecture, module decomposition, interfaces, data flow, and performance budgets before completing full analysis to validate feasibility and guide detailed work. The point here is to put preliminary constraints on the system and challenge these decisions at the analysis stage that precedes the succeeding phase. 
+2. **Preliminary program design**: Produce a high‑level architecture, module decomposition, interfaces, data flow, and performance budgets before completing full analysis to validate feasibility and guide detailed work. The point is to establish preliminary constraints and challenge them during analysis, which precedes the next phase. 
 
-- **Document the design**: Maintain specification-driven artifacts like software requirements, software architecture, service-to-service contracts, test plans, and schedules. It is suggested to produce as much documentation as possible, which eventually becomes the specification and the design for the entire project. It could be used by development and quality assurance teams in later stages to know every aspect of the system and collaborate around it.
+3. **Document the design**: Maintain specification‑driven artifacts like software requirements, software architecture, service‑to‑service contracts, test plans, and schedules. Produce thorough documentation that ultimately becomes the project’s specification and design. These artifacts enable development and quality assurance teams to understand every aspect of the system and collaborate effectively in later stages.
 
-- **"Do it twice"**: Build a pilot/prototype/simulation to validate architecture, technology choices, throughput/latency, and critical algorithms before committing to a full-scale build. Today, we would call it a proof of concept, implementing the primary features and key selling points as a prototype first, and cancel the project if it doesn’t find an audience. This saves resources by not implementing projects that are unrealistic or not actually profitable to customers.
+4. **"Do it twice"**: Build a pilot/prototype/simulation to validate architecture, technology choices, throughput/latency, and critical algorithms before committing to a full‑scale build. Today, we would call it a proof of concept implementing the primary features and key selling points as a prototype first and cancel the project if it doesn’t find an audience. This saves resources by avoiding projects that are unrealistic or not actually valuable to customers.
 
-- **Plan and control testing end-to-end**: Independent test specialists, requirements-to-test traceability, logic-path/coverage goals, integration sequencing, realistic test data and environments, formal readiness/exit reviews.
+5. **Plan and control testing end-to-end**: Independent test specialists, requirements-to-test traceability, logic-path/coverage goals, integration sequencing, realistic test data and environments, formal readiness/exit reviews.
 
-- **Customer involvement at gates**: Formal reviews (requirements, design, prototype demo, acceptance) to lock decisions, reduce ambiguity, and control scope with recorded approvals.
+6. **Customer involvement at gates**: Formal reviews (requirements, design, prototype demo, acceptance) to lock decisions, reduce ambiguity, and control scope with recorded approvals.
 
 ### Strengths and Benefits
 
-Based on the improvement suggestions by the author of the original paper, Waterfall methodology offers several key advantages:
+Based on the improvement suggestions by the author of the original paper, the Waterfall methodology offers several key advantages:
 
-- **Separate Responsibility**: Clear separation of responsibilities into stages makes it easier to follow the process. Separate departments could be focused on their responsibilities and provide detailed feedback on work done by preceding stages.
+- **Separate Responsibility**: Clear separation of responsibilities into stages makes it easier to follow the process. Separate departments can focus on their responsibilities and provide detailed feedback on work done by preceding stages.
 
-- **Iterative Feedback**: Each stage provides feedback on the outcome of the previous stage, allowing multiple teams to collaborate effectively, receive early feedback, and address issues at early stages.
+- **Iterative Feedback**: Each stage provides feedback on the outcome of the previous stage, allowing multiple teams to collaborate effectively, receive early feedback, and address issues at earlier stages.
 
-- **Comprehensive Documentation**: Each stage contributes to documentation; cumulative gathering of information about the project via documents allows sharing knowledge about the system across departments and specialists to reduce the risk of bus factor where one person is the only one to understand how the system actually works.
+- **Comprehensive Documentation**: Each stage contributes to documentation; cumulatively, these artifacts share knowledge about the system across departments and specialists and reduce the bus factor — the risk that only one person understands how the system actually works.
 
-- **Customer Involvement**: It is suggested to involve the end customer in the process to lock in requirements in order to make sure that these will not change at later stages.
+- **Customer Involvement**: The end customer is involved from the requirements‑gathering stage through final software acceptance. Such deep involvement helps reduce misunderstandings in requirements and adds an additional layer of review across the software development life cycle.
 
 ### Challenges and Considerations
 
 These challenges and drawbacks are based on suggestions from the author of the enhanced Waterfall methodology:
 
-- **Rigid Processes**: In spite of all the efforts to improve the original multistage process, it is still as rigid as before, and any severe changes in design or requirements at later stages will 100 percent increase the effort and resources needed to complete the project.
+- **Rigid Processes**: In spite of all the efforts to improve the original multistage process, it remains rigid, and any severe changes in design or requirements at later stages will significantly increase the effort and resources needed to complete the project.
 
-- **Locked-In Requirements**: The process and suggested improvements are targeted to secure requirements early and foresee issues at early stages. Such an approach does not have agility to incorporate constantly changing customer needs and adapt accordingly.
+- **Locked‑In Requirements**: The process and suggested improvements are targeted to secure requirements early and foresee issues at early stages. Such an approach does not have the agility to incorporate constantly changing customer needs and adapt accordingly.
 
-- **Monolithic Solutions**: The process suggests employing modeling and prototyping the solution, but still considers it as a whole complete program to be released. The process is still considered as a complete product to be released from requirements gathering to final delivery to the customer.
+- **Monolithic Solutions**: The process suggests employing modeling and prototyping, but it still treats the program as a single, complete release cycle — from requirements gathering to final delivery to the customer.
 
-- **Late Testing**: Feedback from quality assurance is provided at later stages and validates only the complete system over previously secured requirements. Any significant issue in system design, user experience, or infrastructure may not be considered before this stage. It is extremely challenging to foresee all problems at later stages and more challenging to adapt to changing customer expectations.
+- **Late Testing**: Feedback from quality assurance is provided at later stages and validates only the complete system over previously secured requirements. Significant issues in system design, user experience, or infrastructure may not be discovered until this point. It is extremely challenging to foresee all problems early, and even harder to adapt to changing customer expectations at that stage.
+
+### References
+
+- [MANAGING THE DEVELOPMENT OF LARGE SOFTWARE SYSTEMS, Royce 1970](https://blog.jbrains.ca/assets/articles/royce1970.pdf)
+- [Waterfall by Steven Zeil](https://www.cs.odu.edu/~zeil/cs333/website-sum11/Lectures/waterfall/page/waterfall.html#d0e145)
 
 ## Agile Methodology
 
