@@ -126,7 +126,7 @@ These challenges and drawbacks are based on suggestions from the author of the e
 
 - **Late Testing**: Feedback from quality assurance is provided at later stages and validates only the complete system over previously secured requirements. Significant issues in system design, user experience, or infrastructure may not be discovered until this point. It is extremely challenging to foresee all problems early, and even harder to adapt to changing customer expectations at that stage.
 
-- **Slow Delivery**: Suggested improvements help to fix the initial Waterfall model, but eventually slow down the project and cement all next stages from breaking down the process with bringing any significant value to the customer. The giant amount of documentation requires everyone to contribute to it, write it on almost every step, and support it to make sure the current version aligns with the secured requirements.
+- **Slow Delivery**: Suggested improvements help to fix the initial Waterfall model, but eventually slow down the project and cement all next stages from breaking down the process without bringing any significant value to the customer. The giant amount of documentation requires everyone to contribute to it, write it on almost every step, and support it to make sure the current version aligns with the secured requirements.
 
 ### References
 
