@@ -76,6 +76,8 @@ Waterfall is one of the earliest formalized approaches to software development. 
 
 Most of the time it is described as a rigid process of five sequential stages: Requirements, Design, Development, Testing, and Deployment, where each stage must be completed before the next stage can be started. This is true for the initial process Royce presented as a common but fundamentally flawed model, which is risky and invites failure due to its inability to address issues early. This is the diagram that was later named the "Waterfall Model".
 
+In comparison with the Lean methodology, the Waterfall process is focused on securing the requirements and documenting as much as possible at the cost of increasing the development time and resources, and introducing steps that do not bring value to the customer.
+
 ### Core Principles
 
 For the rest of the paper, Royce actually advocates introducing an iterative approach to this model, with the preceding and succeeding stages cooperating to provide early feedback. It includes the famous feedback arrows going back from each step to the previous ones, collecting and clarifying requirements to streamline further design and development, and the crucial step of building a "Preliminary Program Design" with substantial documentation before full-scale development.
@@ -124,6 +126,8 @@ These challenges and drawbacks are based on suggestions from the author of the e
 
 - **Late Testing**: Feedback from quality assurance is provided at later stages and validates only the complete system over previously secured requirements. Significant issues in system design, user experience, or infrastructure may not be discovered until this point. It is extremely challenging to foresee all problems early, and even harder to adapt to changing customer expectations at that stage.
 
+- **Slow Delivery**: Suggested improvements help to fix the initial Waterfall model, but eventually slow down the project and cement all next stages from breaking down the process with bringing any significant value to the customer. The giant amount of documentation requires everyone to contribute to it, write it on almost every step, and support it to make sure the current version aligns with the secured requirements.
+
 ### References
 
 - [MANAGING THE DEVELOPMENT OF LARGE SOFTWARE SYSTEMS, Royce 1970](https://blog.jbrains.ca/assets/articles/royce1970.pdf)
@@ -131,11 +135,41 @@ These challenges and drawbacks are based on suggestions from the author of the e
 
 ## Agile Methodology
 
-Agile emerged in the early 2000s as a response to the limitations of traditional methodologies like Waterfall. Rather than following a rigid, sequential process, Agile embraces change and focuses on delivering value through iterative cycles and close collaboration.
+Agile emerged in the early 2000s as a response to the limitations of traditional methodologies like Waterfall. The new methodology of Agile Software Development was built around four core values, bringing human interactions among experts to the first place and simplifying development processes by reducing everything that slows them down.
+
+- **Individuals and interactions** over processes and tools
+- **Working software** over comprehensive documentation
+- **Customer collaboration** over contract negotiation
+- **Responding to change** over following a plan
+
+The foundational values of Agile methodology were built around ideas of reducing bureaucracy and close collaboration among all experts involved in software development. In comparison with previous methodologies, we are not trying to optimize another process but allow industry experts to rule the process and make decisions about what is necessary to deliver a working solution. As the Waterfall model was the primary methodology for the majority of software projects, focus on steps that secure production flow but do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process of software development under control, but eventually slowed it down and made any changes in initial requirements everyone's problem.
+
+Agile expands the best ideas from both previous methodologies by adapting them to even more rapidly changing customer needs. One of the breakthrough ideas is an approach to split a complex project into a number of manageable sprints where developers will iteratively contribute to the initial prototype solution and continuously commit to a small scope of new features frequently until the project is considered done. This way the customer will not have to wait for the entire cycle to complete before getting working software and will regularly receive updates with valuable enhancements.
 
 ### Core Principles
 
-Agile methodology is guided by twelve principles that emphasize customer satisfaction through early and continuous delivery of valuable software, welcoming changing requirements even late in development, and fostering a culture of collaboration and self-organization.
+Agile methodology is guided by twelve principles:
+
+- **Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.**
+- **Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.**
+- **Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.**
+
+With these principles we focus on what is valuable to the customer at the current moment. We plan our sprint according to these values and once priorities change next time we adjust to them in the next sprint. There is no room for a long-running development of a complex project—make it simple, do it fast, and release frequently. Also, we involve the customer even more closely with developers. The customer becomes involved in the software development life cycle on a constant basis that shortens the feedback loop and allows us to adapt requirements even faster.
+
+- **Business people and developers must work together daily throughout the project.**
+- **Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.**
+- **The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.**
+- **The best architectures, requirements, and designs emerge from self-organizing teams.**
+- **At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.**
+
+It is suggested to bring experts closer to each other, bring different departments to work together beyond the scope of neighboring phases, and grow an environment of mutual assistance where information about current problems, needs, and blockers is constantly shared. These principles are one of the reasons why nowadays we work in cross-functional teams alongside Stakeholders, Software Architects, Software Testers, Product Owners, and Release Managers.
+
+- **Working software is the primary measure of progress.**
+- **Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.**
+- **Continuous attention to technical excellence and good design enhances agility.**
+- **Simplicity—the art of maximizing the amount of work not done—is essential.**
+
+The progress is measured by stable software operations and constant release of new features. It is suggested to consider there is always room for improvements through new features, performance improvements, scalable architecture, and extendable software design.
 
 ### Key Practices
 
@@ -181,6 +215,7 @@ As the software development landscape continues to evolve, staying informed abou
 
 ### Agile Methodology
 - [The Agile Manifesto](https://agilemanifesto.org/): The foundational document of Agile software development.
+- [The 12 Principles Behind the Agile Manifesto](https://agilemanifesto.org/principles.html): Detailed principles guiding Agile practices.
 - [Scrum Guide](https://scrumguides.org/): Official guide to the Scrum framework, one of the most popular Agile methodologies.
 - [Kanban Guide](https://kanbanguides.org/): Resources for understanding and implementing Kanban practices.
 - [Project Management Institute - Agile Practice Guide](https://www.pmi.org/pmbok-guide-standards/practice-guides/agile): Professional guide to Agile project management.
