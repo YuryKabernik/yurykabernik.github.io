@@ -135,41 +135,41 @@ These challenges and drawbacks are based on suggestions from the author of the e
 
 ## Agile Methodology
 
-Agile emerged in the early 2000s as a response to the limitations of traditional methodologies like Waterfall. The new methodology of Agile Software Development was built around four core values, bringing human interactions among experts to the first place and simplifying development processes by reducing everything that slows them down.
+Over time, the Waterfall model became the primary methodology for the majority of software projects. Focus on steps that secure production flow but do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process of software development under control, but eventually slowed it down and made any changes in initial requirements everyone's problem.
+
+Agile emerged in the early 2000s as a response to the limitations of traditional methodologies like Waterfall. The new methodology of Agile Software Development was built around four core values:
 
 - **Individuals and interactions** over processes and tools
 - **Working software** over comprehensive documentation
 - **Customer collaboration** over contract negotiation
 - **Responding to change** over following a plan
 
-The foundational values of Agile methodology were built around ideas of reducing bureaucracy and close collaboration among all experts involved in software development. In comparison with previous methodologies, we are not trying to optimize another process but allow industry experts to rule the process and make decisions about what is necessary to deliver a working solution. As the Waterfall model was the primary methodology for the majority of software projects, focus on steps that secure production flow but do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process of software development under control, but eventually slowed it down and made any changes in initial requirements everyone's problem.
-
-Agile expands the best ideas from both previous methodologies by adapting them to even more rapidly changing customer needs. One of the breakthrough ideas is an approach to split a complex project into a number of manageable sprints where developers will iteratively contribute to the initial prototype solution and continuously commit to a small scope of new features frequently until the project is considered done. This way the customer will not have to wait for the entire cycle to complete before getting working software and will regularly receive updates with valuable enhancements.
+In compare with previous methodologies, we are not trying to optimize production flow but allow industry experts to adapt quickly and decide what is necessary to deliver a working software.
 
 ### Core Principles
 
-Agile methodology is guided by twelve principles:
+Agile expands some of the best practices from both previous methodologies by adapting them to even more rapidly changing customer needs. Resulting in twelve guiding principles.
 
-- **Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.**
-- **Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.**
-- **Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.**
+1. **Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.**
+2. **Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.**
+3. **Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.**
 
-With these principles we focus on what is valuable to the customer at the current moment. We plan our sprint according to these values and once priorities change next time we adjust to them in the next sprint. There is no room for a long-running development of a complex project—make it simple, do it fast, and release frequently. Also, we involve the customer even more closely with developers. The customer becomes involved in the software development life cycle on a constant basis that shortens the feedback loop and allows us to adapt requirements even faster.
+The major idea is to replace a monolith solution with a seriese of short iterative cycles. Smaller release patches of valuable software help us to receive customer feedback faster and on a constant basis. With these principles we focus on what is important to the customer right now. We plan our sprint according to these values and once priorities change we adjust to them in the next sprint. There is no room for a long-running development of a complex project—make it simple, do it fast, and release frequently.
 
-- **Business people and developers must work together daily throughout the project.**
-- **Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.**
-- **The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.**
-- **The best architectures, requirements, and designs emerge from self-organizing teams.**
-- **At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.**
+4. **Business people and developers must work together daily throughout the project.**
+5. **Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.**
+6. **The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.**
+7. **The best architectures, requirements, and designs emerge from self-organizing teams.**
+8. **At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.**
 
-It is suggested to bring experts closer to each other, bring different departments to work together beyond the scope of neighboring phases, and grow an environment of mutual assistance where information about current problems, needs, and blockers is constantly shared. These principles are one of the reasons why nowadays we work in cross-functional teams alongside Stakeholders, Software Architects, Software Testers, Product Owners, and Release Managers.
+It is suggested to bring experts closer to each other, bring different departments to work beyond the scope of neighboring phases, and grow an environment of mutual assistance. The knowledge about the current system is constantly shared and problems are solved right at the moment when they emerge. These principles are one of the reasons why nowadays we work in cross-functional teams alongside Stakeholders, Software Architects, Software Developers, Quality Assurance Engineers, Product Owners, and Release Managers.
 
-- **Working software is the primary measure of progress.**
-- **Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.**
-- **Continuous attention to technical excellence and good design enhances agility.**
-- **Simplicity—the art of maximizing the amount of work not done—is essential.**
+9. **Working software is the primary measure of progress.**
+2. **Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.**
+3. **Continuous attention to technical excellence and good design enhances agility.**
+4. **Simplicity—the art of maximizing the amount of work not done—is essential.**
 
-The progress is measured by stable software operations and constant release of new features. It is suggested to consider there is always room for improvements through new features, performance improvements, scalable architecture, and extendable software design.
+Without a doubt, all the efforts from the project team are aimed at delivering the best-class solution right into the hands of the end customer. The progress is measured by stable software operations and customer's satisfaction with constant release of valuable features. Keeping the sortware in the best shape means there is always a room for new features, performance improvements, architectural modernization, and capacity for solving technical dept.
 
 ### Key Practices
 
