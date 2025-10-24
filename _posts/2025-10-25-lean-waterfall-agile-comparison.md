@@ -177,11 +177,29 @@ Agile encompasses various frameworks including Scrum, Kanban, and Extreme Progra
 
 ### Strengths and Benefits
 
-Agile's iterative approach allows for rapid response to changing requirements and market conditions. Frequent delivery of working software provides early value to customers and enables continuous feedback and improvement.
+Agile's iterative approach offers several key advantages:
+
+- **Flexible Process**: Flexibility gives the development team the ability to respond to customer demands and incorporate new ideas, which increases the value of the solution. Also, all stages of the development process may be executed in parallel, working on the current sprint and preparing the content for the next one at the same time.
+
+- **Value Focused**: Continuously focusing on the user experience allows us to prioritize the most valuable features and eliminate features you discover are not important, which helps control costs. Project resources might be saved by not investing in functionality that does not meet customer needs.
+
+- **Faster Releases**: Enables your team to develop and release iterative solutions to the market rapidly. No need to wait for a complete solution when you can beat your competitors by being the first who delivered the most desirable feature faster.
+
+- **Identify Issues Early**: Testing early and often enables your team to identify issues and resolve those issues before switching your context to the next iteration. The earlier the team will identify issues, the less rework is required in future.
+
+- **Team Involvement**: Team, involved in business needs and collaborating with business people, may recommend improvements that would bring even greater value unseen from the customer's perspective.
 
 ### Challenges and Considerations
 
-Agile requires significant commitment and culture change from all stakeholders, particularly in organizations accustomed to traditional project management. The reduced emphasis on documentation can present challenges in regulated environments or when onboarding new team members.
+While Agile offers many benefits, it also presents several challenges that teams should be aware of:
+
+- **Lack of Predictability**: Inability to predict the overall development costs may result in underbudgeting teams and departments. Also, unexpectedly changing requirements might bring confusion and miscommunication when not properly communicated within teams.
+
+- **Lack of Documentation**: Insufficient documentation complicates maintenance, onboarding, and cross-team knowledge sharing. Documentation should not fade into oblivion; Agile does not exclude documentation—teams must plan and refresh it so artifacts remain accurate and up to date.
+
+- **Waterfall Sprints**: Software development life cycle of each sprint may vary from project to project, but mostly follows the same Waterfall sequential stages: Requirements, Design, Develop, Test, and Deploy. Stages are highly coupled, meaning preceding stages must be completed before the next stage can be started. Insufficient requirements at the beginning of the sprint might result in severe impediments in succeeding sprint goals and delivery schedules.
+
+- **Sprint Race**: Unrealistic sprint goals, inaccurate estimations, or misused practices eventually turn a simple and adaptable methodology into an endless race for deadlines. When the team needs to hurry to fit in committed timelines, it seriously affects their performance, accuracy, and morale, committing people to overtimes and burnouts.
 
 ## Comparison and Choosing the Right Methodology
 
