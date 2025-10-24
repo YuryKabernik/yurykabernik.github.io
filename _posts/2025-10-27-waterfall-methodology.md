@@ -71,4 +71,4 @@ Waterfall methodology represents a structured, phase-gated approach to software 
 
 - [Managing the Development of Large Software Systems (Royce 1970)](https://blog.jbrains.ca/assets/articles/royce1970.pdf): The original paper that defined the Waterfall model.
 - [Waterfall by Steven Zeil](https://www.cs.odu.edu/~zeil/cs333/website-sum11/Lectures/waterfall/page/waterfall.html#d0e145): Academic perspective on Waterfall methodology.
-- [Waterfall Methodology Guide](https://www.atlassian.com/agile/project-management/waterfall-methodology): Modern overview of Waterfall methodology and its applications.
+- [Waterfall Methodology Guide](https://www.ionos.com/digitalguide/websites/web-development/waterfall-methodology/): Modern overview of Waterfall methodology and its applications.

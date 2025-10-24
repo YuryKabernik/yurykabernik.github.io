@@ -229,7 +229,7 @@ As the software development landscape continues to evolve, staying informed abou
 
 ### Waterfall Methodology
 - [Managing the Development of Large Software Systems (Royce 1970)](https://blog.jbrains.ca/assets/articles/royce1970.pdf): The original paper that defined the Waterfall model.
-- [Waterfall Methodology Guide](https://www.atlassian.com/agile/project-management/waterfall-methodology): Modern overview of Waterfall methodology and its applications.
+- [Waterfall Methodology Guide](https://www.ionos.com/digitalguide/websites/web-development/waterfall-methodology/): Modern overview of Waterfall methodology and its applications.
 
 ### Agile Methodology
 - [The Agile Manifesto](https://agilemanifesto.org/): The foundational document of Agile software development.
