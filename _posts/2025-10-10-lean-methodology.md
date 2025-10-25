@@ -1,6 +1,6 @@
 ---
 title: "Lean Methodology: Maximizing Customer Value While Minimizing Waste"
-date: 2025-10-26 00:00:01 +0200
+date: 2025-10-10 00:00:01 +0200
 categories: Project Management
 tags: lean methodology toyota value-stream-mapping waste-reduction continuous-improvement
 ---
