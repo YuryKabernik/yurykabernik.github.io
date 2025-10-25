@@ -11,7 +11,7 @@ Waterfall is one of the earliest formalized approaches to software development. 
 
 Most of the time it is described as a rigid process of five sequential stages: Requirements, Design, Development, Testing, and Deployment, where each stage must be completed before the next stage can be started. This is true for the initial process Royce presented as a common but fundamentally flawed model, which is risky and invites failure due to its inability to address issues early. This is the diagram that was later named the "Waterfall Model".
 
-In comparison with the Lean methodology, the Waterfall process is focused on securing the requirements and documenting as much as possible at the cost of increasing the development time and resources, and introducing steps that do not bring value to the customer.
+In comparison with the [Lean methodology](/posts/lean-methodology/), the Waterfall process is focused on securing the requirements and documenting as much as possible at the cost of increasing the development time and resources, and introducing steps that do not bring value to the customer.
 
 ## Core Principles
 

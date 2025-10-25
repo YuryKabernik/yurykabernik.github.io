@@ -173,7 +173,13 @@ Without a doubt, all the efforts from the project team are aimed at delivering t
 
 ### Key Practices
 
-Agile encompasses various frameworks including Scrum, Kanban, and Extreme Programming (XP), each with specific practices. Common Agile practices include iterative development through short cycles ("sprints"), daily stand-up meetings, and continuous integration and delivery.
+Agile by itself does not provide us with any kinds of practical recommendations on how to build Agile teams and establish production flow. Practices exist in the scope of three major frameworks following the original principles to implement practices embracing these values within teams.
+
+**Extreme Programming (XP)** focuses on technical excellence and frequent releases with close customer collaboration. Key practices include agile planning with user stories, continuous integration, software refactoring for constant improvement, and test-driven development (TDD).
+
+**Kanban Framework** emphasizes visualizing work, limiting work in progress, and managing flow. It uses Kanban boards to organize work by value, implements WIP limits to avoid multitasking, and promotes continuous flow rather than time-boxed sprints.
+
+**Scrum Framework** provides a structured approach with defined roles, events, and artifacts. It includes sprint planning, daily stand-ups, sprint reviews, sprint retrospectives, a product backlog, and three defined roles: Product Owner, Scrum Master, and Development Team.
 
 ### Strengths and Benefits
 

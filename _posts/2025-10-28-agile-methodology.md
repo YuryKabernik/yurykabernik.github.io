@@ -45,7 +45,45 @@ Without a doubt, all the efforts from the project team are aimed at delivering t
 
 ## Key Practices
 
-Agile encompasses various frameworks including Scrum, Kanban, and Extreme Programming (XP), each with specific practices. Common Agile practices include iterative development through short cycles ("sprints"), daily stand-up meetings, and continuous integration and delivery.
+Agile by itself does not provide us with any kinds of practical recommendations on how to build Agile teams and establish production flow. Practices exist in the scope of three major frameworks following the original principles to implement practices embracing these values within teams.
+
+### Extreme Programming (XP)
+
+Extreme Programming focuses on technical excellence and frequent releases with close customer collaboration:
+
+- **Agile Planning**: User stories are short descriptions of a feature that are written in the language of the customer. Agile teams will use these stories as a way to start their planning process. They'll create estimates and decide how many stories they can deliver in each sprint.
+
+- **Continuous Integration**: XP teams continuously integrate their code. They do this to make sure that it will work with the whole product. In the past, software development teams might work on some code, and then try to integrate it all at the end.
+
+- **Software Refactoring**: An XP team isn't satisfied when the software's finished; they always look to improve the code through constant refactoring. Instead of trying to finish the software all at once, they'll refine it and improve it over time.
+
+- **Test-Driven Development (TDD)**: XP teams try to create tests for their software before they actually start development. It helps developers understand how the software will work before they actually start coding. They'll know how to finish before they get started.
+
+### Kanban Framework
+
+Kanban emphasizes visualizing work, limiting work in progress, and managing flow:
+
+- **Kanban Board**: The Kanban board or Scrum task board is actually a way to organize your work so that your team is focused on delivering the greatest value. The work should flow through the board in a very particular way. The stories at the top should have the highest customer value. The team should work on this top story until it's finished or in the Done column. Once that work is done, then the team can work on the second story from the top.
+
+- **Work in Progress (WIP) Limits**: Agile teams should avoid multitasking and context switching. By limiting WIP, teams focus on completing work before starting new items, which improves flow and reduces cycle time.
+
+- **Continuous Flow**: Unlike Scrum's time-boxed sprints, Kanban promotes continuous delivery where work flows through the system as capacity becomes available.
+
+### Scrum Framework
+
+Scrum provides a structured approach with defined roles, events, and artifacts:
+
+- **Sprint Planning**: The team plans work for the upcoming sprint (typically 1-4 weeks), selecting items from the product backlog and creating a sprint goal.
+
+- **Daily Stand-ups**: Short daily meetings (15 minutes) where team members synchronize their work and identify any impediments.
+
+- **Sprint Review**: At the end of each sprint, the team demonstrates completed work to stakeholders and gathers feedback.
+
+- **Sprint Retrospective**: The team reflects on their process and identifies improvements for the next sprint.
+
+- **Product Backlog**: A prioritized list of features and requirements maintained by the Product Owner.
+
+- **Defined Roles**: Product Owner (defines what to build), Scrum Master (facilitates the process), and Development Team (builds the product).
 
 ## Strengths and Benefits
 
