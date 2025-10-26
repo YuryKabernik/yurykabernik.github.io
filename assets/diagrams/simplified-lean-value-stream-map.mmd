@@ -1,0 +1,45 @@
+---
+query: value stream map of feature software development
+generationTime: 2025-10-26T11:43:34.154Z
+---
+flowchart TD
+  %% Compact colored Value Stream Map (Feature Dev)
+  Start@{ shape: sm-circ, label: "Customer Request" } --> Planning
+
+  subgraph Planning
+    direction LR
+    Backlog["Backlog (10)"] --> Grooming{"Grooming PT:1d"}
+    Grooming --> Ready["Ready for Dev WIP:5"]
+  end
+
+  Planning --> Coding
+
+  subgraph Coding
+    direction LR
+    Dev["Development PT:3d"] --> CR["Code Review PT:0.5d"]
+    CR --> CI["CI / Build PT:0.25d"]
+    CI --> QA["Testing / QA PT:2d"]
+  end
+
+  Coding --> Operations
+
+  subgraph Operations
+    direction LR
+    UAT["UAT PT:1d"] --> Release["Release / Deploy PT:0.25d"]
+    Release --> Monitor@{ shape: text, label: "Monitor / Feedback" }
+  end
+
+
+  %% Rework/defect loops (styled below)
+  QA -- "Fail / Rework" --> Dev
+  CR -- "Defects" --> Dev
+  CI -- "Failed" --> Dev
+
+  %% Node color classes
+  classDef product fill:#fff3e0,stroke:#fb8c00,stroke-width:1px,color:#000;
+  classDef engineering fill:#e3f2fd,stroke:#1565c0,stroke-width:1px,color:#000;
+  class Start,Backlog,Grooming,UAT product;
+  class Ready,Dev,CR,CI,QA,Release,Monitor engineering;
+
+  %% Rework link styles (indices start at 0 in order defined)
+  linkStyle 10,11,12 stroke:#d32f2f,stroke-width:2px,stroke-dasharray:5 5;

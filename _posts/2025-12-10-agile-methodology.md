@@ -1,6 +1,6 @@
 ---
 title: "Agile Methodology: Embracing Change Through Iterative Development"
-date: 2025-12-20 00:00:01 +0200
+date: 2025-12-10 00:00:01 +0200
 categories: Project Management
 tags: agile methodology scrum kanban iterative-development agile-manifesto sprints
 ---
