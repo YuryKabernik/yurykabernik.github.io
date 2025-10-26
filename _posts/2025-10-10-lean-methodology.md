@@ -17,13 +17,13 @@ These changes enabled Toyota to achieve high efficiency, rapid response to marke
 
 From the lessons learned in Toyota's Lean manufacturing, five core principles define the methodology:
 
-1. **Specify value** from the standpoint of the end customer by product family.
-2. **Identify all steps in the value stream** for each product family, eliminating whenever possible those steps that do not create value.
-3. **Make the value-creating steps occur in tight sequence** so that the product will flow smoothly toward the customer.
-4. **Let customers pull value** from the next upstream activity as flow is introduced.
-5. **Repeat the process** until a state of perfection is reached, in which perfect value is created with no waste.
+1. **Specify Value**. Identify value from the end customers' perspective.
+2. **Identify the Value Stream**. Enlist all process steps required to deliver the solution and eliminate those steps that do not create value for the end customer.
+3. **Process Flow**. Establish sequential phase-gated flow of the value-creating steps so that the product will flow smoothly toward the customer.
+4. **Pull**. Let customers pull value from you by requesting a new feature or buying a product.
+5. **Continuous Improvement**. Pursue perfection by continuously collecting customers' feedback and solving issues in terms of minimizing time, cost, and waste.
 
-In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value‑adding steps from identifying requirements to the final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvement.
+In software development, these principles translate into a focus on customer needs (identify value), adapting the production process to these needs (map value streams), establishing only value-adding steps from identifying requirements to the final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvement.
 
 In 2007, Womack and Jones simplified these principles into three key elements:
 
@@ -39,7 +39,7 @@ Value Stream Mapping typically begins with the creation of a **current state map
 
 This **iterative process** repeated over time is one of the simplest and best ways to teach yourself and your team to truly see where value is created (or lost). Although most commonly associated with Lean manufacturing and Lean Thinking and Practice, value stream mapping can be applied in any industry. Managers and teams outside manufacturing can also benefit greatly from using it to optimize their workflows and collaboration.
 
-**Self-monitoring** for quality was implemented via **Jidoka**, an automated mechanism that stops the line when a defect is detected, reducing the need for manual checks. This approach allowed teams to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is multi‑stage CI/CD pipeline including unit, integration, and end‑to‑end testing, which provide  early automated quality signals throughout the software development life cycle.
+**Self-monitoring** for quality was implemented via **Jidoka**, an automated mechanism that stops the line when a defect is detected, reducing the need for manual checks. This approach allowed teams to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is a multi-stage CI/CD pipeline including unit, integration, and end-to-end testing, which provide early automated quality signals throughout the software development life cycle.
 
 ## Strengths and Benefits
 
@@ -62,7 +62,7 @@ Lean also presents explicit challenges that teams should be aware of:
 
 ## Conclusion
 
-Lean methodology offers a powerful framework for maximizing customer value while minimizing waste. Its principles and practices, refined over decades from Toyota's manufacturing innovations, have proven applicable to software development and many other industries. While Lean requires cultural commitment and may not fit every context perfectly, its focus on continuous improvement, value stream optimization, and customer-centric development make it a valuable approach for teams seeking to deliver high-quality products efficiently.
+Lean methodology offers a powerful framework for maximizing customer value while minimizing waste. Its principles and practices, refined over decades from Toyota's manufacturing innovations, have proven applicable to software development and many other industries. Lean requires cultural commitment and may not fit every project perfectly. Its focus on continuous improvement, value stream optimization, and customer-centric development makes Lean a valuable approach for teams seeking to deliver high-quality products efficiently at lower costs.
 
 ## Useful Links
 
