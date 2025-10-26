@@ -1,7 +1,7 @@
 ---
 title: "Lean Methodology: Maximizing Customer Value While Minimizing Waste"
 date: 2025-10-10 00:00:01 +0200
-categories: Project Management
+categories: Project_Management
 tags: lean methodology toyota value-stream-mapping waste-reduction continuous-improvement
 ---
 
@@ -10,8 +10,6 @@ tags: lean methodology toyota value-stream-mapping waste-reduction continuous-im
 The main idea behind Lean methodology is to maximize customer value while minimizing waste, ensuring that every step in the production or development process contributes meaningfully to the final product. Before Lean, manufacturing was dominated by Henry Ford's flow production system. Ford's approach revolutionized mass production with lined-up fabrication, but it lacked flexibility and resulted in a limited variety of products – making it difficult to rapidly adapt to changing customer needs.
 
 Lean originated in the 1950s from Toyota's response to the limitations of Ford's linear approach. Toyota reimagined manufacturing by shifting the focus from optimizing individual machines to optimizing the entire flow of products through the process. They pioneered innovations such as right-sizing machines for actual production volume, self-monitoring for quality, sequencing machines by process, enabling quick setups for small batches, and implementing pull-based production — where each process step signals the previous step for the needed materials. These innovations influenced software development, where production speed to release and responsiveness to customer needs are vital.
-
-Self-monitoring for quality was implemented via Jidoka, an automated mechanism that stops the line when a defect is detected, reducing the need for manual checks. This approach allowed teams to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is multi‑stage CI/CD testing, including unit, integration, and end‑to‑end checks, which provide automated, early quality signals throughout the software development life cycle.
 
 These changes enabled Toyota to achieve high efficiency, rapid response to market needs, low cost, high variety, and high quality, fundamentally improving flow-based production.
 
@@ -27,7 +25,7 @@ From the lessons learned in Toyota's Lean manufacturing, five core principles de
 
 In software development, these principles translate into a focus on customer needs (identify value), varying the product to these needs (map value streams), establishing only value‑adding steps from identifying requirements to the final release (create flow), minimizing waste of overproduction by reacting to customer needs (establish pull), and seeking perfection via continuous improvement.
 
-In 2007, Womack and Jones simplified these principles into three key elements—**Purpose, Process, People**:
+In 2007, Womack and Jones simplified these principles into three key elements:
 
 - **Purpose**: Correctly specify the value that the customer seeks in order to cost-effectively solve their problems and identify the greatest value to provide. For software, this means prioritizing features that make a real difference for users.
 - **Process**: Once purpose is clarified, focus on the process (value stream) used to achieve the objective. Ensure every step adds customer-visible value and delivers high, durable quality. Remove rituals or steps that disrupt rather than help teams achieve their goals.
@@ -39,7 +37,9 @@ A cornerstone practice of Lean software development is **Value Stream Mapping**.
 
 Value Stream Mapping typically begins with the creation of a **current state map**. This involves capturing the actual condition of the value stream's material and information flow, providing an honest look at how work is currently done. Once the current state is visualized, the team develops a **future state map**—a target image of how material and information *should* flow through the value stream to achieve optimal efficiency and value delivery.
 
-This iterative process—repeated over time—is one of the simplest and best ways to teach yourself and your team to truly see where value is created (or lost). Although most commonly associated with Lean manufacturing and Lean Thinking and Practice, value stream mapping can be applied in any industry. Managers and teams outside manufacturing can also benefit greatly from using it to optimize their workflows and collaboration.
+This **iterative process** repeated over time is one of the simplest and best ways to teach yourself and your team to truly see where value is created (or lost). Although most commonly associated with Lean manufacturing and Lean Thinking and Practice, value stream mapping can be applied in any industry. Managers and teams outside manufacturing can also benefit greatly from using it to optimize their workflows and collaboration.
+
+**Self-monitoring** for quality was implemented via **Jidoka**, an automated mechanism that stops the line when a defect is detected, reducing the need for manual checks. This approach allowed teams to address issues and receive quality feedback early, minimizing downstream issues and the high cost of late fixes. In software, the parallel is multi‑stage CI/CD pipeline including unit, integration, and end‑to‑end testing, which provide  early automated quality signals throughout the software development life cycle.
 
 ## Strengths and Benefits
 
@@ -66,7 +66,7 @@ Lean methodology offers a powerful framework for maximizing customer value while
 
 ## Useful Links
 
-- [What is Lean?](https://www.lean.org/explore-lean/what-is-lean/): Introduction to Lean principles and philosophy.
+- [Womack and Jones 1996](https://www.researchgate.net/publication/200657172_Lean_Thinking_Banish_Waste_and_Create_Wealth_in_Your_Corporation): Lean Thinking : Banish Waste and Create Wealth in Your Corporation.
 - [Lean Thinking and Practice](https://www.lean.org/lexicon-terms/lean-thinking-and-practice/): Core concepts of Lean thinking.
 - [Value Stream Mapping](https://www.lean.org/lexicon-terms/value-stream-mapping/): Guide to mapping and optimizing value streams.
 - [Lean Software Development by Mary and Tom Poppendieck](https://www.oreilly.com/library/view/lean-software-development/0321150783/): Comprehensive guide to applying Lean principles in software development.
