@@ -1,6 +1,6 @@
 ---
 title: "Waterfall Methodology: A Phase-Gated Approach to Software Development"
-date: 2025-12-10 00:00:01 +0200
+date: 2025-11-10 00:00:01 +0200
 categories: Project Management
 tags: waterfall methodology royce sdlc sequential-development documentation
 ---
