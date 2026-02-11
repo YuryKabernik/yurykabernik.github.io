@@ -7,83 +7,89 @@ tags: agile methodology scrum kanban iterative-development agile-manifesto sprin
 
 ![Agile Methodology](/assets/img/title/title-agile-methodology.png)
 
-Over time, the Waterfall model became the primary methodology for the majority of software projects. Focus on steps that secure production flow but do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process of software development under control, but eventually slowed it down and made any changes in initial requirements everyone's problem.
+Over time, the Waterfall model became the primary methodology for the majority of software projects. Focus on steps that secure production flow and do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process under control, but eventually slowed it down and made any changes in priorities or initial requirements everyone's problem.
 
-Agile emerged in the early 2000s as a response to the limitations of traditional methodologies like Waterfall. The new methodology of Agile Software Development was built around four core values:
+Agile emerged in the early 2000s in response to the fact that about one third of all companies' profits came from new products. This fact pushed organizations to focus on delivering new products as quickly as possible, adapt to changing requirements, and adjust priorities dynamically.
 
-- **Individuals and interactions** over processes and tools
-- **Working software** over comprehensive documentation
-- **Customer collaboration** over contract negotiation
-- **Responding to change** over following a plan
+The new methodology of Agile Software Development was built around four core values:
 
-In comparison with previous methodologies, we are not trying to optimize production flow but allow industry experts to adapt quickly and decide what is necessary to deliver working software.
+> - **Individuals and interactions** over processes and tools
+> - **Working software** over comprehensive documentation
+> - **Customer collaboration** over contract negotiation
+> - **Responding to change** over following a plan
+
+In comparison with previous methodologies, it does not aim to optimize production flow or lock in initial requirements. Instead, it assumes that the business environment is constantly changing: project priorities and goals can change on the go, new technologies may reshape the market at any time, and organizations must continuously release innovative solutions. This is achieved by allowing industry experts to lead projects, collaborate directly with customers, decide what is necessary to deliver working software, and re-prioritize work to changing requirements. Self-organizing teams have become the mainstream model, where frequent collaboration and overlapping development phases help maximize results in achieving established goals.
+
+Another distinguishing feature of Agile is the repetition of the same waterfall steps within smaller, time-boxed cycles. Instead of implementing the entire project at once, teams focus on delivering a number of prioritized features. They perform the same steps on a smaller scope of work, release a portion of application functionality, and receive feedback much earlier incorporating new demands and ideas, which increases the value of a solution. Splitting the work into smaller pieces allows teams to adjust priorities to address customer needs each time a new development cycle begins. 
 
 ## Core Principles
 
-Agile expands some of the best practices from both previous methodologies by adapting them to even more rapidly changing customer needs. This results in twelve guiding principles.
+Agile expands on Waterfall and Lean best practices by adapting them to rapidly changing market needs and a cross-functional team model. This expansion results in twelve guiding principles that describe key priorities without prescribing specific practices or rituals for how Agile should be implemented within a team. 
 
-1. **Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.**
-2. **Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.**
-3. **Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.**
+> 1. **Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.**
+> 2. **Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.**
+> 3. **Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.**
 
-The major idea is to replace a monolithic solution with a series of short iterative cycles. Smaller release patches of valuable software help us to receive customer feedback faster and on a constant basis. With these principles we focus on what is important to the customer right now. We plan our sprint according to these values and once priorities change we adjust to them in the next sprint. There is no room for a long-running development of a complex project—make it simple, do it fast, and release frequently.
+The main idea here is to replace a monolithic solution with a series of short, iterative cycles. Small, frequent releases of valuable software allow teams to receive customer feedback quickly and continuously. These principles help teams focus on what is most important to the customer at the moment and adapt to competitive business environment in real time. Sprints are planned around these values, and when priorities change, teams adjust in the next sprint. There is no room for long-running development of complex projects. Keep it simple, move fast, and release often.
 
-4. **Business people and developers must work together daily throughout the project.**
-5. **Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.**
-6. **The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.**
-7. **The best architectures, requirements, and designs emerge from self-organizing teams.**
-8. **At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.**
+> 4. **Business people and developers must work together daily throughout the project.**
+> 5. **Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.**
+> 6. **The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.**
+> 7. **The best architectures, requirements, and designs emerge from self-organizing teams.**
+> 8. **At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.**
 
-It is suggested to bring experts closer to each other, bring different departments to work beyond the scope of neighboring phases, and grow an environment of mutual assistance. The knowledge about the current system is constantly shared and problems are solved right at the moment when they emerge. These principles are one of the reasons why nowadays we work in cross-functional teams alongside Stakeholders, Software Architects, Software Developers, Quality Assurance Engineers, Product Owners, and Release Managers.
+Next, it is suggested to bring experts closer together, encourage collaboration across departments beyond the boundaries of individual phases, and foster an environment of mutual support. Knowledge about the current system is continuously shared, and problems are addressed as soon as they emerge. These principles are one of the reasons why teams today work in cross-functional setups alongside stakeholders, software architects, software developers, quality assurance engineers, product owners, and release managers.
 
-9. **Working software is the primary measure of progress.**
-10. **Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.**
-11. **Continuous attention to technical excellence and good design enhances agility.**
-12. **Simplicity—the art of maximizing the amount of work not done—is essential.**
+> 9. **Working software is the primary measure of progress.**
+> 10. **Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.**
+> 11. **Continuous attention to technical excellence and good design enhances agility.**
+> 12. **Simplicity—the art of maximizing the amount of work not done—is essential.**
 
-Without a doubt, all the efforts from the project team are aimed at delivering the best-class solution right into the hands of the end customer. The progress is measured by stable software operations and customer's satisfaction with constant release of valuable features. Keeping the software in the best shape means there is always room for new features, performance improvements, architectural modernization, and capacity for solving technical debt.
+Finally, all efforts of the project team are focused on delivering a best-in-class solution to the end customer. Progress is measured by stable software operation and customer satisfaction through the continuous release of valuable features. Keeping the software in good shape ensures there is always room for new features, performance improvements, architectural modernization, and the ability to address technical debt.
 
 ## Key Practices
 
-Agile by itself does not provide us with any kinds of practical recommendations on how to build Agile teams and establish production flow. Practices exist in the scope of three major frameworks following the original principles to implement practices embracing these values within teams.
+Agile itself does not provide practical recommendations on how to implement it. Teams and organizations are free to interpret and implement these principles in ways that maximize value within their business domains. In practice, these principles are implemented through three major frameworks inspired by the original Agile values.
 
 ### Extreme Programming (XP)
 
-Extreme Programming focuses on technical excellence and frequent releases with close customer collaboration:
+Extreme Programming (XP) is designed specifically for software development. Its Agile principles is focused on engineering practices such as pair programming, planning poker, continuous integration and small releases in delivering working software. XP emphasizes technical excellence, frequent releases, and close collaboration with experts in your team:
 
-- **Agile Planning**: User stories are short descriptions of a feature that are written in the language of the customer. Agile teams will use these stories as a way to start their planning process. They'll create estimates and decide how many stories they can deliver in each sprint.
+- **Agile Planning**: Teams are responsible for planning their own work using short descriptions of features written in the customer’s language, called User Stories. Agile teams use these stories to start the planning process, prioritize work, and estimate complexity of converting business requirements in code. Estimating the work helps teams decide how many stories they can handle in each sprint and what should be done first.
 
-- **Continuous Integration**: XP teams continuously integrate their code. They do this to make sure that it will work with the whole product. In the past, software development teams might work on some code, and then try to integrate it all at the end.
+- **Continuous Integration**: To ensure that features developed independently work well together, XP teams continuously integrate their code. This helps to confirm that each change works with the product as intended. In the past, development teams often worked on code in isolation for long periods and attempted integration only at the end. Such prolonged separation increases the risk that components will not fit together, leading to more rework and integration issues.
 
-- **Software Refactoring**: An XP team isn't satisfied when the software's finished; they always look to improve the code through constant refactoring. Instead of trying to finish the software all at once, they'll refine it and improve it over time.
+- **Software Refactoring**: As the software development landscape constantly changes, it is assumed that teams must always leave room for improvements like enhancement of software security, solution re-design, minor- and large-scale refactoring, and the adoption of new technologies. An XP team is never truly satisfied when software is considered “finished”; instead, they continuously improve the code through constant refactoring. Rather than trying to complete the software all at once, they refine and enhance it over time.
 
-- **Test-Driven Development (TDD)**: XP teams try to create tests for their software before they actually start development. It helps developers understand how the software will work before they actually start coding. They'll know how to finish before they get started.
+- **Test-Driven Development (TDD)**: It is assumed that developers write tests before starting development. It helps to design system workflows and interfaces by thinking about how the software should behave before writing the code. The practice follows a three-step Red–Green–Refactor cycle: write a failing test for new functionality (Red), write the simplest code needed to make the test pass (Green), clean up the code while keeping all tests passing to improve maintainability (Refactor). This cycle is repeated continuously, with new tests securing user story requirements and features being built incrementally. Existing tests provide strong regression safety as the system evolves.
 
 ### Kanban Framework
 
-Kanban emphasizes visualizing work, limiting work in progress, and managing flow:
+First of all, Kanban is a scheduling system that was used in Lean manufacturing to display team progress on a Kanban Board. The idea behind it is knowing the current team's capacity to do work. Kanban emphasizes visualizing work, limiting work in progress, and managing process flow:
 
-- **Kanban Board**: The Kanban board or Scrum task board is actually a way to organize your work so that your team is focused on delivering the greatest value. The work should flow through the board in a very particular way. The stories at the top should have the highest customer value. The team should work on this top story until it's finished or in the Done column. Once that work is done, then the team can work on the second story from the top.
+- **Kanban Board**: The Kanban board or Scrum task board is actually a way to organize your team to focus on delivering prioritized stories. These stories should flow through the board in a very particular way from backlog passing development and testing right to the Done column. The top of the backlog should have the highest business value so that the development team will work on what is necessary first. Once that work is done the team can pick up the next story from the top.
 
-- **Work in Progress (WIP) Limits**: Agile teams should avoid multitasking and context switching. By limiting WIP, teams focus on completing work before starting new items, which improves flow and reduces cycle time.
+- **Work in Progress (WIP) Limits**: Agile teams should avoid multitasking and context switching. This is archived by limiting WIP for each column in order to highlight too many stories in work-in-progress/code-review/testing stage. Teams focus on completing the ongoing work before starting new tasks, which improves value flow and reduces cycle time for each individual story.
 
-- **Continuous Flow**: Unlike Scrum's time-boxed sprints, Kanban promotes continuous delivery where work flows through the system as capacity becomes available.
+- **Continuous Flow**: Unlike Scrum's time-boxed sprints, Kanban promotes continuous delivery where work flows through the system as capacity becomes available. In addition, backlog priorities and content are constantly rebalanced when project priorities or market needs change. Such flexibility allows teams to maximize business value and welcome changes in requirements even late in development.
 
 ### Scrum Framework
 
-Scrum provides a structured approach with defined roles, events, and artifacts:
+Originally, Scrum is described as an empirical process control framework, meaning it focuses on learning and discovering outcomes during the process rather than planning the entire project upfront. Decisions about goals, priorities, and features are based on observation of market needs and experimentation, rather than detailed upfront planning. Unfortunately, it is often implemented with strict deadlines and long-term planned work lacking flexibility. This approach contradicts its empirical nature, turning Scrum into a prescriptive methodology rather than an adaptive framework.
 
-- **Sprint Planning**: The team plans work for the upcoming sprint (typically 1-4 weeks), selecting items from the product backlog and creating a sprint goal.
+Compared to earlier agile frameworks, Scrum introduces a more structured approach with clearly defined roles, recurring ceremonies, and formalized processes:
 
-- **Daily Stand-ups**: Short daily meetings (15 minutes) where team members synchronize their work and identify any impediments.
+- **Scrum Roles**: To make the development process more predictive and efficient, teams adopt three clearly defined roles that maintain focus on business priorities: the Product Owner represents the business side and grooms the backlog through stakeholder communication, the Scrum Master facilitates Scrum practices and helps the team monitor and improve their workflow, and the Development Team builds the product. These roles can be filled by existing team members or invited specialists. The Scrum Master role may rotate among team members every sprint to involve everyone in process facilitation.
 
-- **Sprint Review**: At the end of each sprint, the team demonstrates completed work to stakeholders and gathers feedback.
+- **Product Backlog**: To remain responsive to changing business needs, teams maintain a prioritized list of features and requirements. The Product Owner manages this backlog and handles stakeholder communication, allowing developers to focus their time and energy on writing software rather than navigating business discussions.
 
-- **Sprint Retrospective**: The team reflects on their process and identifies improvements for the next sprint.
+- **Sprint Planning**: The team defines a clear sprint goals, selects backlog items that meet their owna and business expectations, and breaks them into actionable tasks. It also aligns on scope based on capacity, dependencies, and Definition of Done to reduce mid-sprint surprises.
 
-- **Product Backlog**: A prioritized list of features and requirements maintained by the Product Owner.
+- **Daily Stand-ups**: Short daily meetings (about 15 minutes) where team members synchronize their work, surface blockers, and adjust the sprint plans. The focus is on progress toward the sprint goal and quick coordination, not detailed problem-solving.
 
-- **Defined Roles**: Product Owner (defines what to build), Scrum Master (facilitates the process), and Development Team (builds the product).
+- **Sprint Review**: At the end of each sprint, the team demonstrates completed work to stakeholders, validates it against the sprint goals, and gathers feedback. This feedback informs backlog refinement and priority adjustments for upcoming sprints.
+
+- **Sprint Retrospective**: The team reflects on their process, identifies what worked and what did not, and commits to concrete improvements for the next sprint. It reinforces continuous improvement and team ownership of the workflow.
 
 ## Strengths and Benefits
 
@@ -95,7 +101,7 @@ Agile's iterative approach offers several key advantages:
 
 - **Faster Releases**: Enables your team to develop and release iterative solutions to the market rapidly. No need to wait for a complete solution when you can beat your competitors by being the first who delivered the most desirable feature faster.
 
-- **Identify Issues Early**: Testing early and often enables your team to identify issues and resolve those issues before switching your context to the next iteration. The earlier the team will identify issues, the less rework is required in future.
+- **Identify Issues Early**: Testing early and often enables your team to identify issues and resolve those issues before switching your context to the next iteration. The earlier the team will identify issues, the less rework is required in the future.
 
 - **Team Involvement**: Team, involved in business needs and collaborating with business people, may recommend improvements that would bring even greater value unseen from the customer's perspective.
 
@@ -103,7 +109,7 @@ Agile's iterative approach offers several key advantages:
 
 While Agile offers many benefits, it also presents several challenges that teams should be aware of:
 
-- **Lack of Predictability**: Inability to predict the overall development costs may result in underbudgeting teams and departments. Also, unexpectedly changing requirements might bring confusion and miscommunication when not properly communicated within teams.
+- **Lack of Predictability**: Inability to predict the overall development costs may result in under-budgeting teams and departments. Also, unexpectedly changing requirements might bring confusion and miscommunication when not properly communicated within teams.
 
 - **Lack of Documentation**: Insufficient documentation complicates maintenance, onboarding, and cross-team knowledge sharing. Documentation should not fade into oblivion; Agile does not exclude documentation—teams must plan and refresh it so artifacts remain accurate and up to date.
 
