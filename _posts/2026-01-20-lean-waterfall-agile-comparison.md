@@ -6,11 +6,7 @@ tags: lean waterfall agile methodology sdlc project-management software-developm
 image:
   path: /assets/img/title/title-agile-methodology.png
   alt: Software Development Methodologies Comparison
-  width: 1200
-  height: 630
 ---
-
-![Software Development Methodologies Comparison](/assets/img/title/title-agile-methodology.png)
 
 In the ever-evolving landscape of software development, choosing the right methodology can make or break a project. Three prominent approaches—Lean, Waterfall, and Agile—each offer distinct philosophies and practices, impacting how teams deliver value, respond to change, and optimize their work. This post explores the origins, core principles, strengths, and challenges of these methodologies to help you decide which is best for your next project.
 

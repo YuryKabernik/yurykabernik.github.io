@@ -6,11 +6,7 @@ tags: agile methodology scrum kanban iterative-development agile-manifesto sprin
 image:
   path: /assets/img/title/title-agile-methodology.png
   alt: Agile Methodology
-  width: 1200
-  height: 630
 ---
-
-![Agile Methodology](/assets/img/title/title-agile-methodology.png)
 
 Over time, the Waterfall model became the primary methodology for the majority of software projects. Focus on steps that secure production flow and do not add actual value to the final product brought more complexity than benefits to developers' lives. Huge volumes of documentation helped to keep the process under control, but eventually slowed it down and made any changes in priorities or initial requirements everyone's problem.
 
