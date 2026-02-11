@@ -3,9 +3,10 @@ title: "Waterfall Methodology: A Phase-Gated Approach to Software Development"
 date: 2025-11-10 00:00:01 +0200
 categories: Project Management
 tags: waterfall methodology royce sdlc sequential-development documentation
+image:
+  path: /assets/img/title/title-waterfall-methodology.png
+  alt: Waterfall Methodology
 ---
-
-![Waterfall Methodology](/assets/img/title/title-waterfall-methodology.png)
 
 Waterfall is one of the earliest formalized approaches to software development. Often linked to Winston W. Royce's 1970 paper "MANAGING THE DEVELOPMENT OF LARGE SOFTWARE SYSTEMS", Waterfall draws from traditional engineering disciplines where predictability, documentation, and phase gates mitigate risk in large, capital‑intensive initiatives (defense, aerospace, infrastructure) with clear goals and clear timelines.
 

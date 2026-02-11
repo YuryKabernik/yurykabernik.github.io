@@ -3,6 +3,11 @@ title: "Agile Methodology: Embracing Change Through Iterative Development"
 date: 2025-12-10 00:00:01 +0200
 categories: Project Management
 tags: agile methodology scrum kanban iterative-development agile-manifesto sprints
+image:
+  path: /assets/img/title/title-agile-methodology.png
+  alt: Agile Methodology
+  width: 1200
+  height: 630
 ---
 
 ![Agile Methodology](/assets/img/title/title-agile-methodology.png)

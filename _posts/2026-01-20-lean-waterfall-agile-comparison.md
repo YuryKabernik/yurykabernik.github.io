@@ -3,6 +3,11 @@ title: "Lean vs Waterfall vs Agile: A Comprehensive Comparison of Software Devel
 date: 2026-01-20 00:00:01 +0200
 categories: Project Management
 tags: lean waterfall agile methodology sdlc project-management software-development
+image:
+  path: /assets/img/title/title-agile-methodology.png
+  alt: Software Development Methodologies Comparison
+  width: 1200
+  height: 630
 ---
 
 ![Software Development Methodologies Comparison](/assets/img/title/title-agile-methodology.png)
