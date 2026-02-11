@@ -3,9 +3,10 @@ title: "Lean Methodology: Maximizing Customer Value While Minimizing Waste"
 date: 2025-10-10 00:00:01 +0200
 categories: Project_Management
 tags: lean methodology toyota value-stream-mapping waste-reduction continuous-improvement
+image:
+  path: /assets/img/title/value-stream-map.png
+  alt: Lean Methodology
 ---
-
-![Lean Methodology](/assets/img/title/value-stream-map.png)
 
 The main idea behind Lean methodology is to maximize customer value while minimizing waste, ensuring that every step in the production or development process contributes meaningfully to the final product. Before Lean, manufacturing was dominated by Henry Ford's flow production system. Ford's approach revolutionized mass production with lined-up fabrication, but it lacked flexibility and resulted in a limited variety of products – making it difficult to rapidly adapt to changing customer needs.
 
