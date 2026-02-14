@@ -1,0 +1,21 @@
+{
+  "server": {
+    "name": "enterprise-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP server for enterprise microservices and microfrontends"
+  },
+  "resources": {
+    "rulesPath": "./rules/rules.json",
+    "promptsPath": "./prompts/prompts.json",
+    "instructionsPath": "./instructions/instructions.json"
+  },
+  "categories": {
+    "rules": ["architecture", "security", "deployment", "testing"],
+    "types": ["microservice", "microfrontend", "general"]
+  },
+  "features": {
+    "enableCaching": true,
+    "enableValidation": true,
+    "autoReload": false
+  }
+}

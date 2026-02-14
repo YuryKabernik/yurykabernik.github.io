@@ -1,0 +1,227 @@
+[
+  {
+    "id": "inst-setup-001",
+    "task": "setup",
+    "title": "Setting Up a New Microservice",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Create project structure",
+        "description": "Initialize the project with your framework of choice (Spring Boot, Express, etc.)"
+      },
+      {
+        "step": 2,
+        "action": "Configure service discovery",
+        "description": "Set up service registration with Consul, Eureka, or Kubernetes service discovery"
+      },
+      {
+        "step": 3,
+        "action": "Implement health endpoints",
+        "description": "Add /health/live and /health/ready endpoints for container orchestration"
+      },
+      {
+        "step": 4,
+        "action": "Add logging framework",
+        "description": "Configure structured logging with correlation IDs"
+      },
+      {
+        "step": 5,
+        "action": "Set up metrics collection",
+        "description": "Integrate Prometheus metrics or similar monitoring"
+      },
+      {
+        "step": 6,
+        "action": "Configure API documentation",
+        "description": "Set up OpenAPI/Swagger documentation"
+      },
+      {
+        "step": 7,
+        "action": "Implement authentication",
+        "description": "Add JWT or OAuth2 authentication middleware"
+      },
+      {
+        "step": 8,
+        "action": "Create Dockerfile",
+        "description": "Build optimized Docker image with multi-stage builds"
+      }
+    ]
+  },
+  {
+    "id": "inst-setup-002",
+    "task": "setup",
+    "title": "Setting Up a Microfrontend",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Initialize project",
+        "description": "Create project with your chosen framework (React, Vue, Angular, etc.)"
+      },
+      {
+        "step": 2,
+        "action": "Configure module federation",
+        "description": "Set up Webpack Module Federation or similar technology"
+      },
+      {
+        "step": 3,
+        "action": "Define exposed components",
+        "description": "Configure which components/routes to expose to the shell"
+      },
+      {
+        "step": 4,
+        "action": "Set up routing",
+        "description": "Implement routing that integrates with the shell application"
+      },
+      {
+        "step": 5,
+        "action": "Configure shared dependencies",
+        "description": "Define shared libraries to avoid duplication"
+      },
+      {
+        "step": 6,
+        "action": "Implement error boundaries",
+        "description": "Add error boundaries to prevent cascading failures"
+      },
+      {
+        "step": 7,
+        "action": "Set up build pipeline",
+        "description": "Configure CI/CD for independent deployment"
+      },
+      {
+        "step": 8,
+        "action": "Configure CDN deployment",
+        "description": "Set up deployment to CDN with versioning"
+      }
+    ]
+  },
+  {
+    "id": "inst-deploy-001",
+    "task": "deployment",
+    "title": "Deploying to Kubernetes",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Create deployment manifest",
+        "description": "Define Kubernetes Deployment with replicas, resources, and probes"
+      },
+      {
+        "step": 2,
+        "action": "Create service manifest",
+        "description": "Define Kubernetes Service for service discovery"
+      },
+      {
+        "step": 3,
+        "action": "Configure ingress",
+        "description": "Set up Ingress for external access with proper routing"
+      },
+      {
+        "step": 4,
+        "action": "Add ConfigMaps and Secrets",
+        "description": "Externalize configuration and sensitive data"
+      },
+      {
+        "step": 5,
+        "action": "Set resource limits",
+        "description": "Configure CPU and memory requests/limits"
+      },
+      {
+        "step": 6,
+        "action": "Configure auto-scaling",
+        "description": "Set up HorizontalPodAutoscaler based on metrics"
+      },
+      {
+        "step": 7,
+        "action": "Apply manifests",
+        "description": "Deploy using kubectl apply or Helm charts"
+      },
+      {
+        "step": 8,
+        "action": "Verify deployment",
+        "description": "Check pod status, logs, and run smoke tests"
+      }
+    ]
+  },
+  {
+    "id": "inst-test-001",
+    "task": "testing",
+    "title": "Testing Microservices",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Unit tests",
+        "description": "Test individual components in isolation with mocked dependencies"
+      },
+      {
+        "step": 2,
+        "action": "Integration tests",
+        "description": "Test service with real dependencies (database, message queue)"
+      },
+      {
+        "step": 3,
+        "action": "Contract tests",
+        "description": "Verify API contracts with consumer-driven contract testing"
+      },
+      {
+        "step": 4,
+        "action": "API tests",
+        "description": "Test REST/gRPC endpoints with various scenarios"
+      },
+      {
+        "step": 5,
+        "action": "Load tests",
+        "description": "Perform load testing to identify performance bottlenecks"
+      },
+      {
+        "step": 6,
+        "action": "Chaos engineering",
+        "description": "Test resilience by introducing failures"
+      }
+    ]
+  },
+  {
+    "id": "inst-debug-001",
+    "task": "debugging",
+    "title": "Debugging Distributed Systems",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Check logs",
+        "description": "Search centralized logs using correlation ID"
+      },
+      {
+        "step": 2,
+        "action": "Trace request flow",
+        "description": "Use distributed tracing (Jaeger, Zipkin) to follow request path"
+      },
+      {
+        "step": 3,
+        "action": "Check metrics",
+        "description": "Review service metrics for anomalies (latency, errors, saturation)"
+      },
+      {
+        "step": 4,
+        "action": "Verify service health",
+        "description": "Check health endpoints and service discovery status"
+      },
+      {
+        "step": 5,
+        "action": "Inspect configuration",
+        "description": "Verify environment variables and configuration values"
+      },
+      {
+        "step": 6,
+        "action": "Test service isolation",
+        "description": "Test the service in isolation to identify dependencies"
+      },
+      {
+        "step": 7,
+        "action": "Review recent changes",
+        "description": "Check recent deployments and configuration changes"
+      },
+      {
+        "step": 8,
+        "action": "Use debugging tools",
+        "description": "Attach debugger or use remote debugging if needed"
+      }
+    ]
+  }
+]

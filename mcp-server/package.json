@@ -1,0 +1,30 @@
+{
+  "name": "enterprise-mcp-server",
+  "version": "1.0.0",
+  "description": "Test MCP server to aggregate rules, prompts and instructions for microservice and microfrontend enterprise applications",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Tests coming soon\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "microservices",
+    "microfrontends",
+    "enterprise",
+    "rules",
+    "prompts",
+    "instructions"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

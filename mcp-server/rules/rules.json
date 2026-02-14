@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ms-arch-001",
+    "type": "microservice",
+    "category": "architecture",
+    "title": "Single Responsibility Principle",
+    "description": "Each microservice should have a single, well-defined responsibility",
+    "priority": "high",
+    "details": "Design each microservice around a specific business capability or domain. Avoid creating god services that handle multiple unrelated concerns."
+  },
+  {
+    "id": "ms-arch-002",
+    "type": "microservice",
+    "category": "architecture",
+    "title": "API Gateway Pattern",
+    "description": "Use an API Gateway as a single entry point for all client requests",
+    "priority": "high",
+    "details": "Implement an API Gateway to handle cross-cutting concerns like authentication, rate limiting, and request routing."
+  },
+  {
+    "id": "ms-sec-001",
+    "type": "microservice",
+    "category": "security",
+    "title": "Service-to-Service Authentication",
+    "description": "Implement proper authentication between microservices",
+    "priority": "critical",
+    "details": "Use JWT tokens, mTLS, or service mesh for secure service-to-service communication. Never trust internal network traffic implicitly."
+  },
+  {
+    "id": "ms-deploy-001",
+    "type": "microservice",
+    "category": "deployment",
+    "title": "Container-Based Deployment",
+    "description": "Deploy microservices as containers for consistency and portability",
+    "priority": "high",
+    "details": "Use Docker or similar container technology. Ensure each service has its own container with all dependencies bundled."
+  },
+  {
+    "id": "ms-test-001",
+    "type": "microservice",
+    "category": "testing",
+    "title": "Contract Testing",
+    "description": "Implement contract tests between service consumers and providers",
+    "priority": "high",
+    "details": "Use tools like Pact or Spring Cloud Contract to ensure API compatibility between services."
+  },
+  {
+    "id": "mf-arch-001",
+    "type": "microfrontend",
+    "category": "architecture",
+    "title": "Independent Deployment",
+    "description": "Each microfrontend should be independently deployable",
+    "priority": "high",
+    "details": "Design microfrontends so they can be developed, tested, and deployed independently without affecting other microfrontends."
+  },
+  {
+    "id": "mf-arch-002",
+    "type": "microfrontend",
+    "category": "architecture",
+    "title": "Framework Agnostic",
+    "description": "Microfrontends should be framework agnostic where possible",
+    "priority": "medium",
+    "details": "Use module federation, web components, or iframes to enable different frameworks to coexist."
+  },
+  {
+    "id": "mf-sec-001",
+    "type": "microfrontend",
+    "category": "security",
+    "title": "Shared Security Context",
+    "description": "Implement a shared security context across microfrontends",
+    "priority": "critical",
+    "details": "Use a central authentication service and share security tokens across microfrontends securely."
+  },
+  {
+    "id": "mf-deploy-001",
+    "type": "microfrontend",
+    "category": "deployment",
+    "title": "CDN Distribution",
+    "description": "Deploy microfrontends to CDN for optimal performance",
+    "priority": "high",
+    "details": "Use CDN services to distribute static assets globally. Implement cache invalidation strategies."
+  },
+  {
+    "id": "mf-test-001",
+    "type": "microfrontend",
+    "category": "testing",
+    "title": "Integration Testing",
+    "description": "Test microfrontend integration points thoroughly",
+    "priority": "high",
+    "details": "Ensure proper testing of shell application integration, routing, and state sharing between microfrontends."
+  }
+]

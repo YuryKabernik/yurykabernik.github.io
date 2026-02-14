@@ -1,0 +1,44 @@
+[
+  {
+    "id": "prompt-ms-001",
+    "type": "microservice",
+    "title": "Creating a New Microservice",
+    "prompt": "When creating a new microservice, consider:\n\n1. What is the single responsibility of this service?\n2. What domain or business capability does it represent?\n3. What are its API contracts?\n4. How will it communicate with other services?\n5. What data does it own?\n6. What are its dependencies?\n7. How will it be deployed and scaled?\n8. What are the security requirements?\n9. How will it be monitored and logged?\n10. What are the testing strategies?",
+    "tags": ["architecture", "design", "best-practices"]
+  },
+  {
+    "id": "prompt-ms-002",
+    "type": "microservice",
+    "title": "Service Communication Pattern",
+    "prompt": "When choosing a communication pattern:\n\n- **Synchronous (REST/gRPC)**: Use for real-time, request-response scenarios\n- **Asynchronous (Message Queue)**: Use for eventual consistency, decoupling, and high throughput\n- **Event-Driven**: Use for reactive systems and event sourcing\n\nConsider: latency requirements, consistency needs, coupling tolerance, and failure handling.",
+    "tags": ["communication", "patterns", "architecture"]
+  },
+  {
+    "id": "prompt-mf-001",
+    "type": "microfrontend",
+    "title": "Designing Microfrontend Boundaries",
+    "prompt": "When designing microfrontend boundaries:\n\n1. Align with business domains or user journeys\n2. Consider team ownership and autonomy\n3. Define clear integration points\n4. Minimize shared state\n5. Plan for independent deployment\n6. Consider performance implications\n7. Design for failure and fallbacks\n8. Ensure consistent UX across boundaries",
+    "tags": ["architecture", "design", "boundaries"]
+  },
+  {
+    "id": "prompt-mf-002",
+    "type": "microfrontend",
+    "title": "State Management Strategy",
+    "prompt": "For microfrontend state management:\n\n- **Local State**: Keep state within the microfrontend when possible\n- **Shared State**: Use custom events, shared storage, or state management libraries for cross-microfrontend state\n- **Global State**: Consider a lightweight event bus or shared context for truly global concerns\n\nAvoid tight coupling through shared state. Prefer message passing and events.",
+    "tags": ["state-management", "architecture", "patterns"]
+  },
+  {
+    "id": "prompt-general-001",
+    "type": "general",
+    "title": "Error Handling and Resilience",
+    "prompt": "Implement comprehensive error handling:\n\n1. Use circuit breakers for service calls\n2. Implement retry logic with exponential backoff\n3. Set appropriate timeouts\n4. Provide fallback mechanisms\n5. Log errors with context\n6. Monitor error rates\n7. Implement graceful degradation\n8. Use correlation IDs for tracing",
+    "tags": ["error-handling", "resilience", "best-practices"]
+  },
+  {
+    "id": "prompt-general-002",
+    "type": "general",
+    "title": "Observability Best Practices",
+    "prompt": "Ensure proper observability:\n\n- **Logging**: Structured logs with correlation IDs, appropriate log levels\n- **Metrics**: Business and technical metrics, SLIs/SLOs\n- **Tracing**: Distributed tracing across services\n- **Health Checks**: Liveness and readiness probes\n- **Alerting**: Actionable alerts based on SLOs\n\nUse standard formats (OpenTelemetry) and centralized collection.",
+    "tags": ["observability", "monitoring", "logging"]
+  }
+]
