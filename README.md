@@ -25,6 +25,20 @@ Jekyll site. The following is a list of targets:
 To save you time, and also in case you lose some files while copying, we extract those files/configurations of the
 latest version of the **Chirpy** theme and the [CD][CD] workflow to here, so that you can start writing in minutes.
 
+## MCP Server
+
+This repository includes an **Enterprise MCP Server** for aggregating rules, prompts, and instructions for microservice and microfrontend enterprise applications.
+
+📂 [View MCP Server Documentation](mcp-server/README.md)
+
+The MCP server provides:
+- Architecture rules for microservices and microfrontends
+- Development prompts and best practices
+- Step-by-step instructions for common tasks
+- Model Context Protocol (MCP) integration for AI assistants
+
+[Quick Start Guide](mcp-server/USAGE.md)
+
 ## Usage
 
 Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
