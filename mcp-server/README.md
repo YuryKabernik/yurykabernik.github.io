@@ -70,7 +70,6 @@ The server provides access to resources via URIs:
 Edit `config/server-config.json` to customize:
 - Resource paths
 - Categories
-- Feature flags (caching, validation, auto-reload)
 
 ## Adding New Content
 

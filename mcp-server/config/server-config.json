@@ -12,10 +12,5 @@
   "categories": {
     "rules": ["architecture", "security", "deployment", "testing"],
     "types": ["microservice", "microfrontend", "general"]
-  },
-  "features": {
-    "enableCaching": true,
-    "enableValidation": true,
-    "autoReload": false
   }
 }

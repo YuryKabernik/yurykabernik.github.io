@@ -68,10 +68,11 @@ async function runTests() {
   try {
     const rules = await loadRules();
     const hasRequiredFields = rules.every(rule => 
-      rule.id && rule.type && rule.category && rule.title && rule.description
+      rule.id && rule.type && rule.category && rule.title && 
+      rule.description && rule.priority && rule.details
     );
     if (hasRequiredFields) {
-      console.log('✓ All rules have required fields');
+      console.log('✓ All rules have required fields (id, type, category, title, description, priority, details)');
       passed++;
     } else {
       console.log('✗ Some rules missing required fields');
