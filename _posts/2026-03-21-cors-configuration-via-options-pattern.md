@@ -12,13 +12,31 @@ image:
 
 ![Dotnet with OpenAPI Initiative](/assets/img/title/aws-cors-diagram.png)
 
-Basic CORS configuration for ASPNET applications is well described in Microsoft docs and based on named configuration via action delegate.
+Basic instructions over CORS configuration for ASP\.NET applications is well described on the official Microsoft documentation page. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management.
 
-Described: [Enable Cross-Origin Requests (CORS) in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-10.0#enable-cors)
+Today, we will explore an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable configuration setup. Suggested design intent to allow us to separate concerns from the application root and improve customization of our CORS configuration benefiting from modular nature of the ASP\.NET framework.
 
-Today, we will explore an alternative approach to configuring CORS in ASP.NET Core applications using the Options pattern. This design allows for a more modular and testable configuration setup, separating concerns and improving maintainability.
+## Internals of CORS Configuration
 
-## ASP.NET Core Internals of CORS Configuration
+Security of modern web applications was always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, CORS (**Cross-Origin Resource Sharing**), a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define which cross-origin requests are permitted and which resources are accessible from the page.
+
+In ASP.NET Core, CORS is implemented as middleware that can be configured to specify which origins, headers, and methods are allowed when making cross-origin requests. These configuration parameters enrich Web API responses with standard headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself.
+
+The basic setup process combines adding CORS services to the service collection and configuring CORS policies directly in the `Startup` class at the same time. The suggested approach...
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .WithOrigins("https://example.com", "https://another-example.com")
+            .WithExposedHeaders("X-Custom-Header")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+```
 
 Extension methods for setting up cross-origin resource sharing services in a Service Collection are defined in `CorsServiceCollectionExtensions` class and register services required for CORS support, such as `ICorsService` and `ICorsPolicyProvider`.
 
@@ -149,7 +167,7 @@ app.UseCors();
 app.MapGet("/capitals", (HttpContext httpContext) =>
     {
         httpContext.Response.Headers.Append("X-Custom-Header", "This is a custom header that should be exposed to the client.");
-        httpContext.Response.Headers.Append("X-Custom-Header-None", "This is a custom header that should not be exposed to the client.");
+        httpContext.Response.Headers.Append("X-Custom-Header-Hidden", "This is a custom header that should not be exposed to the client.");
 
         var capitals = new Dictionary<string, string>
         {
@@ -208,15 +226,16 @@ Most **Development** tools don't care about it.
 With that being said, CORS is mostly a browser-enforced security mechanism, and testing it typically involves using tools that can simulate browser behavior or directly testing in a browser environment. Let's simulate a CORS request using a simple JavaScript fetch call from `example.com` to your ASP.NET Core API running on `localhost:5000` with CORS configured above.
 
 Using `example.com` as an origin site to test cors fetch for `capitals`, provide examples:
-- CORS Disabled: fetch fails by CORS error
-- CORS Enabled, Origin Allowed: fetch succeeded + header NOT exposed in application
-- CORS Enabled, Origin Allowed, Custom Header Exposed: fetch succeeded + header exposed in application
+- CORS Disabled: fetch fails by CORS error (example-org not listed in allowed domains)
+![img_3.png](/assets/img/posts/cors-configuration-via-options-pattern/failed-cors-from-exapmle-org.png)
 
-![cors-origin-requests-blocked](/assets/img/posts/cors-configuration-via-options-pattern/cors-origin-requests-blocked.png)
+- CORS Enabled, Origin Allowed: fetch succeeded + header NOT exposed in application (example-com is allowed domain, 2nd header not listed in exposed headers)
+- CORS Enabled, Origin Allowed, Custom Header Exposed: fetch succeeded + header exposed in application (request from example-com and first-header listed in allowed domains)s
+  ![img_2.png](/assets/img/posts/cors-configuration-via-options-pattern/successful-cors-from-example-com.png)
 
-reading headers in the client application with CORS enabled and custom header exposed:
+reading headers in the client application with CORS enabled and custom header exposed: using Edge/Chrome DevTools, navigate to the Network Console tab, compose the request to the `capitals` endpoint, and check the "Headers" section. You should see the `X-Custom-Header` in the response headers and `X-Custom-Header-Hidden` discarded from the response details, confirming that it is exposed to the client application.
 
-![img.png](/assets/img/posts/cors-configuration-via-options-pattern/cors-request-reading-allowed-headers.png)
+At the same time you could examine the actual server response. Navigate to the Network tab, find the outgoing `capitals` request, and check the actual response headers from the server. You should see both `X-Custom-Header` and `X-Custom-Header-Hidden` in the response headers, confirming that both headers are sent by the server, but only `X-Custom-Header` is exposed to the client application due to the CORS configuration. 
 
 ## Conclusion
 
@@ -240,3 +259,4 @@ By weighing these benefits and drawbacks, you can determine whether this design 
 - [Options Pattern in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options): Guide to using the Options pattern for configuration in ASP.NET Core.
 - [Best Practices for CORS Configuration](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#best_practices): Best practices for configuring CORS to enhance security and performance.
 - [Cross Origin Resource Sharing](https://aws.amazon.com/de/what-is/cross-origin-resource-sharing): Overview of CORS in the context of AWS services.
+- [Compose and send web API requests using the Network Console tool](https://learn.microsoft.com/en-us/microsoft-edge/devtools/network-console/network-console-tool): Use the Network Console tool to send web API requests from Browser.
