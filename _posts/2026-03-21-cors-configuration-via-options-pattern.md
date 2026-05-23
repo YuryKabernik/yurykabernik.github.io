@@ -20,9 +20,9 @@ Today, we will explore an alternative approach to configuring CORS in ASP.NET Co
 
 ## Internals of CORS Configuration
 
-In ASP.NET Core, CORS is implemented as middleware that can be configured to specify which origins, headers, and methods are allowed when making cross-origin requests. These configuration parameters enrich Web API responses with standard headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application.
+In ASP.NET Core, CORS is implemented as middleware designed to enrich Web API responses with standard CORS headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version.
 
-The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version. First, `AddCors` is called to register feature services and lets us specify default and custom policies in a lambda expression. Then, the `AddDefaultPolicy` and `AddPolicy` extension methods accept another lambda accumulating the rules for each individual named policy. Later on, the `UseCors` middleware is added to the request pipeline applying the defined policies to incoming requests.
+First, `AddCors` is called to register feature services and lets us specify default and custom policies in a lambda expression. Then, the `AddDefaultPolicy` and `AddPolicy` extension methods accept another lambda accumulating the rules for each individual named policy. Later on, the `UseCors` middleware is added to the request pipeline applying the defined policies to incoming requests.
 
 ```csharp
 // register CORS services and define policies
@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
 app.UseCors();
 ```
 
-Let's take a closer look at the `AddCors` method and its overloads to understand how they work internally and how we can leverage them for our own configuration needs.
+Let's take a closer look at `AddCors` method overloads to understand how they work internally and how we can leverage them for our own configuration needs.
 
 The overloaded `AddCors(this IServiceCollection services, Action<CorsOptions> setupAction)` method not only registers the services but additionally takes an action delegate for `CorsOptions`. The action delegate gets registered as a configuration action for `CorsOptions` in the service collection. This configuration is stored in the service collection as part of the options configuration infrastructure.
 
@@ -101,7 +101,7 @@ Diving deeper into details, both `CorsService` and `DefaultCorsPolicyProvider` c
     public DefaultCorsPolicyProvider(IOptions<CorsOptions> options);
 ```
 
-In addition to registering the core services, the overloaded `AddCors` calls `Configure<TOptions>(this IServiceCollection services, Action<TOptions> configureOptions)` method registering `ConfigureNamedOptions<CorsOptions>` configurator with the provided action delegate. This means that we can create our own implementation of `IConfigureOptions<CorsOptions>` to set up policies based on our custom configuration values, allowing us to separate concerns and improve maintainability of our application.
+In addition to registering the core services, overloaded `AddCors` calls `Configure<TOptions>(this IServiceCollection services, Action<TOptions> configureOptions)` method registering `ConfigureNamedOptions<CorsOptions>` configurator with the provided action delegate. It means we can create our own implementation of `IConfigureOptions<CorsOptions>` to set up policies based on our custom configuration values, allowing us to separate concerns and improve maintainability of our application.
 
 ```csharp
 /// <summary>
@@ -125,11 +125,13 @@ public static IServiceCollection Configure<TOptions>(this IServiceCollection ser
 }
 ```
 
-From now on we know that `CorsService` and `DefaultCorsPolicyProvider` read policy settings through `IOptions<CorsOptions>` and `CorsServiceCollectionExtensions` exposes `AddCors` allowing to register only core services. Knowing these facts we can move policy setup into a custom `IConfigureOptions<CorsOptions>` implementation. This cleanly separates service registration from CORS policy configuration.
+From now on we know that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>` while `CorsServiceCollectionExtensions` exposes `AddCors` allowing to register core services without preliminary configuration of any options. Knowing these facts we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. Such approach clearly separates service registration from CORS policy configuration.
 
 ## Configuring CorsOptions in IConfigureOptions<T>
 
-settings json with custom CorsRules section to store our custom values for  CORS policies
+In order to implement the full-scale solution, we need to follow several steps.
+
+First, we need to define a configuration section in `appsettings.json` to store CORS policy settings.
 
 ```json
 {
@@ -153,90 +155,52 @@ settings json with custom CorsRules section to store our custom values for  CORS
     ]
   }
 }
-
 ```
 
-full application code with options configuration and cors options
+Next, we will define a configuration class `CorsRules` to represent the structure of our custom configuration section. This class will be used to bind the configuration values from `appsettings.json` and provide them to configurator using the `IOptions<T>` interface of the options pattern infrastructure. 
 
 ```csharp
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.Extensions.Options;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors();
-
-builder.Services.AddOptions();
-builder.Services.ConfigureOptions<CorsRulesConfiguration>();
-builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class CorsRules
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Define a constant for the configuration section name
+    public const string SectionName = nameof(CorsRules);
+
+    public string[] AllowedOrigins { get; init; } = [];
+    public string[] ExposedHeaders { get; init; } = [];
 }
+```
 
-app.UseCors();
+Then, in order to implement our own configuration for CORS policies, we need to create a configurator class that implements generic `IConfigureOptions<T>` interface parameterized by `CorsOptions`. This class will be responsible for configuring the `CorsOptions` profile based on custom settings defined in `CorsRules` configuration sections.
 
-app.MapGet("/capitals", (HttpContext httpContext) =>
-    {
-        httpContext.Response.Headers.Append("X-Custom-Header", "This is a custom header that should be exposed to the client.");
-        httpContext.Response.Headers.Append("X-Custom-Header-Hidden", "This is a custom header that should not be exposed to the client.");
-
-        var capitals = new Dictionary<string, string>
-        {
-            { "France", "Paris" },
-            { "Spain", "Madrid" },
-            { "Italy", "Rome" },
-            { "Germany", "Berlin" },
-            { "United Kingdom", "London" }
-        };
-
-        return Results.Ok(capitals);
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
-app.Run();
-
-public class CorsRulesConfiguration(IConfiguration configuration) : IConfigureOptions<CorsRules>
+```csharp
+// define a custom configuration class for CORS profile initialization
+public class CorsOptionsConfiguration(IOptionsMonitor<CorsRules> config) : IConfigureOptions<CorsOptions>
 {
-    public void Configure(CorsRules options)
-    {
-        configuration.GetSection(CorsRules.SectionName).Bind(options);
-    }
-}
+    private CorsRules CorsRules => config.CurrentValue;
 
-public class CorsOptionsConfiguration(IOptions<CorsRules> config) : IConfigureOptions<CorsOptions>
-{
     public void Configure(CorsOptions options)
     {
         options.AddDefaultPolicy(policyBuilder =>
         {
             policyBuilder
-                .WithOrigins(config.Value.AllowedOrigins.ToArray())
-                .WithExposedHeaders(config.Value.ExposedHeaders.ToArray())
+                .WithOrigins(CorsRules.AllowedOrigins)
+                .WithExposedHeaders(CorsRules.ExposedHeaders)
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
     }
 }
-
-public class CorsRules
-{
-    public const string SectionName = nameof(CorsRules);
-    public List<string> AllowedOrigins { get; set; }
-    public List<string> ExposedHeaders { get; set; }
-}
 ```
+
+Final step is to register our custom configurator in the service collection, ensuring that it gets executed during application startup to set up the CORS policies based on our configuration values.
+
+```csharp
+builder.Services.AddOptions();
+builder.Services.Configure<CorsRules>(builder.Configuration.GetSection(CorsRules.SectionName));
+builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
+```
+
+full application code with options configuration and cors options could be found here: _TBD_
 
 ## Testing and Validation
 
