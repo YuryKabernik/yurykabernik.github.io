@@ -4,13 +4,13 @@ date: 2026-03-20 00:00:01 +0200
 categories: .NET
 tags: dotnet options-pattern cors aspnet-core middleware patterns
 image:
-  path: /assets/img/title/title-agile-methodology.png
-  alt: Agile Methodology
+  path: /assets/img/title/aws-cors-diagram.png
+  alt: Cors Validation
   width: 1200
   height: 630
 ---
 
-![Dotnet with OpenAPI Initiative](/assets/img/title/aws-cors-diagram.png)
+![Cors Validation](/assets/img/title/aws-cors-diagram.png)
 
 Security of modern web applications was always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, CORS (**Cross-Origin Resource Sharing**), a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define which cross-origin requests are permitted and which resources are accessible from the page.
 
@@ -65,7 +65,7 @@ public static IServiceCollection AddCors(this IServiceCollection services, Actio
 }
 ```
 
-The parameterless `AddCors(this IServiceCollection services)`, on the other hand, is responsible only for registering the core services without any configuration. One more thing to notice here is that it also ensures that options infrastructure is added to the application by calling `services.AddOptions()`. This call is necessary for the `IOptions<T>` implementations to work properly for both `CorsService` and `DefaultCorsPolicyProvider` services.
+The parameterless `AddCors(this IServiceCollection services)` on the other hand, is responsible only for registering the core services without any configuration. One more thing to notice here is it also ensures that options infrastructure is added to the application by calling `services.AddOptions()`. This call is necessary for the `IOptions<T>` implementations to work properly for both `CorsService` and `DefaultCorsPolicyProvider` services.
 
 ```csharp
 /// <summary>
@@ -125,7 +125,9 @@ public static IServiceCollection Configure<TOptions>(this IServiceCollection ser
 }
 ```
 
-From now on we know that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>` while `CorsServiceCollectionExtensions` exposes `AddCors` allowing to register core services without preliminary configuration of any options. Knowing these facts we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. Such approach clearly separates service registration from CORS policy configuration.
+From now on we know that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>` while `CorsServiceCollectionExtensions` exposes `AddCors` allowing to register middleware services without preliminary configuration of any options.
+
+Knowing these facts we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. Such approach clearly separates service registration from CORS policy configuration unlocking the possibility to isolate more complex configuration from application startup.
 
 ## Configuring CorsOptions in IConfigureOptions<T>
 
