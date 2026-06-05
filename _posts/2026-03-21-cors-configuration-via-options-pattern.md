@@ -16,7 +16,7 @@ Security of modern web applications was always a critical aspect in software dev
 
 Basic instructions for CORS configuration for ASP\.NET applications is well described on the official Microsoft documentation page. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management.
 
-Today, we will explore an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable configuration setup. Suggested approach allows us to separate concerns from the application root and improve customization of our CORS configuration benefiting from modular nature of the ASP\.NET framework.
+Today, today I would like to show an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable configuration setup. Suggested approach allows us to separate concerns from the application root and improve customization of our CORS configuration benefiting from modular nature of the ASP\.NET framework.
 
 ## Internals of CORS Configuration
 
@@ -199,7 +199,7 @@ builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
 
 <details>
 
-<summary>Complete application code could be found here:</summary>
+<summary>Complete application code could be found here</summary>
 
 ```json
 {
@@ -258,7 +258,6 @@ app.MapGet("/capitals", (HttpContext httpContext) =>
 
         return Results.Ok(capitals);
     })
-    .WithName("GetWeatherForecast")
     .WithOpenApi();
 
 app.Run();
@@ -292,18 +291,24 @@ public class CorsRules
 
 ## Testing and Validation
 
-Both CORS (Cross-Origin Resource Sharing) and SOP (Same-Origin Policy) are server-side configurations that clients decide to enforce or not.
+Both CORS and SOP are server-side configurations that clients decide to enforce or not. Most **Browsers** do enforce it to prevent CSRF (Cross-Site Request Forgery) attacks, but common **Development tools** and **Services** don't care about it. CORS is mostly a browser-enforced security mechanism, and testing it typically involves using tools that can simulate browser behavior or directly testing in a browser environment.
 
-Most **Browsers** do enforce it to prevent issues related to CSRF (Cross-Site Request Forgery) attack.
-Most **Development** tools don't care about it.
+Network Console is a tool implemented in the Edge browser that I find useful for testing browser-driven scenarios. It allows simulating a network request to services on behalf of the currently opened web page in your browser. Just open DevTools, click on "More tools" icon in the tab panel and select "Create a request" from the blank page options.
 
-With that being said, CORS is mostly a browser-enforced security mechanism, and testing it typically involves using tools that can simulate browser behavior or directly testing in a browser environment. Let's simulate a CORS request using a simple JavaScript fetch call from `example.com` to your ASP.NET Core API running on `localhost:5000` with CORS configured above.
+![Empty Network Console](/assets/img/posts/cors-configuration-via-options-pattern/empty-network-console.png)
 
-Using `example.com` as an origin site to test cors fetch for `capitals`, provide examples:
-- CORS Disabled: fetch fails by CORS error (example-org not listed in allowed domains)
-![img_3.png](/assets/img/posts/cors-configuration-via-options-pattern/failed-cors-from-exapmle-org.png)
+Using this tool it is possible to simulate requests from `example.com` and `example.org` pages to the localhost API with CORS policy configured as described in the article.
+
+Starting with `example.org` as an origin site for a cross origin fetch for `capitals`. Sending the request evaluates in an error message in the console in spite of the successfully completed network request with 200 (OK) status code.
+
+![CORS Check Failure request from example org](/assets/img/posts/cors-configuration-via-options-pattern/failed-cors-from-exapmle-org.png)
+
+The response has been sent by the service but blocked by the browser. The reason is the strict same-origin policy enforced by the browser. Since the `example.org` origin doesn't match any value in the allowed origins list on the backend, the service doesn't set the `Access-Control-Allow-Origin` header, instructing the browser that the site is a trusted origin to receive the response.
+
+![Successful response without allow origin header](/assets/img/posts/cors-configuration-via-options-pattern/missing-allow-origin-header.png)
 
 - CORS Enabled, Origin Allowed: fetch succeeded + header NOT exposed in application (example-com is allowed domain, 2nd header not listed in exposed headers)
+
 - CORS Enabled, Origin Allowed, Custom Header Exposed: fetch succeeded + header exposed in application (request from example-com and first-header listed in allowed domains)s
   ![img_2.png](/assets/img/posts/cors-configuration-via-options-pattern/successful-cors-from-example-com.png)
 
@@ -318,12 +323,12 @@ This design offers several significant benefits:
 - **Centralized Configuration**: All configuration is centralized in one place, making it easier to manage and maintain.
 - **Separation of Concerns**: It promotes separation of concerns, as the CORS configuration logic is decoupled from the application startup code.
 - **Dynamic Configuration**: It allows for more flexible and dynamic configuration, as you can easily modify the CORS settings without changing the application code, simply by updating the configuration file or environment variables.
-- **Testability**: It enhances testability, as you can easily mock the `IConfigureOptions<T>` implementations in unit tests to verify that the CORS configuration is being set up correctly.
+- **Testability**: It enhances testability, as you can easily mock the `IConfigureOptions<T>` implementations in unit tests or the configurator itself to verify the CORS configuration has being set up correctly.
 
 However, this approach is not without its drawbacks:
 
-- **Boilerplate Code**: It may require more boilerplate code, as you need to create separate classes for configuring the CORS options, which can be seen as overhead compared to the more straightforward approach of configuring CORS directly in the `Startup` class.
-- **.NET Implementation Dependency**: This design relies on the internal implementation of the `AddCors` method in ASP.NET Core, which may change in future versions, potentially breaking your configuration if it relies on specific behaviors of the `AddCors` method.
+- **Boilerplate Code**: It may require more boilerplate code, as you need to create separate classes for configuring the CORS options. Such approach might be considered as overhead compared to straightforward CORS configuration in `Startup` class.
+- **.NET Implementation Dependency**: The design relies on the internal implementation of `AddCors` in ASP.NET Core. Coupling to the framework internals unlikely but may change in future versions potentially breaking your configuration when it relies on an implicit configuration registry behavior.
 
 By weighing these benefits and drawbacks, you can determine whether this design is the right fit for your specific use case and requirements.
 
