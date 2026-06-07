@@ -213,6 +213,10 @@ exclude:
   - "*.config.js"
   - "package*.json"
 
+plugins:
+  - jekyll-archives
+  - jekyll-sitemap
+
 jekyll-archives:
   enabled: [categories, tags]
   layouts:
