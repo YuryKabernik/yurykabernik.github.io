@@ -1,87 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 480" font-family="'Courier New', Courier, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 460" font-family="'Courier New', Courier, monospace">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#444"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
     </marker>
   </defs>
 
   <!-- Outer border -->
-  <rect x="8" y="8" width="1424" height="464" fill="white" stroke="#444" stroke-width="2" rx="6"/>
+  <rect x="6" y="6" width="1428" height="448" fill="white" stroke="#333" stroke-width="2" rx="8"/>
 
   <!-- "Request Flow" label -->
-  <text x="720" y="36" text-anchor="middle" font-size="16" fill="#444">Request Flow</text>
+  <text x="720" y="32" text-anchor="middle" font-size="15" fill="#333">Request Flow</text>
 
   <!-- Audience Types section background -->
-  <rect x="740" y="55" width="290" height="390" fill="#ebe6f5" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="885" y="82" text-anchor="middle" font-size="14" fill="#555">Audience Types</text>
+  <rect x="732" y="48" width="296" height="382" fill="#e8e0f0" stroke="#a090c8" stroke-width="1.5" rx="6"/>
+  <text x="880" y="74" text-anchor="middle" font-size="14" fill="#444">Audience Types</text>
 
   <!-- Handlers and Models section background -->
-  <rect x="1050" y="55" width="370" height="390" fill="#ebe6f5" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="1235" y="82" text-anchor="middle" font-size="14" fill="#555">Handlers and Models</text>
+  <rect x="1048" y="48" width="378" height="382" fill="#e8e0f0" stroke="#a090c8" stroke-width="1.5" rx="6"/>
+  <text x="1237" y="74" text-anchor="middle" font-size="14" fill="#444">Handlers and Models</text>
 
   <!-- HTTP Request with Polymorphic Data box -->
-  <rect x="25" y="203" width="185" height="74" fill="#d4edda" stroke="#6aaa7e" stroke-width="1.5" rx="5"/>
-  <text x="117" y="236" text-anchor="middle" font-size="12" fill="#333">HTTP Request with</text>
-  <text x="117" y="254" text-anchor="middle" font-size="12" fill="#333">Polymorphic Data</text>
+  <rect x="22" y="197" width="182" height="72" fill="#d6eddc" stroke="#7ab88a" stroke-width="1.5" rx="5"/>
+  <text x="113" y="228" text-anchor="middle" font-size="12" fill="#222">HTTP Request with</text>
+  <text x="113" y="248" text-anchor="middle" font-size="12" fill="#222">Polymorphic Data</text>
 
   <!-- Arrow: HTTP Request -> OpenAPI Discriminator -->
-  <line x1="210" y1="240" x2="255" y2="240" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="204" y1="233" x2="240" y2="233" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- OpenAPI Discriminator box -->
-  <rect x="255" y="203" width="185" height="74" fill="#d4edda" stroke="#6aaa7e" stroke-width="1.5" rx="5"/>
-  <text x="348" y="236" text-anchor="middle" font-size="12" fill="#333">OpenAPI</text>
-  <text x="348" y="254" text-anchor="middle" font-size="12" fill="#333">Discriminator</text>
+  <rect x="250" y="197" width="188" height="72" fill="#d6eddc" stroke="#7ab88a" stroke-width="1.5" rx="5"/>
+  <text x="344" y="228" text-anchor="middle" font-size="12" fill="#222">OpenAPI</text>
+  <text x="344" y="248" text-anchor="middle" font-size="12" fill="#222">Discriminator</text>
 
-  <!-- Arrow: OpenAPI Discriminator -> Parsing JSON body diamond -->
-  <line x1="440" y1="240" x2="488" y2="240" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Arrow: OpenAPI Discriminator -> diamond -->
+  <line x1="438" y1="233" x2="475" y2="233" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Parsing JSON body diamond -->
-  <polygon points="585,178 675,240 585,302 495,240" fill="#ffd966" stroke="#c9a500" stroke-width="1.5"/>
-  <text x="585" y="235" text-anchor="middle" font-size="12" fill="#333">Parsing JSON</text>
-  <text x="585" y="252" text-anchor="middle" font-size="12" fill="#333">body</text>
+  <polygon points="575,165 670,233 575,301 480,233" fill="#fdd96a" stroke="#b8960a" stroke-width="1.5"/>
+  <text x="575" y="228" text-anchor="middle" font-size="13" fill="#222">Parsing JSON</text>
+  <text x="575" y="247" text-anchor="middle" font-size="13" fill="#222">body</text>
 
-  <!-- Arrow: diamond -> CompanyAudience (top) -->
-  <path d="M 675 210 C 700 150, 720 135, 745 135" stroke="#444" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- Arrow: diamond -> CompanyAudience (top, S-curve) -->
+  <path d="M 670 205 C 695 170, 710 145, 737 145" stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
 
-  <!-- Arrow: diamond -> GroupAudience (middle) -->
-  <line x1="675" y1="240" x2="745" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- Arrow: diamond -> GroupAudience (middle, straight) -->
+  <line x1="670" y1="233" x2="737" y2="233" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
-  <!-- Arrow: diamond -> ContactAudience (bottom) -->
-  <path d="M 675 270 C 700 335, 720 350, 745 350" stroke="#444" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- Arrow: diamond -> ContactAudience (bottom, S-curve) -->
+  <path d="M 670 261 C 695 296, 710 321, 737 321" stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
 
   <!-- CompanyAudience box -->
-  <rect x="755" y="105" width="260" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="885" y="140" text-anchor="middle" font-size="12" fill="#333">CompanyAudience</text>
+  <rect x="747" y="116" width="268" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="881" y="151" text-anchor="middle" font-size="13" fill="#222">CompanyAudience</text>
 
   <!-- GroupAudience box -->
-  <rect x="755" y="210" width="260" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="885" y="245" text-anchor="middle" font-size="12" fill="#333">GroupAudience</text>
+  <rect x="747" y="204" width="268" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="881" y="239" text-anchor="middle" font-size="13" fill="#222">GroupAudience</text>
 
   <!-- ContactAudience box -->
-  <rect x="755" y="320" width="260" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="885" y="355" text-anchor="middle" font-size="12" fill="#333">ContactAudience</text>
+  <rect x="747" y="292" width="268" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="881" y="327" text-anchor="middle" font-size="13" fill="#222">ContactAudience</text>
 
   <!-- Arrow: CompanyAudience -> Invoke Company Handler -->
-  <line x1="1015" y1="135" x2="1055" y2="135" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1015" y1="145" x2="1053" y2="145" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Arrow: GroupAudience -> Invoke Group Handler -->
-  <line x1="1015" y1="240" x2="1055" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1015" y1="233" x2="1053" y2="233" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Arrow: ContactAudience -> Invoke Contact Handler -->
-  <line x1="1015" y1="350" x2="1055" y2="350" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1015" y1="321" x2="1053" y2="321" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Invoke Company Handler + Command box -->
-  <rect x="1065" y="105" width="340" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="1235" y="131" text-anchor="middle" font-size="12" fill="#333">Invoke Company Handler</text>
-  <text x="1235" y="149" text-anchor="middle" font-size="12" fill="#333">+ Command</text>
+  <rect x="1063" y="116" width="352" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="1239" y="140" text-anchor="middle" font-size="13" fill="#222">Invoke Company Handler</text>
+  <text x="1239" y="160" text-anchor="middle" font-size="13" fill="#222">+ Command</text>
 
   <!-- Invoke Group Handler + Command box -->
-  <rect x="1065" y="210" width="340" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="1235" y="236" text-anchor="middle" font-size="12" fill="#333">Invoke Group Handler +</text>
-  <text x="1235" y="254" text-anchor="middle" font-size="12" fill="#333">Command</text>
+  <rect x="1063" y="204" width="352" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="1239" y="228" text-anchor="middle" font-size="13" fill="#222">Invoke Group Handler</text>
+  <text x="1239" y="248" text-anchor="middle" font-size="13" fill="#222">+ Command</text>
 
   <!-- Invoke Contact Handler + Command box -->
-  <rect x="1065" y="320" width="340" height="60" fill="#f3f0fb" stroke="#9b8abf" stroke-width="1.5" rx="5"/>
-  <text x="1235" y="346" text-anchor="middle" font-size="12" fill="#333">Invoke Contact Handler</text>
-  <text x="1235" y="364" text-anchor="middle" font-size="12" fill="#333">+ Command</text>
+  <rect x="1063" y="292" width="352" height="58" fill="white" stroke="#a090c8" stroke-width="1.5" rx="5"/>
+  <text x="1239" y="316" text-anchor="middle" font-size="13" fill="#222">Invoke Contact Handler</text>
+  <text x="1239" y="336" text-anchor="middle" font-size="13" fill="#222">+ Command</text>
 </svg>
