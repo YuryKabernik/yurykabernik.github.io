@@ -1,22 +1,22 @@
 ---
 title: "Cleaning Up ASP.NET Core Startup: Configuring CORS with the Options Pattern"
-date: 2026-03-20 00:00:01 +0200
+date: 2026-06-07 00:00:01 +0200
 categories: .NET
-tags: dotnet options-pattern cors aspnet-core middleware patterns
+tags: dotnet options-pattern cors aspnet-core middleware patterns access-control browser
 image:
-  path: /assets/img/title/aws-cors-diagram.png
-  alt: Cors Validation
+  path: /assets/img/title/cors-origin-request-diagram.png
+  alt: Cors Request Diagram
   width: 1200
   height: 630
 ---
 
-![Cors Validation](/assets/img/title/aws-cors-diagram.png)
+![Cors Request Diagram](/assets/img/title/cors-origin-request-diagram.png)
 
 Security of modern web applications was always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, CORS (**Cross-Origin Resource Sharing**), a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define which cross-origin requests are permitted and which resources are accessible from the page.
 
 Basic instructions for CORS configuration for ASP\.NET applications is well described on the official Microsoft documentation page. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management.
 
-Today, today I would like to show an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable configuration setup. Suggested approach allows us to separate concerns from the application root and improve customization of our CORS configuration benefiting from modular nature of the ASP\.NET framework.
+Today, I would like to demonstrate an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable access control setup. Suggested approach intends to separate concerns from the application root and improve customization of the access headers configuration benefiting from modular nature of ASP\.NET Core.
 
 ## Internals of CORS Configuration
 
@@ -125,9 +125,9 @@ public static IServiceCollection Configure<TOptions>(this IServiceCollection ser
 }
 ```
 
-From now on we know that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>` while `CorsServiceCollectionExtensions` exposes `AddCors` allowing to register middleware services without preliminary configuration of any options.
+Now we understand that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>`, while `CorsServiceCollectionExtensions` exposes `AddCors` to register middleware services without preliminary options configuration.
 
-Knowing these facts we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. Such approach clearly separates service registration from CORS policy configuration unlocking the possibility to isolate more complex configuration from application startup.
+With this knowledge, we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. This approach clearly separates service registration from policy configuration, enabling us to isolate more complex configuration scenarios from application startup.
 
 ## Configuring CorsOptions in IConfigureOptions<T>
 
