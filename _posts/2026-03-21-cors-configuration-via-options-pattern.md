@@ -197,8 +197,7 @@ builder.Services.Configure<CorsRules>(builder.Configuration.GetSection(CorsRules
 builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
 ```
 
-<details>
-
+<details markdown="1">
 <summary>Complete application code could be found here</summary>
 
 ```json
