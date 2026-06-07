@@ -297,24 +297,25 @@ Network Console is a tool implemented in the Edge browser that I find useful for
 
 ![Empty Network Console](/assets/img/posts/cors-configuration-via-options-pattern/empty-network-console.png)
 
-Using this tool it is possible to simulate requests from `example.com` and `example.org` pages to the localhost API with CORS policy configured as described in the article.
+Using this tool, it is possible to simulate requests from `example.com` and `example.org` pages to the localhost API with the CORS policy configured as described above.
 
-Starting with `example.org` as an origin site for a cross origin fetch for `capitals`. Sending the request evaluates in an error message in the console in spite of the successfully completed network request with 200 (OK) status code.
+Starting with `example.org` as the origin site for a cross-origin fetch for `capitals`. Sending the request results in an error message in the console, despite the network request completing successfully with a 200 (OK) status code.
 
 ![CORS Check Failure request from example org](/assets/img/posts/cors-configuration-via-options-pattern/failed-cors-from-exapmle-org.png)
 
-The response has been sent by the service but blocked by the browser. The reason is the strict same-origin policy enforced by the browser. Since the `example.org` origin doesn't match any value in the allowed origins list on the backend, the service doesn't set the `Access-Control-Allow-Origin` header, instructing the browser that the site is a trusted origin to receive the response.
+The response has been sent by the service but blocked by the browser due to the strict same-origin policy. Since the `example.org` origin doesn't match any value in the allowed origins list on the backend, the service doesn't set the `Access-Control-Allow-Origin` header, which would instruct the browser to treat the origin as a trusted source and expose the response to the client.
 
-![Successful response without allow origin header](/assets/img/posts/cors-configuration-via-options-pattern/missing-allow-origin-header.png)
+![Response without an allow origin header](/assets/img/posts/cors-configuration-via-options-pattern/access-control-headers-missing.png)
 
-- CORS Enabled, Origin Allowed: fetch succeeded + header NOT exposed in application (example-com is allowed domain, 2nd header not listed in exposed headers)
+Switching the origin to the allowed domain solves the issue. This time the browser accepts the resource for the allowed origin as the response includes the allowed origin in the header. 
 
-- CORS Enabled, Origin Allowed, Custom Header Exposed: fetch succeeded + header exposed in application (request from example-com and first-header listed in allowed domains)s
-  ![img_2.png](/assets/img/posts/cors-configuration-via-options-pattern/successful-cors-from-example-com.png)
+![Response without an allow origin header](/assets/img/posts/cors-configuration-via-options-pattern/successful-cors-from-example-com.png)
 
-reading headers in the client application with CORS enabled and custom header exposed: using Edge/Chrome DevTools, navigate to the Network Console tab, compose the request to the `capitals` endpoint, and check the "Headers" section. You should see the `X-Custom-Header` in the response headers and `X-Custom-Header-Hidden` discarded from the response details, confirming that it is exposed to the client application.
+Also, you might notice that only some CORS-safelisted response headers are exposed to the client on the Network console. From both custom `X-Custom-Header` and `X-Custom-Header-Hidden` headers set by the service, only the first one is available to the client.
 
-At the same time you could examine the actual server response. Navigate to the Network tab, find the outgoing `capitals` request, and check the actual response headers from the server. You should see both `X-Custom-Header` and `X-Custom-Header-Hidden` in the response headers, confirming that both headers are sent by the server, but only `X-Custom-Header` is exposed to the client application due to the CORS configuration. 
+![Response with a single expose header](/assets/img/posts/cors-configuration-via-options-pattern/access-control-headers.png)
+
+Navigating to the Network tab once again and finding the outgoing `capitals` request, you can see both custom headers in the response. This confirms that both are present in the outgoing payload, but only `X-Custom-Header` satisfies the `Access-Control-Expose-Headers` access control for the cross-origin request. For clients to access other headers, the server must explicitly list them or specify a special wildcard value to expose all.
 
 ## Conclusion
 
@@ -323,12 +324,12 @@ This design offers several significant benefits:
 - **Centralized Configuration**: All configuration is centralized in one place, making it easier to manage and maintain.
 - **Separation of Concerns**: It promotes separation of concerns, as the CORS configuration logic is decoupled from the application startup code.
 - **Dynamic Configuration**: It allows for more flexible and dynamic configuration, as you can easily modify the CORS settings without changing the application code, simply by updating the configuration file or environment variables.
-- **Testability**: It enhances testability, as you can easily mock the `IConfigureOptions<T>` implementations in unit tests or the configurator itself to verify the CORS configuration has being set up correctly.
+- **Testability**: It enhances testability, as you can easily mock the `IConfigureOptions<T>` implementations in unit tests or the configurator itself to verify that the CORS configuration has been set up correctly.
 
 However, this approach is not without its drawbacks:
 
-- **Boilerplate Code**: It may require more boilerplate code, as you need to create separate classes for configuring the CORS options. Such approach might be considered as overhead compared to straightforward CORS configuration in `Startup` class.
-- **.NET Implementation Dependency**: The design relies on the internal implementation of `AddCors` in ASP.NET Core. Coupling to the framework internals unlikely but may change in future versions potentially breaking your configuration when it relies on an implicit configuration registry behavior.
+- **Boilerplate Code**: It may require more boilerplate code, as you need to create separate classes for configuring the CORS options. Such an approach might be considered overhead compared to straightforward CORS configuration in the `Startup` class.
+- **.NET Implementation Dependency**: The design relies on the internal implementation of `AddCors` in ASP.NET Core. Coupling to framework internals is unlikely but may change in future versions, potentially breaking your configuration when it relies on implicit configuration registry behavior.
 
 By weighing these benefits and drawbacks, you can determine whether this design is the right fit for your specific use case and requirements.
 
