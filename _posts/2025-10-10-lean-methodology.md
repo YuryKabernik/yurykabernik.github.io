@@ -3,10 +3,50 @@ title: "Lean Methodology: Maximizing Customer Value While Minimizing Waste"
 date: 2025-10-10 00:00:01 +0200
 categories: Project_Management
 tags: lean methodology toyota value-stream-mapping waste-reduction continuous-improvement
+mermaid: true
 image:
   path: /assets/img/title/value-stream-map.png
   alt: Lean Methodology
 ---
+
+```mermaid
+flowchart TD
+  Start@{ shape: sm-circ, label: "Customer Request" } --> Planning
+
+  subgraph Planning
+    direction LR
+    Backlog["Backlog (10)"] --> Grooming{"Grooming PT:1d"}
+    Grooming --> Ready["Ready for Dev WIP:5"]
+  end
+
+  Planning --> Coding
+
+  subgraph Coding
+    direction LR
+    Dev["Development PT:3d"] --> CR["Code Review PT:0.5d"]
+    CR --> CI["CI / Build PT:0.25d"]
+    CI --> QA["Testing / QA PT:2d"]
+  end
+
+  Coding --> Operations
+
+  subgraph Operations
+    direction LR
+    UAT["UAT PT:1d"] --> Release["Release / Deploy PT:0.25d"]
+    Release --> Monitor@{ shape: text, label: "Monitor / Feedback" }
+  end
+
+  QA -- "Fail / Rework" --> Dev
+  CR -- "Defects" --> Dev
+  CI -- "Failed" --> Dev
+
+  classDef product fill:#fff3e0,stroke:#fb8c00,stroke-width:1px,color:#000;
+  classDef engineering fill:#e3f2fd,stroke:#1565c0,stroke-width:1px,color:#000;
+  class Start,Backlog,Grooming,UAT product;
+  class Ready,Dev,CR,CI,QA,Release,Monitor engineering;
+
+  linkStyle 10,11,12 stroke:#d32f2f,stroke-width:2px,stroke-dasharray:5 5;
+```
 
 The main idea behind Lean methodology is to maximize customer value while minimizing waste, ensuring that every step in the production or development process contributes meaningfully to the final product. Before Lean, manufacturing was dominated by Henry Ford's flow production system. Ford's approach revolutionized mass production with lined-up fabrication, but it lacked flexibility and resulted in a limited variety of products – making it difficult to rapidly adapt to changing customer needs.
 
