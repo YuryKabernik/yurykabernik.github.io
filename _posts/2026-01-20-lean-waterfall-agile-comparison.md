@@ -1,5 +1,6 @@
 ---
-title: "Lean vs Waterfall vs Agile: A Comprehensive Comparison of Software Development Methodologies"
+title: "Lean vs Waterfall vs Agile"
+description: "A side-by-side comparison of Lean, Waterfall, and Agile methodologies to help choose the right approach for your software project."
 date: 2026-01-20 00:00:01 +0200
 categories: Methodology
 tags: lean waterfall agile methodology sdlc project-management software-development
