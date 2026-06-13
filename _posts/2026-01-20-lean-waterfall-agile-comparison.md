@@ -1,5 +1,5 @@
 ---
-title: "Lean vs Waterfall vs Agile"
+title: "Comparing Lean, Waterfall, and Agile Methodologies"
 description: "A side-by-side comparison of Lean, Waterfall, and Agile methodologies to help choose the right approach for your software project."
 date: 2026-01-20 00:00:01 +0200
 categories: Methodology
