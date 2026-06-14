@@ -1,5 +1,6 @@
 ---
-title: "Agile Methodology: Embracing Change Through Iterative Development"
+title: "Agile: Embracing Change with Iterative Development"
+description: "Agile software development embraces iterative delivery, self-organizing teams, and continuous adaptation to rapidly changing requirements."
 date: 2025-12-10 00:00:01 +0200
 categories: Methodology
 tags: agile methodology scrum kanban iterative-development agile-manifesto sprints

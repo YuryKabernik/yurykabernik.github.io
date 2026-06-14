@@ -1,5 +1,6 @@
 ---
-title: "Lean Methodology: Maximizing Customer Value While Minimizing Waste"
+title: "Lean: Streamlining Software Production"
+description: "Lean methodology focuses on maximizing customer value while minimizing waste, originating from Toyota's production system in the 1950s."
 date: 2025-10-10 00:00:01 +0200
 categories: Methodology
 tags: lean methodology toyota value-stream-mapping waste-reduction continuous-improvement
