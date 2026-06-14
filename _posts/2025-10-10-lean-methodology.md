@@ -1,5 +1,5 @@
 ---
-title: "Streamlining Software Production to Maximize Customer Value"
+title: "Lean: Streamlining Software Production"
 description: "Lean methodology focuses on maximizing customer value while minimizing waste, originating from Toyota's production system in the 1950s."
 date: 2025-10-10 00:00:01 +0200
 categories: Methodology

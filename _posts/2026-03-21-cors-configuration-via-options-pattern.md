@@ -1,5 +1,5 @@
 ---
-title: "Configuring CORS with the Options Pattern"
+title: "Clearing Up Startup: Configuring CORS with the Options Pattern"
 description: "How to configure CORS in ASP.NET Core using the Options pattern for a more testable and maintainable access control setup."
 date: 2026-06-07 00:00:01 +0200
 categories: .NET

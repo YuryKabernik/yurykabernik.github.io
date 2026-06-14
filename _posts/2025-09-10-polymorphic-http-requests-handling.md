@@ -1,5 +1,5 @@
 ---
-title: "Handling Polymorphic HTTP Requests in .NET"
+title: "Handling Polymorphic JSON Serialization in .NET"
 description: "How to handle polymorphic HTTP requests in .NET using OpenAPI Discriminator Objects and System.Text.Json."
 date: 2025-09-10 00:00:01 +0200
 categories: .NET
