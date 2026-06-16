@@ -1,6 +1,6 @@
 ---
 title: "Clearing Up Startup: Configuring CORS with the Options Pattern"
-description: "How to configure CORS in ASP.NET Core using the Options pattern for a more testable and maintainable access control setup."
+description: "How to clean up CORS configuration in ASP.NET Core using the Options pattern for a more testable and maintainable access control setup."
 date: 2026-06-07 00:00:01 +0200
 categories: .NET
 tags: dotnet options-pattern cors aspnet-core middleware patterns access-control browser
@@ -13,15 +13,13 @@ image:
 
 ![Cors Request Diagram](/assets/img/title/cors-origin-request-diagram.png)
 
-Security of modern web applications was always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, CORS (**Cross-Origin Resource Sharing**), a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define which cross-origin requests are permitted and which resources are accessible from the page.
+You might be well familliar with the basic example of CORS configuration for ASP\.NET applications from the official documentation. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management and more complex resource sharing rules.
 
-Basic instructions for CORS configuration for ASP\.NET applications is well described on the official Microsoft documentation page. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management.
-
-Today, I would like to demonstrate an alternative approach to configuring CORS in ASP.NET Core applications. Instead of configuring CORS directly in the `Startup` class, we will leverage the Options pattern to create a more testable and maintainable access control setup. Suggested approach intends to separate concerns from the application root and improve customization of the access headers configuration benefiting from modular nature of ASP\.NET Core.
+Today, I would like to demonstrate an alternative approach on how to configuring CORS in ASP.NET Core application. Instead of defining rules directly in the `Startup` class, we will leverage the Options pattern in order to design a more testable and maintainable access control setup. Suggested approach intends to separate concerns from the application root and improve customization of the access headers configuration benefiting from modular nature of ASP\.NET Core.
 
 ## Internals of CORS Configuration
 
-In ASP.NET Core, CORS is implemented as middleware designed to enrich Web API responses with standard CORS headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version.
+In ASP.NET Core, CORS is implemented as middleware designed to enrich Web API responses with standard CORS headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically  done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version.
 
 First, `AddCors` is called to register feature services and lets us specify default and custom policies in a lambda expression. Then, the `AddDefaultPolicy` and `AddPolicy` extension methods accept another lambda accumulating the rules for each individual named policy. Later on, the `UseCors` middleware is added to the request pipeline applying the defined policies to incoming requests.
 
@@ -128,9 +126,9 @@ public static IServiceCollection Configure<TOptions>(this IServiceCollection ser
 
 Now we understand that major system components like `CorsService` and `DefaultCorsPolicyProvider` retrieve policy settings through `IOptions<CorsOptions>`, while `CorsServiceCollectionExtensions` exposes `AddCors` to register middleware services without preliminary options configuration.
 
-With this knowledge, we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. This approach clearly separates service registration from policy configuration, enabling us to isolate more complex configuration scenarios from application startup.
+With this knowledge, we can encapsulate policy setup into a custom `IConfigureOptions<CorsOptions>` interface implementation. This approach clearly separates service registration from policy configuration, enabling us to move more complex configuration responsibility from application startup.
 
-## Configuring CorsOptions in IConfigureOptions<T>
+## Configuring CorsOptions
 
 In order to implement the full-scale solution, let's follow several steps. First, we need to define a configuration section in `appsettings.json` to store CORS policy settings. The section might be structured in any form you like, but for our convenience it will specify key-value pairs of CORS response headers.
 
@@ -168,11 +166,11 @@ public class CorsRules
 }
 ```
 
-Then, in order to finalize the custom configurator for CORS policies we need to implement the configuraton class from `IConfigureOptions<CorsOptions>` interface. This is the exact class responsible for configuring the CORS infrastructure policy based on the settings defined in `CorsRules`. As you might have noticed `CorsOptionsConfiguration` supports dependencly injection which means we can build even more complex setup scenario like fetching allowed domains from a client service discovery or collecting a public endpoint metadata to allow or expose some headers.
+Then, to finalize the custom configurator for CORS policies, we need to implement the `IConfigureOptions<CorsOptions>` interface. This type will be responsible for configuring the policy based on the settings defined in `CorsRules`. Notice that `CorsOptionsConfiguration` supports dependency injection allowing any required dependencies to be naturally injected during policy setup. Without this approach, we would need to create a scoped service provider in the Startup class resulting in more complicated code.
 
 ```csharp
 // define a custom configuration class for CORS profile initialization
-public class CorsOptionsConfiguration(IOptionsMonitor<CorsRules> config) : IConfigureOptions<CorsOptions>
+public class CorsOptionsConfiguration(IOptions<CorsRules> config) : IConfigureOptions<CorsOptions>
 {
     private CorsRules CorsRules => config.CurrentValue;
 
@@ -190,7 +188,7 @@ public class CorsOptionsConfiguration(IOptionsMonitor<CorsRules> config) : IConf
 }
 ```
 
-The final step is to register our custom types in the service collection. Knowing how the framework is implemented internally we may skip the setup action in CORS services registry, configure the settings option, and register the CORS configurator to achive the same result with more incapsulate approach for setup.
+The final step is to register our custom types in the service collection. Knowing how the framework is implemented internally we may skip the setup action in CORS services registry, configure the settings option, and register the CORS configurator to achieve the same result with more encapsulate approach for setup.
 
 ```csharp
 builder.Services.AddCors();
@@ -198,11 +196,13 @@ builder.Services.Configure<CorsRules>(builder.Configuration.GetSection(CorsRules
 builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
 ```
 
-## Testing and Validation
+## Browser-Based Testing
 
-Both CORS and SOP are server-side configurations that clients decide to enforce or not. Most **Browsers** do enforce it to prevent CSRF (Cross-Site Request Forgery) attacks, but common **Development tools** and **Services** don't care about it. CORS is mostly a browser-enforced security mechanism, and testing it typically involves using tools that can simulate browser behavior or directly testing in a browser environment.
+Security of web applications is always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, **Cross-Origin Resource Sharing**, a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define trusted origins and resources accessible for these origins.
 
-Network Console is a tool implemented in the Edge browser that I find useful for testing browser-driven scenarios. It allows simulating a network request to services on behalf of the currently opened web page in your browser. Just open DevTools, click on "More tools" icon in the tab panel and select "Create a request" from the blank page options.
+Most **Browsers** enforce SOP and apply CORS to prevent untrusted pages from receiving sensitive data, but common **Development tools** and **Services** don't care about it. CORS is mostly a browser-enforced security mechanism and testing it typically involves using tools that can simulate browser behavior.
+
+Here I would like to introduce a Network Console tool implemented in the Edge browser. I find it pretty useful for testing browser-driven scenarios while avoiding writing custom scripts. The tool allows simulating network requests on behalf of the currently opened web page. Just open DevTools, click on "More tools" icon in the tab panel and select "Create a request" from the blank page options.
 
 ![Empty Network Console](/assets/img/posts/cors-configuration-via-options-pattern/empty-network-console.png)
 
