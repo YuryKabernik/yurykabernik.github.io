@@ -194,7 +194,7 @@ builder.Services.ConfigureOptions<CorsOptionsConfiguration>();
 
 ## Browser-Based Testing
 
-Security of web applications is always a critical aspect in software development. Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, **Cross-Origin Resource Sharing**, a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define trusted origins and resources accessible for these origins.
+Browsers by default enforce the **Same-Origin Policy**, restricting access from the provided page to resources that share the same scheme, host, and port. In contrast, **Cross-Origin Resource Sharing**, a W3C standard, relaxes this restriction by allowing the hosting server to explicitly define trusted origins and resources accessible for these origins.
 
 Most **Browsers** enforce SOP and apply CORS to prevent untrusted pages from receiving sensitive data, but common **Development tools** and **Services** don't care about it. CORS is mostly a browser-enforced security mechanism and testing it typically involves using tools that can simulate browser behavior.
 
