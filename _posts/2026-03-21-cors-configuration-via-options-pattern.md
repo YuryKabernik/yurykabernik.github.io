@@ -9,13 +9,13 @@ image:
   alt: Cors Request Diagram
 ---
 
-You might be well familliar with the basic example of CORS configuration for ASP\.NET applications from the official documentation. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management and more complex resource sharing rules.
+You might be well familiar with the basic example of CORS configuration for ASP\.NET applications from the official documentation. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management and more complex resource sharing rules.
 
-Today, I would like to demonstrate an alternative approach on how to configuring CORS in ASP.NET Core application. Instead of defining rules directly in the `Startup` class, we will leverage the Options pattern in order to design a more testable and maintainable access control setup. Suggested approach intends to separate concerns from the application root and improve customization of the access headers configuration benefiting from modular nature of ASP\.NET Core.
+Today, I would like to demonstrate an alternative approach on how to configure CORS in ASP.NET Core application. Instead of defining rules directly in the `Startup` class, we will leverage the Options pattern in order to design a more testable and maintainable access control setup. Suggested approach intends to separate concerns from the application root and improve customization of the access headers configuration benefiting from modular nature of ASP\.NET Core.
 
 ## Internals of CORS Configuration
 
-In ASP.NET Core, CORS is implemented as middleware designed to enrich Web API responses with standard CORS headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically  done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version.
+In ASP.NET Core, CORS is implemented as middleware designed to enrich Web API responses with standard CORS headers describing which destination origins can access the resource, which HTTP methods are allowed for these origins, and what custom response headers are exposed to the client application. The middleware configuration consists of three main components: the CORS services, the CORS policies, and the CORS middleware itself. This is typically done directly in the `Startup` class or the `Program` file, depending on the ASP.NET Core version.
 
 First, `AddCors` is called to register feature services and lets us specify default and custom policies in a lambda expression. Then, the `AddDefaultPolicy` and `AddPolicy` extension methods accept another lambda accumulating the rules for each individual named policy. Later on, the `UseCors` middleware is added to the request pipeline applying the defined policies to incoming requests.
 
@@ -168,7 +168,7 @@ Then, to finalize the custom configurator for CORS policies, we need to implemen
 // define a custom configuration class for CORS profile initialization
 public class CorsOptionsConfiguration(IOptions<CorsRules> config) : IConfigureOptions<CorsOptions>
 {
-    private CorsRules CorsRules => config.CurrentValue;
+    private CorsRules CorsRules => config.Value;
 
     public void Configure(CorsOptions options)
     {
@@ -184,7 +184,7 @@ public class CorsOptionsConfiguration(IOptions<CorsRules> config) : IConfigureOp
 }
 ```
 
-The final step is to register our custom types in the service collection. Knowing how the framework is implemented internally we may skip the setup action in CORS services registry, configure the settings option, and register the CORS configurator to achieve the same result with more encapsulate approach for setup.
+The final step is to register our custom types in the service collection. Knowing how the framework is implemented internally we may skip the setup action in CORS services registry, configure the settings option, and register the CORS configurator to achieve the same result with more encapsulated approach for setup.
 
 ```csharp
 builder.Services.AddCors();
@@ -216,7 +216,7 @@ Switching the origin to the allowed domain solves the issue. This time the brows
 
 ![Response without an allow origin header](/assets/img/posts/cors-configuration-via-options-pattern/successful-cors-from-example-com.png)
 
-Also, you might notice that only some CORS-safelisted response headers are exposed to the client on the Network console. From both custom `X-Custom-Header` and `X-Custom-Header-Hidden` headers set by the service, only the first one is available to the client.
+Also, you might notice that only some CORS-satellited response headers are exposed to the client on the Network console. From both custom `X-Custom-Header` and `X-Custom-Header-Hidden` headers set by the service, only the first one is available to the client.
 
 ![Response with a single expose header](/assets/img/posts/cors-configuration-via-options-pattern/access-control-headers.png)
 
