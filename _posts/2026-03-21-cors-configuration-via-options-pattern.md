@@ -5,13 +5,9 @@ date: 2026-06-07 00:00:01 +0200
 categories: .NET
 tags: dotnet options-pattern cors aspnet-core middleware patterns access-control browser
 image:
-  path: /assets/img/title/cors-origin-request-diagram.png
+  path: /assets/img/title/cors-origin-request-diagram.svg
   alt: Cors Request Diagram
-  width: 1200
-  height: 630
 ---
-
-![Cors Request Diagram](/assets/img/title/cors-origin-request-diagram.png)
 
 You might be well familliar with the basic example of CORS configuration for ASP\.NET applications from the official documentation. Provided approach is straightforward and suitable for most use cases. Feature previews and quick demos are often implemented using this approach, as a quick setup and immediate testing of CORS policies. However, it may not be the best fit for enterprise-grade applications with centralized configuration management and more complex resource sharing rules.
 
