@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          # submodules: true
+          submodules: true
           # If using the 'assets' git submodule from Chirpy Starter, uncomment above
           # (See: https://github.com/cotes2020/chirpy-starter/tree/main/assets)
 
@@ -44,6 +44,10 @@ jobs:
         with:
           ruby-version: 3.4
           bundler-cache: true
+
+    steps:
+      - name: Setup IndexNow key file
+        run: echo ${{ secrets.INDEXNOW_KEY }} > ${{ secrets.INDEXNOW_KEY }}.txt
 
       - name: Build site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
@@ -71,3 +75,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: IndexNow - Global
+        uses: bojieyang/indexnow-action@v3
+        with:
+          endpoint: api.indexnow.org
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          key: ${{ secrets.INDEXNOW_KEY }}
+
+      - name: IndexNow - Bing
+        uses: bojieyang/indexnow-action@v3
+        with:
+          endpoint: www.bing.com
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          key: ${{ secrets.INDEXNOW_KEY }}
+
+      - name: IndexNow - Yandex
+        uses: bojieyang/indexnow-action@v3
+        with:
+          endpoint: yandex.com
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          key: ${{ secrets.INDEXNOW_KEY }}
