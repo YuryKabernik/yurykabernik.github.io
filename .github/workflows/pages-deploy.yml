@@ -79,7 +79,7 @@ jobs:
         uses: bojieyang/indexnow-action@v3
         with:
           endpoint: api.indexnow.org
-          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}feed.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
           since-unit: year
@@ -88,7 +88,7 @@ jobs:
         uses: bojieyang/indexnow-action@v3
         with:
           endpoint: www.bing.com
-          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}feed.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
           since-unit: year
@@ -97,7 +97,7 @@ jobs:
         uses: bojieyang/indexnow-action@v3
         with:
           endpoint: yandex.com
-          sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          sitemap-location: "${{ steps.deployment.outputs.page_url }}feed.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
           since-unit: year
