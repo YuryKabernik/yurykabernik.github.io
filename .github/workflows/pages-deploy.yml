@@ -45,7 +45,6 @@ jobs:
           ruby-version: 3.4
           bundler-cache: true
 
-    steps:
       - name: Setup IndexNow key file
         run: echo ${{ secrets.INDEXNOW_KEY }} > ${{ secrets.INDEXNOW_KEY }}.txt
 
