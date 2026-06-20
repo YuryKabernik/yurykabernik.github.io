@@ -1,6 +1,6 @@
 ---
 title: "Polymorphic Serialization in .NET: OpenAPI Discriminators in Action"
-description: "Learn how to implement polymorphic request deserialization in .NET using OpenAPI discriminators and `System.Text.Json`."
+description: "Learn how to implement polymorphic JSON serialization in .NET using OpenAPI discriminators and `System.Text.Json`."
 date: 2025-09-10 00:00:01 +0200
 categories: .NET
 tags: dotnet openapi discriminator webapi csharp serialization
