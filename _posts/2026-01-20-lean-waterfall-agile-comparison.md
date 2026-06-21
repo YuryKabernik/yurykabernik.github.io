@@ -5,7 +5,7 @@ date: 2026-01-20 00:00:01 +0200
 categories: Methodology
 tags: lean waterfall agile methodology sdlc project-management software-development
 image:
-  path: /assets/img/title/title-agile-methodology.png
+  path: /assets/img/title/compare-methodologies.svg
   alt: Software Development Methodologies Comparison
 ---
 
