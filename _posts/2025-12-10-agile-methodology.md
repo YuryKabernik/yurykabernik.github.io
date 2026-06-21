@@ -5,7 +5,7 @@ date: 2025-12-10 00:00:01 +0200
 categories: Methodology
 tags: agile methodology scrum kanban iterative-development agile-manifesto sprints
 image:
-  path: /assets/img/title/title-agile-methodology.png
+  path: /assets/img/title/agile-sprint-cycle.svg
   alt: Agile Methodology
 ---
 
