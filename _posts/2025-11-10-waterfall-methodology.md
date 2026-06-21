@@ -5,7 +5,7 @@ date: 2025-11-10 00:00:01 +0200
 categories: Methodology
 tags: waterfall methodology royce sdlc sequential-development documentation
 image:
-  path: /assets/img/title/title-waterfall-methodology.png
+  path: /assets/img/title/title-waterfall-methodology.svg
   alt: Waterfall Methodology
 ---
 

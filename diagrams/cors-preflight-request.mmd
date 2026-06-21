@@ -1,0 +1,25 @@
+flowchart LR
+  subgraph B[Browser]
+    P[Web page]
+    BR[Browser runtime]
+    C{CORS check}
+    P --> BR --> C
+  end
+
+  subgraph S[Server]
+    A[API server]
+    R[CORS rules allow: yourdomain.com]
+    A --- R
+  end
+
+  C -->|preflight| A
+  A -->|allow / deny| C
+  C --> O[Allowed / Denied]
+
+  classDef browser fill:#eef2ff,stroke:#6b7fd7,stroke-width:1.2px,color:#1d2a52;
+  classDef server fill:#e6f7ff,stroke:#0087c7,stroke-width:1.2px,color:#083047;
+  classDef outcome fill:#e9fbe9,stroke:#2f9e44,stroke-width:2px,color:#14532d;
+
+  class P,BR,C browser;
+  class A,R server;
+  class O outcome;
