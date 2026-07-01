@@ -2,6 +2,7 @@
 title: "Waterfall: Securing Requirements with Phase-Gated Development"
 description: "A phase-gated approach to software development based on Royce's 1970 model, emphasizing sequential stages, documentation, and early risk reduction."
 date: 2025-11-10 00:00:01 +0200
+author: Yury Kabernik-Berazouski
 categories: Methodology
 tags: waterfall methodology royce sdlc sequential-development documentation
 image:
