@@ -2,6 +2,7 @@
 title: "Agile: Embracing Change with Iterative Development"
 description: "Agile software development embraces iterative delivery, self-organizing teams, and continuous adaptation to rapidly changing requirements."
 date: 2025-12-10 00:00:01 +0200
+author: Yury Kabernik-Berazouski
 categories: Methodology
 tags: agile methodology scrum kanban iterative-development agile-manifesto sprints
 image:
