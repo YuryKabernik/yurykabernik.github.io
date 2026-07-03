@@ -1,10 +1,8 @@
 # Yury Kabernik
 
-Personal website and blog about software engineering.
+Personal website and blog about software engineering: https://yurykabernik.github.io
 
-Website: https://yurykabernik.github.io
-
-## What is in this repository
+## What Is in This Repository
 
 - blog posts and notes
 - profile pages
