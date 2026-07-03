@@ -8,14 +8,14 @@ Personal website and blog about software engineering: https://yurykabernik.githu
 - profile pages
 - site source built with Jekyll and Chirpy
 
-## Local run
+## Local Run
 
 ```bash
 bundle install
 bundle exec jekyll serve
 ```
 
-## Check the site
+## Check the Site
 
 ```bash
 bash tools/test.sh
