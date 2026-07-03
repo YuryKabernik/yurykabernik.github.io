@@ -2,11 +2,11 @@
 
 Personal website and blog about software engineering: https://yurykabernik.github.io
 
-## What Is in This Repository
+## Repository Contents
 
-- blog posts and notes
-- profile pages
-- site source built with Jekyll and Chirpy
+- Blog posts and notes
+- Profile pages
+- Site source built with Jekyll and Chirpy
 
 ## Local Run
 
