@@ -104,8 +104,9 @@ jobs:
 
       - name: Ping Bing sitemap
         run: |
-          BING_PING_URL="https://www.bing.com/ping?sitemap=${{ steps.deployment.outputs.page_url }}sitemap.xml"
-          curl -fsSL "$BING_PING_URL" || {
-            echo "Failed to ping Bing sitemap: $BING_PING_URL"
+          SITEMAP_URL="${{ steps.deployment.outputs.page_url }}sitemap.xml"
+          curl -fsSLG "https://www.bing.com/ping" \
+            --data-urlencode "sitemap=$SITEMAP_URL" || {
+            echo "Failed to ping Bing sitemap for: $SITEMAP_URL"
             exit 1
           }
