@@ -1,15 +1,13 @@
 ---
-title: "Serving File Streams in HTTP Range Requests"
-description: "How to clean Startup in ASP.NET Core using the Options pattern for a more testable and maintainable CORS policy setup."
+title: "Chunking Large Content in HTTP Range Response"
+description: "exploring intrinsic implementation of http range request processing in aspnet core via result type system for minimal api and mvc controllers"
 date: 2026-07-18 00:00:01 +0200
 author: Yury Kabernik-Berazouski
 categories: .NET
-tags: dotnet aspnet-core file-result file-serving http http-range range-request
+tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
 ---
 
-Since the existence of the Internet, file sharing has been a major feature of network systems. The same capabilities and limitations persist today when transferring large amounts of data across the network.
-
-ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the framework. Following international HTTP protocol standards, ASP.NET Core supports Range requests for serving binaries as relatively small ranges of a single file.
+ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range requests for serving large binaries in relatively small chunks.
 
 ## HTTP Range Requests Overview
 
@@ -20,19 +18,38 @@ The HTTP protocol implements headers and status codes that enable delivering lar
 - **Headers**: Range, Content-Range, Accept-Ranges, If-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
-## File Processing in ASP.NET Core
+## File Typed Result in ASP.NET Core
 
-Since ASP.NET Core 6.0, we are provided with two separate type systems designed to serve nearly identical set of web results. These distinct hierarchies are built on top of `IActionResult` and `IResult` interface implementations.
+Since ASP.NET Core 6.0, we are provided with two type systems designed to serve wide range of response content types in a form of result objects. These distinct hierarchies are built on top of `IActionResult` and `IResult` interface implementations. Both defining a contract for an asynchronous method writing the result from an MVC action or an HTTP endpoint into a valid HTTP response.
 
-Action results were created to ease migrating Windows oriented ASP.NET Framework web applications to a new cross-platform ASP.NET Core web framework. The idea was to preserve a well-known MVC pattern in the form of WebApi Controllers with an extended set of method helpers serving different content types. running action result executors `IActionResultExecutor<T>` for each kind of the result type extending an abstract `ActionResult` class of the `IActionResult` interface.
-
-| Overload | Behavior |
+| Method | Behavior |
 |----------|----------|
-| `File(byte[], string, string, bool, DateTimeOffset?, EntityTagHeaderValue)` | Writes byte array content to response. Supports range requests (206 or 416 status codes). Alias for `Bytes()`. |
-| `File(Stream, string, string, DateTimeOffset?, EntityTagHeaderValue, bool)` | Writes Stream to response. Supports range requests (206 or 416 status codes). Alias for `Stream()`. |
-| `File(string, string, string, DateTimeOffset?, EntityTagHeaderValue, bool)` | Writes file from specified path to response. Supports range requests (206 or 416 status codes). |
+| `Task ExecuteResultAsync(ActionContext context)` | Executes the asynchronous result operation of the action method with the provided `ActionContext` in which the result is executed including the original request details. |
+| `Task ExecuteAsync(HttpContext httpContext)` | Writes an HTTP response reflecting the result of a task that represents the asynchronous execute operation back to the `HttpContext` for the current request. |
 
-## FileResultHelper Range Processing
+Controller-based MVC actions are based on an abstract `ActionResult` implementation of the `IActionResult` interface. For the file processing purpose we are provided with a derived abstract `Microsoft.AspNetCore.Mvc.FileResult` that when executed will write a file to the response body. The file abstraction extends action result in the way allowing to specifiy the content type, file download name, last modified time offset, entity tag, and metadata flag `EnableRangeProcessing` that enables range processing.
+
+| Type | Behavior |
+|----------|----------|
+| `FileStreamResult` | Represents an action result that when executed will write a file from a stream to the response. Supports range requests (206 and 416 status codes) |
+| `FileContentResult` | Represents an action result that when executed will write a binary file to the response. Supports range requests (206 and 416 status codes) |
+| `PhysicalFileResult` | Represents an action result that when executed will write a file from disk to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
+| `VirtualFileResult` | Represents an action result that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
+
+Minimal API endpoints expect to return `IResult` types created using a static `TypedResults` or `Results` typed factory in `Microsoft.AspNetCore.Http.HttpResults` namespace. These factories allow to build results for specific content types same as the action result system, but this time none of them is embedded into any kind of abstract controller.
+
+| Type | Behavior |
+|----------|----------|
+| `FileStreamHttpResult` | Represents an `IResult` that when executed will write a file from a stream to the response. |
+| `FileContentHttpResult` | Represents an `IResult` that when executed will write a file from the content to the response. |
+| `PhysicalFileHttpResult` | A `PhysicalFileHttpResult` on execution will write a file from disk to the response using mechanisms provided by the host. |
+| `VirtualFileHttpResult` | A `IResult` that on execution writes the file specified using a virtual path to the response using mechanisms provided by the host. |
+
+What's important about these types, is that all of them rely on a shared static `FileResultHelper`...
+
+One more thing to mention is the fact that all these factories operate over the result type by calling the same common static helper called `FileResultHelper`. Next we will discover a complete implementation of the HTTP Range processing following RFC specification. Everything that needs to be done to serve partial response: from writing the response HTTP headers to the response writer logic to the client.
+
+## Range Response Processing by FileResultHelper
 
 Both legacy MVC and modern Results APIs share an internal implementation in `FileResultHelper.cs`. The base controller's `File` method and its Result type subclasses handle file processing.
 
