@@ -27,21 +27,27 @@ Since ASP.NET Core 6.0, we are provided with two type systems designed to serve 
 | `Task ExecuteResultAsync(ActionContext context)` | Executes the asynchronous result operation of the action method with the provided `ActionContext` in which the result is executed including the original request details. |
 | `Task ExecuteAsync(HttpContext httpContext)` | Writes an HTTP response reflecting the result of a task that represents the asynchronous execute operation back to the `HttpContext` for the current request. |
 
-Controller-based MVC actions are based on an abstract `ActionResult` implementation of the `IActionResult` interface. For the file processing purpose we are provided with a derived abstract `Microsoft.AspNetCore.Mvc.FileResult` that when executed will write a file to the response body. The file abstraction extends action result in the way allowing to specifiy the content type, file download name, last modified time offset, entity tag, and metadata flag `EnableRangeProcessing` that enables range processing.
+Controller-based MVC actions are based on an abstract `ActionResult` implementation of the `IActionResult` interface. For the file processing purpose we are provided with an abstract derived `Microsoft.AspNetCore.Mvc.FileResult` an action result that when executed will write a file to the response body.
+
+It does not implement the asynchronous method yet, but extends its parent class with properties required to process a complete or partial file content. Among the shared properties are the content type, file download name, last modified time offset, entity tag, and boolean flag `EnableRangeProcessing` that enables range processing.
+
+More specific non-abstract types combine base class properties with the output data to properly implement the asynchronous response handler for the given type of content. These classes work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
+
+You might find such deep inheritance hierarchy pretty overcomplicated, especially knowing that this is all needed to proxy context and result type through another inheritence chain to finally pass them to the static `FileResultHelper` class. Methods from this type are doing the actual job of setting http headers for file procesing and writing bytes to the output stream body.
 
 | Type | Behavior |
 |----------|----------|
-| `FileStreamResult` | Represents an action result that when executed will write a file from a stream to the response. Supports range requests (206 and 416 status codes) |
-| `FileContentResult` | Represents an action result that when executed will write a binary file to the response. Supports range requests (206 and 416 status codes) |
-| `PhysicalFileResult` | Represents an action result that when executed will write a file from disk to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
-| `VirtualFileResult` | Represents an action result that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
+| `FileStreamResult` | Represents a `FileResult` that when executed will write a file from a stream to the response. Supports range requests (206 and 416 status codes) |
+| `FileContentResult` | Represents a `FileResult` that when executed will write a binary file to the response. Supports range requests (206 and 416 status codes) |
+| `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
+| `VirtualFileResult` | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
 
-Minimal API endpoints expect to return `IResult` types created using a static `TypedResults` or `Results` typed factory in `Microsoft.AspNetCore.Http.HttpResults` namespace. These factories allow to build results for specific content types same as the action result system, but this time none of them is embedded into any kind of abstract controller.
+On the other hand, Minimal API endpoints expect to return `IResult` types instantiated via a static `Microsoft.AspNetCore.Http.HttpResults.TypedResults` factory methods. These factories allow to build results for specific content types same as the action result system, but this time none of them has a base class to inherit from. Each type does not even have a dedicated executor to inject, instead every http result implements `IResult` interface directly along with the interfaces defining properties required to fulfill the request.
 
 | Type | Behavior |
 |----------|----------|
 | `FileStreamHttpResult` | Represents an `IResult` that when executed will write a file from a stream to the response. |
-| `FileContentHttpResult` | Represents an `IResult` that when executed will write a file from the content to the response. |
+| `FileContentHttpResult` | Represents an `IResult` that when executed will the byte-array content to the response. |
 | `PhysicalFileHttpResult` | A `PhysicalFileHttpResult` on execution will write a file from disk to the response using mechanisms provided by the host. |
 | `VirtualFileHttpResult` | A `IResult` that on execution writes the file specified using a virtual path to the response using mechanisms provided by the host. |
 
