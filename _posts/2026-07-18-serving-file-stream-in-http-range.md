@@ -2,7 +2,6 @@
 title: "Chunking Large Content in HTTP Range Response"
 description: "exploring intrinsic implementation of http range request processing in aspnet core via result type system for minimal api and mvc controllers"
 date: 2026-07-18 00:00:01 +0200
-author: Yury Kabernik-Berazouski
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
 ---
@@ -39,12 +38,12 @@ Controller-based MVC actions are built on an abstract `ActionResult` implementat
 
 Derived types combine base class properties with a strongly typed file content to properly implement the asynchronous response handler for the given content-type. These ancestors work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
 
-| Type                 | Behavior                                                                                                                                                                                                  |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FileStreamResult`   | Represents a `FileResult` that when executed will write a file from a stream to the response. Supports range requests (206 and 416 status codes)                                                          |
-| `FileContentResult`  | Represents a `FileResult` that when executed will write a binary file to the response. Supports range requests (206 and 416 status  codes)                                                                |
-| `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes)                        |
-| `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host. Supports range requests (206 and 416 status codes) |
+| Type                 | Behavior                                                                                                                                              |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FileStreamResult`   | Represents a `FileResult` that when executed will write a file from a stream to the response                                                          |
+| `FileContentResult`  | Represents a `FileResult` that when executed will write a binary file to the response                                                                 |
+| `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host                        |
+| `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
 
 The deep inheritance hierarchy might seem complex, but it ultimately serves to proxy the action context and result to the static `FileResultHelper` class, which handles the actual work of assigning HTTP headers and streaming bytes to the response body.
 
