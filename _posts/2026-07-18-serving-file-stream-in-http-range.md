@@ -4,6 +4,9 @@ description: "exploring intrinsic implementation of http range request processin
 date: 2026-07-18 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
+image:
+  path: /assets/img/title/file-result-type-class-diagram.svg
+  alt: File Result Type Class Diagram
 ---
 
 ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range requests for serving large binaries in relatively small chunks.
@@ -17,14 +20,16 @@ The HTTP protocol implements headers and status codes that enable delivering lar
 - **Headers**: Range, Content-Range, Accept-Ranges, If-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
-## File Typed Result in ASP.NET Core
+## File Result Types in ASP.NET Core
 
 Since ASP.NET Core 6.0, we are provided with two type systems designed to serve a wide range of response content types in the form of result objects. These distinct hierarchies are built on top of `IActionResult` and `IResult` interface implementations. Both define a contract for an asynchronous method designed to write the result from an MVC action or an HTTP endpoint into the response body.
 
-| Method                                           | Behavior                                                                                                                                                                  |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Task ExecuteResultAsync(ActionContext context)` | Executes the asynchronous result operation of the action method with the provided `ActionContext` in which the result is executed including the original request details. |
-| `Task ExecuteAsync(HttpContext httpContext)`     | Writes an HTTP response reflecting the result of a task that represents the asynchronous execute operation back to the `HttpContext` for the current request.             |
+| Method                                           | Behavior                                                                                                                           |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `Task ExecuteResultAsync(ActionContext context)` | Executes the asynchronous result operation of the action method with the provided `ActionContext` in which the result is executed. |
+| `Task ExecuteAsync(HttpContext httpContext)`     | Writes an HTTP response body reflecting the result of an asynchronous operation back to the `HttpContext` for the current request. |
+
+### Controller API Result Execution
 
 Controller-based MVC actions are built on an abstract `ActionResult` implementation of the `IActionResult` interface. For file processing scenarios, ASP.NET Core provides a derived `Microsoft.AspNetCore.Mvc.FileResult` subclass that adds another abstraction layer. Rather than implementing the asynchronous method directly, it extends the contract with file-specific properties shared across concrete implementations.
 
@@ -46,6 +51,8 @@ Derived types combine base class properties with a strongly typed file content t
 | `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
 
 The deep inheritance hierarchy might seem complex, but it ultimately serves to proxy the action context and result to the static `FileResultHelper` class, which handles the actual work of assigning HTTP headers and streaming bytes to the response body.
+
+### Minimal API Result Execution
 
 In contrast, Minimal API endpoints return `IResult` types instantiated via static factory methods in `Microsoft.AspNetCore.Http.HttpResults.TypedResults`. While these factories provide the same flexibility for building content-type-specific results, none of them inherit from a base class. Instead, each type implements the `IResult` interface directly along with all interfaces required to fulfill the request, without requiring a dedicated executor.
 
