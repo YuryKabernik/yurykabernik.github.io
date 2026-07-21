@@ -32,7 +32,7 @@ Controller-based MVC actions are built on an abstract `ActionResult` implementat
 | `LastModified`          | Specifies the timestamp when the file was last modified, serves HTTP conditional requests and client-side cache validation via `Last-Modified` header.                 |
 | `EnableRangeProcessing` | Boolean flag that enables HTTP range request processing for the result, unlocks delivering small byte ranges of large files.                                           |
 
-Derived types combine base class properties with strongly typed file content to properly implement the asynchronous response handler for the given content-type. These results work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
+Derived types combine base class properties with strongly typed file content to properly implement the asynchronous response handler for the given content-type. These classes work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
 
 | Type                 | Behavior                                                                                                                                              |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -41,9 +41,9 @@ Derived types combine base class properties with strongly typed file content to 
 | `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host                        |
 | `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
 
-Each class uses a service locator to inject its own result-specific implementation of the result executor interface. Similar to the result type hierarchy, all of them share the common `FileResultExecutorBase` base class that implements the real work of processing headers and writing the response body. The result executor is parameterized with a particular result type, which is passed to the asynchronous `Task ExecuteAsync(ActionContext context, TResult result)` execute handler along with the request context. By providing the binary source and content properties encapsulated inside the result, it modifies the `HttpResponse` object to properly serve the HTTP response to the client.
+While implementing result handlers, each class uses a service locator to inject a result-specific executor. Similarly to the result type hierarchy, all executors share a common `FileResultExecutorBase` base class that implements the common logic of processing HTTP headers and writing the response body following HTTP protocol specifications.
 
-The deep inheritance hierarchy seems a little bit too complex, especially knowing that it ultimately serves to proxy the context and the result to the static `FileResultHelper` class. It handles the actual work of assigning HTTP headers and streaming bytes to the response.
+Every result executor is designed to parameterize the asynchronous `Task ExecuteAsync(ActionContext context, TResult result)` handler with a dedicated result type and action context arguments. By separating the response data and write behavior in different type hierarchies, developers implement a classic visitor pattern where data and behavior evolve independently while remaining associated with each other in serving the `HttpResponse` to the client.
 
 ### Minimal API Result Execution
 
