@@ -1,15 +1,24 @@
 ---
-title: "Understanding File Result Types in ASP.NET Core"
-description: "Exploring intrinsic implementation of serving binary and file result in aspnet core via result type system for minimal api and mvc controllers"
-date: 2026-07-20 00:00:01 +0200
+title: "Chunking Large Content in HTTP Range Response"
+description: "exploring intrinsic implementation of http range request processing in aspnet core via result type system for minimal api and mvc controllers"
+date: 2026-07-29 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
 image:
   path: /assets/img/title/file-result-type-class-diagram.svg
-  alt: ASP.NET Core file result type hierarchy for MVC and Minimal APIs
+  alt: File Result Type Class Diagram
 ---
 
-ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports standard HTTP headers defining the kinds of file content and HTTP Range requests for serving large binaries in smaller chunks.
+ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range requests for serving large binaries in relatively small chunks.
+
+## HTTP Range Requests Overview
+
+The HTTP protocol implements headers and status codes that enable delivering large file objects over the internet in smaller pieces:
+
+- **Content-Type**: `bytes`
+- **Status Codes**: 206 Partial Content, 416 Range Not Satisfiable
+- **Headers**: Range, Content-Range, Accept-Ranges, If-Range
+- **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
 ## File Result Types in ASP.NET Core
 
@@ -32,7 +41,7 @@ Controller-based MVC actions are built on an abstract `ActionResult` implementat
 | `LastModified`          | Specifies the timestamp when the file was last modified, serves HTTP conditional requests and client-side cache validation via `Last-Modified` header.                 |
 | `EnableRangeProcessing` | Boolean flag that enables HTTP range request processing for the result, unlocks delivering small byte ranges of large files.                                           |
 
-Derived types combine base class properties with strongly typed file content to properly implement the asynchronous response handler for the given content-type. These results work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
+Derived types combine base class properties with a strongly typed file content to properly implement the asynchronous response handler for the given content-type. These ancestors work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
 
 | Type                 | Behavior                                                                                                                                              |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -41,13 +50,11 @@ Derived types combine base class properties with strongly typed file content to 
 | `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host                        |
 | `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
 
-Each class uses a service locator to inject its own result-specific implementation of the result executor interface. Similar to the result type hierarchy, all of them share the common `FileResultExecutorBase` base class that implements the real work of processing headers and writing the response body. The result executor is parameterized with a particular result type, which is passed to the asynchronous `Task ExecuteAsync(ActionContext context, TResult result)` execute handler along with the request context. By providing the binary source and content properties encapsulated inside the result, it modifies the `HttpResponse` object to properly serve the HTTP response to the client.
-
-The deep inheritance hierarchy seems a little bit too complex, especially knowing that it ultimately serves to proxy the context and the result to the static `FileResultHelper` class. It handles the actual work of assigning HTTP headers and streaming bytes to the response.
+The deep inheritance hierarchy might seem complex, but it ultimately serves to proxy the action context and result to the static `FileResultHelper` class, which handles the actual work of assigning HTTP headers and streaming bytes to the response body.
 
 ### Minimal API Result Execution
 
-In contrast, Minimal API endpoints return `IResult` types instantiated via static factory methods in `Microsoft.AspNetCore.Http.HttpResults.TypedResults`. While these factories provide flexibility of building content-type-specific results, none of them inherit from a base class. Instead, each type implements the `IResult` interface directly along with all interfaces required to fulfill the request without injecting a dedicated executor.
+In contrast, Minimal API endpoints return `IResult` types instantiated via static factory methods in `Microsoft.AspNetCore.Http.HttpResults.TypedResults`. While these factories provide the same flexibility for building content-type-specific results, none of them inherit from a base class. Instead, each type implements the `IResult` interface directly along with all interfaces required to fulfill the request, without requiring a dedicated executor.
 
 | Type                     | Behavior                                                                                                                            |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -62,7 +69,7 @@ Next we will discover a complete implementation of the HTTP Range processing fol
 
 ## Range Response Processing by FileResultHelper
 
-Both legacy MVC and modern Results APIs share an internal implementation in `FileResultHelper` for fileserving purposes. The base controller's `File` method and its Result type subclasses handle file processing.
+Both legacy MVC and modern Results APIs share an internal implementation in `FileResultHelper.cs`. The base controller's `File` method and its Result type subclasses handle file processing.
 
 ### SetHeadersAndLog
 
