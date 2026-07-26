@@ -1,6 +1,6 @@
 ---
-title: "Chunking Large Content in HTTP Range Response"
-description: "exploring intrinsic implementation of http range request processing in aspnet core via result type system for minimal api and mvc controllers"
+title: "Chunking Large Content in HTTP Range Requests"
+description: "Exploring intrinsic implementation of http range request processing in aspnet core via result type system for minimal api and mvc controllers. Breaking down the internal implementation of RFC 7233 Range Requests in ASP.NET Core."
 date: 2026-07-29 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
@@ -8,6 +8,22 @@ image:
   path: /assets/img/title/file-result-type-class-diagram.svg
   alt: File Result Type Class Diagram
 ---
+
+<!-- 
+Article 2: “How ASP.NET Core Handles Range Requests for File Results”
+
+Why range requests matter
+FileResultHelper overview
+Precondition validation
+Header setup
+Range processing pipeline
+Debugging and observability -->
+
+Previously in the posts we’ve explored...
+
+
+
+
 
 ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range requests for serving large binaries in relatively small chunks.
 
@@ -106,8 +122,4 @@ Enable Debug log level in the application logger to expose runtime events during
 
 ## References
 
-- [Microsoft - Results.File API](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.results.file)
-- [Microsoft - FileResult Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.fileresult)
-- [ASP.NET Core - FileResultHelper Source](https://github.com/dotnet/aspnetcore/blob/main/src/Shared/ResultsHelpers/FileResultHelper.cs)
-- [Difference between FileContentResult and FileStreamResult](https://stackoverflow.com/questions/34498184/difference-between-filecontentresult-and-filestreamresult)
-- [ASP.NET MVC File Results Comparison](https://stackoverflow.com/questions/1187261/whats-the-difference-between-the-four-file-results-in-asp-net-mvc)
+- [Hypertext Transfer Protocol (HTTP/1.1): Range Requests](https://datatracker.ietf.org/doc/html/rfc7233)
