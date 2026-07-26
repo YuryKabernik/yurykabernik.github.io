@@ -1,0 +1,22 @@
+---
+---
+
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}'
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+.table-wrapper > table thead th,
+.table-wrapper > table tbody tr td {
+  padding: 0.4rem 1rem;
+  font-size: 95%;
+  white-space: break-spaces;
+}
