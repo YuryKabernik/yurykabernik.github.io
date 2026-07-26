@@ -11,7 +11,7 @@ image:
 
 ASP.NET Core has evolved over years into a mature platform for building web applications. File sharing and serving binaries from the backend are among the features it handles well. Following HTTP protocol standards, ASP.NET Core supports the headers and range semantics needed to serve large binaries in smaller chunks.
 
-This post focuses with the result type system and the abstractions that make file responses work in ASP.NET Core. It will preparing us for the range-request details and client-side handling in the next posts. Let's start with the result type system and see how ASP.NET Core abstracts file responses in code.
+This post focuses on the result type system and the abstractions that make file responses work in ASP.NET Core. It will prepare us for the range-request details and client-side handling in the next posts. Let's start with the result type system and see how ASP.NET Core abstracts file responses in code.
 
 ## File Result Types in ASP.NET Core
 
@@ -43,7 +43,7 @@ Derived types combine base class properties with strongly typed file content to 
 | `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host                        |
 | `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
 
-While implementing result handlers, each class uses a service locator to inject a result-specific executor. Similarly to the result type hierarchy, all executors share a common `FileResultExecutorBase` base class that implements the common logic of processing HTTP headers and writing the response body following HTTP protocol specifications.
+When a result is executed, each MVC file result resolves a result-specific executor from `HttpContext.RequestServices`. Similarly to the result type hierarchy, all executors share a common `FileResultExecutorBase` base class that implements the common logic of processing HTTP headers and writing the response body following HTTP protocol specifications.
 
 Every result executor is designed to parameterize the asynchronous `Task ExecuteAsync(ActionContext context, TResult result)` handler with a dedicated result type and action context arguments. By separating the response data and write behavior in different type hierarchies, developers implement a classic visitor pattern where data and behavior evolve independently while remaining associated with each other in serving the `HttpResponse` to the client.
 
@@ -62,7 +62,7 @@ The `IResult` interface only defines a contract for the executor function updati
 
 For instance, the `IFileHttpResult` interface, implemented in each of the mentioned file types, specifies `string? ContentType` and `string? FileDownloadName` type members. The `ContentType` property represents the Content-Type header for the response, reflecting the data format of the file contents. The `FileDownloadName` property represents the file name that will be used in the Content-Disposition header of the response upon file download.
 
-Not all of the result properties come from a strongly typed contracts. Some of them are unscoped to any of http interface but identical to all these classes. Each of them take part in defining the amount of data and http headers in response, initialization of which come from constructurs and only expose public getters tight to the provided result type.
+Not all of the result properties come from strongly typed interface contracts. Some of them are not scoped to a dedicated HTTP interface in spite of the fact they are identical across these classes. Together they take part in evaluating the response metadata for headers and usually exposed as public getters tied to the concrete result type.
 
 | Property                | Type                    | Description                                                                                                                                                        |
 | ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -71,19 +71,19 @@ Not all of the result properties come from a strongly typed contracts. Some of t
 | `EnableRangeProcessing` | `bool`                  | Gets the value that enables range processing for the file result. When enabled, sets the `Accept-Ranges: bytes` header and allows `206 Partial Content` responses. |
 | `FileLength`            | `long?`                 | Gets or sets the file length information. Translated to the `Content-Length` HTTP header; adjusted for range requests per RFC 7233.                                |
 
-As every result serves the content from the different source type, one more type-scoped property is important to implement. Classes implement value properties holding the output data they designed to serve.
+Because each result serves content from a different source type, one more type-scoped property is needed. These classes expose value properties that hold the output data they are designed to serve.
 
-| Property       | Data Type              | Description                                                                     | Source Type                                       |
-| -------------- | ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `FileStream`   | `Stream`               | Serves a file stream that will be sent back as the response.                    | `FileStreamHttpResult`                            |
-| `FileContents` | `ReadOnlyMemory<byte>` | Serves a binary array or memory region that will be sent back as the response.  | `FileContentHttpResult`                           |
-| `FileName`     | `string`               | Serves a file stream from the file path that will be sent back as the response. | `PhysicalFileHttpResult`, `VirtualFileHttpResult` |
+| Property       | Data Type              | Description                                                             | Source Type                                       |
+| -------------- | ---------------------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `FileStream`   | `Stream`               | Serves a file stream to be sent back as the response.                   | `FileStreamHttpResult`                            |
+| `FileContents` | `ReadOnlyMemory<byte>` | Serves a binary array or memory region to be sent back as the response. | `FileContentHttpResult`                           |
+| `FileName`     | `string`               | Serves a file from the file path to be sent back as the response.       | `PhysicalFileHttpResult`, `VirtualFileHttpResult` |
 
-What is common among MVC and Minimal result types is that all of them rely on the same static `FileResultHelper`, which handles the details of regular and HTTP range request file processing. This unified implementation ensures consistent behavior across both MVC and Minimal API paradigms, abstracting away the complexity of RFC 7233 compliance and header management into a single, well-tested component.
+What is common among MVC and Minimal API file result types is that they share FileResultHelper for the low-level file and HTTP range-processing logic. In Minimal APIs, that logic is reached through helper methods such as HttpResultsHelper.WriteResultAsFileCore, but the core header and range handling still comes from the same shared implementation.
 
 ## Conclusion
 
-ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without need from us to build the response logic from scratch. In the next parts of this series, I am going to elaborate on the range-request processing inside `FileResultHelper` and showcase an example involving the response processing that shows how partial content can be handled on the frontend in practice.
+ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without requiring us to build the response logic from scratch. In the next parts of this series, I am going to elaborate on the range-request processing inside these helpers and showcase an example of how partial content can be handled on the frontend in practice.
 
 ## Additional links
 
