@@ -1,6 +1,6 @@
 ---
 title: "Understanding File Result Types in ASP.NET Core"
-description: "Exploring intrinsic implementation of serving binary and file result in aspnet core via result type system for minimal api and mvc controllers"
+description: "Exploring intrinsic implementation of serving binary and file result in aspnet core via result type system for minimal api and mvc controllers. Breaking down the internal implementation of RFC 7233 Range Requests in ASP.NET Core."
 date: 2026-07-18 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request
@@ -49,20 +49,39 @@ Every result executor is designed to parameterize the asynchronous `Task Execute
 
 In contrast, Minimal API endpoints return `IResult` types instantiated via static factory methods in `Microsoft.AspNetCore.Http.HttpResults.TypedResults`. While these factories provide flexibility of building content-type-specific results, none of them inherit from a base class. Instead, each type implements the `IResult` interface directly along with all interfaces required to fulfill the request without injecting a dedicated executor.
 
-| Type                     | Behavior                                                                                                                            |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `FileStreamHttpResult`   | Represents an `IResult` that when executed will write a file from a stream to the response.                                         |
-| `FileContentHttpResult`  | Represents an `IResult` that when executed will the byte-array content to the response.                                             |
-| `PhysicalFileHttpResult` | A `PhysicalFileHttpResult` on execution will write a file from disk to the response using mechanisms provided by the host.          |
-| `VirtualFileHttpResult`  | A `IResult` that on execution writes the file specified using a virtual path to the response using mechanisms provided by the host. |
+| Type                     | Behavior                                                                                                                           |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `FileStreamHttpResult`   | Represents an `IResult` that when executed will write a file from a stream to the response.                                        |
+| `FileContentHttpResult`  | Represents an `IResult` that when executed will write the byte-array content to the response.                                      |
+| `PhysicalFileHttpResult` | Represents an `IResult` that writes a file from disk to the response using mechanisms provided by the host.                        |
+| `VirtualFileHttpResult`  | Represents an `IResult` that writes the file specified using a virtual path to the response using mechanisms provided by the host. |
 
-What's important about these types is all of them rely on the same static `FileResultHelper` which handles the intricate details of HTTP range request processing. This unified implementation ensures consistent behavior across both MVC and Minimal API paradigms, abstracting away the complexity of RFC compliance and header management into a single, well-tested component.
+The `IResult` interface only defines a contract for the executor function updating the HTTP response from the result instance. The rest of the properties are defined within the dedicated result type or implemented using the supporting interfaces.
 
-Next we will discover a complete implementation of the HTTP Range processing following RFC specification. Everything that needs to be done to serve partial response: from writing the response HTTP headers to the response writer logic to the client.
+For instance, the `IFileHttpResult` interface, implemented in each of the mentioned file types, specifies `string? ContentType` and `string? FileDownloadName` type members. The `ContentType` property represents the Content-Type header for the response, reflecting the data format of the file contents. The `FileDownloadName` property represents the file name that will be used in the Content-Disposition header of the response upon file download.
+
+Not all of the result properties come from a strongly typed contracts. Some of them are unscoped to any of http interface but identical to all these classes. Each of them take part in defining the amount of data and http headers in response, initialization of which come from constructurs and only expose public getters tight to the provided result type.
+
+| Property                | Type                    | Description                                                                                                                                                        |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `LastModified`          | `DateTimeOffset?`       | Gets the last modified information associated with the file result. Translated to the `Last-Modified` HTTP header for cache validation.                            |
+| `EntityTag`             | `EntityTagHeaderValue?` | Gets the etag associated with the file result. Translated to the `ETag` HTTP header for resource versioning and conditional requests.                              |
+| `EnableRangeProcessing` | `bool`                  | Gets the value that enables range processing for the file result. When enabled, sets the `Accept-Ranges: bytes` header and allows `206 Partial Content` responses. |
+| `FileLength`            | `long?`                 | Gets or sets the file length information. Translated to the `Content-Length` HTTP header; adjusted for range requests per RFC 7233.                                |
+
+As every result serves the content from the different source type, one more type-scoped property is important to implement. Classes implement value properties holding the output data they designed to serve.
+
+| Property       | Data Type              | Description                                                                     | Source Type                                       |
+| -------------- | ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `FileStream`   | `Stream`               | Serves a file stream that will be sent back as the response.                    | `FileStreamHttpResult`                            |
+| `FileContents` | `ReadOnlyMemory<byte>` | Serves a binary array or memory region that will be sent back as the response.  | `FileContentHttpResult`                           |
+| `FileName`     | `string`               | Serves a file stream from the file path that will be sent back as the response. | `PhysicalFileHttpResult`, `VirtualFileHttpResult` |
+
+What is common among MVC and Minimal result types is that all of them rely on the same static `FileResultHelper`, which handles the details of HTTP range request processing. This unified implementation ensures consistent behavior across both MVC and Minimal API paradigms, abstracting away the complexity of RFC 7233 compliance and header management into a single, well-tested component.
 
 ## Range Response Processing by FileResultHelper
 
-Both legacy MVC and modern Results APIs share an internal implementation in `FileResultHelper` for fileserving purposes. The base controller's `File` method and its Result type subclasses handle file processing.
+Both legacy MVC and modern Results APIs share an internal implementation in `FileResultHelper` for file serving purposes. This type holds a complete implementation of the HTTP Range processing and follows RFC 7233 specification. It has everything needed to serve a partial file response like writing the response headers and the response body writer logic to the client.
 
 ### SetHeadersAndLog
 
@@ -99,6 +118,7 @@ Enable Debug log level in the application logger to expose runtime events during
 
 ## References
 
+- [Hypertext Transfer Protocol (HTTP/1.1): Range Requests](https://datatracker.ietf.org/doc/html/rfc7233)
 - [Microsoft - Results.File API](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.results.file)
 - [Microsoft - FileResult Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.fileresult)
 - [ASP.NET Core - FileResultHelper Source](https://github.com/dotnet/aspnetcore/blob/main/src/Shared/ResultsHelpers/FileResultHelper.cs)
