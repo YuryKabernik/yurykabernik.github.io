@@ -1,6 +1,6 @@
 ---
 title: "Understanding File Result Types in ASP.NET Core"
-description: "A deep dive into the internal implementation of ASP.NET Core file result types for MVC WebAPIs and Minimal APIs."
+description: "A deep dive into the internal implementation of FileResult types in ASP.NET Core for MVC WebAPIs and Minimal APIs."
 date: 2026-07-18 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request minimal-api mvc iresult iactionresult webapi
@@ -36,12 +36,12 @@ Controller-based MVC actions are built on an abstract `ActionResult` implementat
 
 Derived types combine base class properties with strongly typed file content to properly implement the asynchronous response handler for the given content-type. These classes work like a bridge between binary data representations (file streams, byte arrays, memory spans, file locations) and actual `IActionResultExecutor<T>` handlers.
 
-| Type                 | Behavior                                                                                                                                              |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FileStreamResult`   | Represents a `FileResult` that when executed will write a file from a stream to the response                                                          |
-| `FileContentResult`  | Represents a `FileResult` that when executed will write a binary file to the response                                                                 |
-| `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk to the response using mechanisms provided by the host                        |
-| `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using a virtual path to the response using mechanisms provided by the host |
+| Type                 | Behavior                                                                                                                                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FileStreamResult`   | Represents a `FileResult` that when executed will write a file content as `Stream` to the response body with provided `MediaTypeHeaderValue` in the Content-Type header.                                                     |
+| `FileContentResult`  | Represents a `FileResult` that when executed will write a file content as `byte[]` to the response body with provided `MediaTypeHeaderValue` in the Content-Type header.                                                     |
+| `PhysicalFileResult` | Represents a `FileResult` that when executed will write a file from disk by an absolute path to the response using mechanisms provided by the host. Accepts `MediaTypeHeaderValue` of the Content-Type header.               |
+| `VirtualFileResult`  | Represents a `FileResult` that when executed will write the file specified using the relative/virtual path to the response using mechanisms provided by the host. Accepts `MediaTypeHeaderValue` of the Content-Type header. |
 
 When a result is executed, each MVC file result resolves a result-specific executor from `HttpContext.RequestServices`. Similarly to the result type hierarchy, all executors share a common `FileResultExecutorBase` base class that implements the common logic of processing HTTP headers and writing the response body following HTTP protocol specifications.
 
@@ -51,12 +51,12 @@ Every result executor is designed to parameterize the asynchronous `Task Execute
 
 In contrast, Minimal API endpoints return `IResult` types instantiated via static factory methods of partial `Microsoft.AspNetCore.Http.Results` and `Microsoft.AspNetCore.Http.HttpResults.TypedResults` classes. While these factories provide flexibility of building response-specific result objects, none of them inherit from any base class. Each result type implements the `IResult` interface directly along with all interfaces required to fulfill the request without the need to inject a content-specific result executor.
 
-| Type                     | Behavior                                                                                                                           |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `FileStreamHttpResult`   | Represents an `IResult` that when executed will write a file from a stream to the response.                                        |
-| `FileContentHttpResult`  | Represents an `IResult` that when executed will write the byte-array content to the response.                                      |
-| `PhysicalFileHttpResult` | Represents an `IResult` that writes a file from disk to the response using mechanisms provided by the host.                        |
-| `VirtualFileHttpResult`  | Represents an `IResult` that writes the file specified using a virtual path to the response using mechanisms provided by the host. |
+| Type                     | Behavior                                                                                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FileStreamHttpResult`   | Represents an `IResult` instance that when executed will write a file content as `Stream` to the response body. Such as streaming large files or database blobs.                                            |
+| `FileContentHttpResult`  | Represents an `IResult` instance that when executed will write a file content `byte[]` to the response body. Such as serving pre-loaded file contents from memory.                                          |
+| `PhysicalFileHttpResult` | Represents an `IResult` instance that writes a file from disk to the response using mechanisms provided by the host. Such as serving files from absolute file system paths.                                 |
+| `VirtualFileHttpResult`  | Represents an `IResult` instance that writes the file specified using a relative/virtual path to the response using mechanisms provided by the host. Such as serving application-relative or wwwroot files. |
 
 The `IResult` interface only defines a contract for the executor function updating the HTTP response from the result instance. The rest of the properties are defined within the dedicated result type or implemented using the supporting interfaces.
 
