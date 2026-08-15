@@ -82,7 +82,7 @@ jobs:
           sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
-          since-unit: year
+          since-unit: month
 
       - name: IndexNow - Bing
         uses: bojieyang/indexnow-action@v3
@@ -91,7 +91,7 @@ jobs:
           sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
-          since-unit: year
+          since-unit: month
 
       - name: IndexNow - Yandex
         uses: bojieyang/indexnow-action@v3
@@ -100,4 +100,4 @@ jobs:
           sitemap-location: "${{ steps.deployment.outputs.page_url }}sitemap.xml"
           key: ${{ secrets.INDEXNOW_KEY }}
           since: 1
-          since-unit: year
+          since-unit: month
