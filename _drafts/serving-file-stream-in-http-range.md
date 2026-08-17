@@ -3,7 +3,7 @@ title: "How ASP.NET Core Handles Range Requests for File Results?"
 description: "Exploring how ASP.NET Core handles HTTP range requests for file results, with a practical overview of why range requests matter, protocol semantics, conditional headers, and the FileResultHelper pipeline from freshness validation and header setup to chunked responses, range processing, and debugging."
 date: 2026-07-29 00:00:01 +0200
 categories: .NET
-tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request webapi minimal-api rfc7233 file-result-helper
+tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request rfc7233 file-result-helper multipart byte-ranges
 image:
   path: /assets/img/title/file-result-type-class-diagram.svg
   alt: File Result Type Class Diagram
@@ -34,19 +34,17 @@ There are multiple reasons for this functionality to extend rich HTTP specificat
 
 As the RFC7233 document explains, the main purpose of this feature is to handle sudden failures or interruptions in data transfers. Range requests are intended to provide a convenient mechanism for resuming the transfer of the remaining or missing parts of a large resource. It is suggested to resume content delivery starting from the missing part rather than requesting the entire resource once again.
 
-Such behaviour is useful for systems implementing content delivery networks, document management systems and processing of binary large objects of custom content types on the client. The most obvious kinds of the large resourse are a static content, images or any complex server-generated binary data.
+Such behaviour is useful for systems implementing content delivery networks, document management systems and artifactories processing large binaries of custom types of content. The most obvious kinds of the large resourse are executable binaries, high-quality images or runtime-generated binary data.
 
 The approach does not quite fit for handeling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonable large in every round trip and resilience of your system is a requirement.
 
-### Client Performance Optimizations
+### Performance Optimizations
 
-Another use case suggested by the paper describes an necessity...  
+Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constrains or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design. Over passing of times it might seem like modern portable devices are not limited in resources, but it is true until you are developing a business-specific tool working in extreme conditions with restricted resources.
 
-2. Multi-part or Single-part data transfer between client and server systems. Insufficient runtime memory on the client side. Not all content is necessary at a time.
+The Range requests standard is designed with the ability to support both single-part and multi-part response body. There is a special `multipart/byteranges` media type allowing to put multiple ranges in a single response body separated by a boundary parameter. The advantage here is that the server can stream each part separately and the client can process each part one at a time as new content arrives.
 
-### Intermediet Network Limitations
-
-3. Throughtput limitations from cloud service providers on the amount of transfered data allowed.
+Within the same response and without buffering the entire file application can benefit from reduced memory consumption and lowered latency by starting to process smaller binaries early. The same effect could be achived without keeping the conneciton alive via a sequence of single-part ranges. Processing in single range parts allows to simplify client behaviour and complete partial processings asynchronously.
 
 ### Cache Features and Security Drawbacks
 
@@ -107,3 +105,7 @@ Enable Debug log level in the application logger to expose runtime events during
 ## References
 
 - [Hypertext Transfer Protocol (HTTP/1.1): Range Requests](https://datatracker.ietf.org/doc/html/rfc7233)
+- [HTTP Range Requests for partial content retrieval](https://http.dev/range-request)
+- [Introduction to HTTP Multipart](https://blog.adamchalmers.com/multipart/)
+- [Genius article, just leave it here: Static streams for faster async proxies](https://blog.adamchalmers.com/streaming-proxy/)
+- 
