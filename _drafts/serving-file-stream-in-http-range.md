@@ -44,24 +44,28 @@ Another use case suggested by the paper is inability of the client device to pro
 
 The Range requests standard is designed with the ability to support both single-part and multi-part response body. There is a special `multipart/byteranges` media type allowing to put multiple ranges in a single response body separated by a boundary parameter. The advantage here is that the server can stream each part separately and the client can process each part one at a time as new content arrives.
 
-Within the same response and without buffering the entire file application can benefit from reduced memory consumption and lowered latency by starting to process smaller binaries early. The same effect could be achived without keeping the conneciton alive via a sequence of single-part ranges. Processing in single range parts allows to simplify client behaviour and complete partial processings asynchronously.
-
-### Cache Features and Security Drawbacks
-
-Intermediate cache servers might cache partial content ranges and serve in response to other clients.
-
-Clients with poorly implemented range requests are at risk of exposing the system to the denial-of-service attacks because the effort required to request many overlapping ranges of the same data is tiny compared to the time, memory, and bandwidth consumed by attempting to serve the requested data in many parts.
-
-Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transfering a file in multiple pieces prevents security systems from to analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is imposible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
+Within the same response and without buffering the entire file application can benefit from reduced memory consumption and lowered latency by processing small binary chunks earlier. The same effect could be achived without keeping the conneciton alive via a sequence of single-part ranges. Processing in single range parts allows to simplify client behaviour and complete partial processings asynchronously.
 
 ## HTTP Range Request Overview
 
-The HTTP protocol implements headers and status codes that enable delivering large file objects over the internet in smaller pieces:
+The HTTP protocol implements headers, status codes, and content type that enable delivering large file objects over the internet in smaller pieces.
 
-- **Content-Type**: `bytes`
-- **Status Codes**: 206 Partial Content, 416 Range Not Satisfiable
+### Content Type and Range Unit
+
+First of all, client and server need to collaborate over the type and size of the transfered resource range. This is achived by abstracting it to a sequence of octets, or simply saying a continuous byte range. So that the `bytes` range unit is proposed for expressing subranges of the data's octet sequence. At the same time, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
+
+The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformally without knowing about its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom subrange type suitable for processing and transfering a data structure by the system.
+
+Once the decision over the "range unit" is done, it used to advertise support for range requests, delineate the parts of a representation that are requested, and to describe which part of a representation is being transferred.
+
+### Headers
+
 - **Headers**: Range, Content-Range, Accept-Ranges, If-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
+
+### Status Codes
+
+- **Status Codes**: 206 Partial Content, 416 Range Not Satisfiable
 
 ## Range Response Processing in FileResultHelper
 
@@ -101,6 +105,14 @@ Activated when `enableRangeProcessing` is enabled:
 ### Debugging
 
 Enable Debug log level in the application logger to expose runtime events during range processing.
+
+## Cache Features and Security Drawbacks
+
+Intermediate cache servers might cache partial content ranges and serve in response to other clients.
+
+Clients with poorly implemented range requests are at risk of exposing the system to the denial-of-service attacks because the effort required to request many overlapping ranges of the same data is tiny compared to the time, memory, and bandwidth consumed by attempting to serve the requested data in many parts.
+
+Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transfering a file in multiple pieces prevents security systems from to analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is imposible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
 
 ## References
 
