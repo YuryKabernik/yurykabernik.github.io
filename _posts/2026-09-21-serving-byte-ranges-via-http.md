@@ -29,7 +29,7 @@ Previously, in the post about the Results type system of ASP.NET Core, we’ve e
 
 ## Why range requests matter?
 
-There are multiple reasons for this functionality to extend rich HTTP specification. Among primary reasons are interrupted and pause/resume data transfers, performance optimisatoins with Multi-part or Single-part data transfer between client and server systems, and addressing throughtput limitations in network systems on the amount of data allowed to pass through. 
+There are multiple reasons for this functionality to extend rich HTTP specification. Among primary reasons are interrupted and pause/resume data transfers, performance optimisations with Multi-part or Single-part data transfer between client and server systems, and addressing throughput limitations in network systems on the amount of data allowed to pass through. 
 
 ### Interrupted Data Transfer
 
@@ -46,9 +46,9 @@ Typical scenarios leading to an interrupted transfer include:
 
 ![Typical interrupted transfer scenarios](/assets/img/posts/http-range-request/typical-interrupted-transfer-scenarios.svg)
 
-Such behaviour is useful for systems implementing content delivery networks, document management systems and artifactories processing large binaries of custom types of content. The most obvious kinds of the large resourse are executable binaries, high-quality images or runtime-generated binary data.
+Such behaviour is useful for systems implementing content delivery networks, document management systems and artifactories processing large binaries of custom types of content. The most obvious kinds of the large resource are executable binaries, high-quality images or runtime-generated binary data.
 
-The approach does not quite fit for handeling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonable large in every round trip and resilience of your system is a requirement.
+The approach does not quite fit for handling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonable large in every round trip and resilience of your system is a requirement.
 
 ### Performance Optimizations
 
@@ -75,9 +75,9 @@ The HTTP protocol implements headers, status codes, and content type that enable
 
 ### Content Type and Range Unit
 
-First of all, client and server need to collaborate over the type and size of the transfered resource range. This is achived by abstracting it to a sequence of octets, or simply saying a continuous byte range. So that the `bytes` range unit is proposed for expressing subranges of the data's octet sequence. At the same time, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
+First of all, client and server need to collaborate over the type and size of the transferred resource range. This is archived by abstracting it to a sequence of octets, or simply saying a continuous byte range. So that the `bytes` range unit is proposed for expressing sub-ranges of the data's octet sequence. At the same time, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
 
-The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformally without knowing about its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom subrange type suitable for processing and transfering a data structure by the system.
+The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformly without knowing about its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom range type suitable for processing and transferring a data structure by the system.
 
 Once the decision over the "range unit" is done, it used to advertise support for range requests, delineate the parts of a representation that are requested, and to describe which part of a representation is being transferred.
 
@@ -94,7 +94,7 @@ Once the decision over the "range unit" is done, it used to advertise support fo
 
 ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range Requests for serving large binaries in relatively small chunks.
 
-As we previously explored the result type hierarhy for serving file data, both legacy MVC Action Result and modern Results APIs share the internal file processing implementation in the static `FileResultHelper` class.
+As we previously explored the result type hierarchy for serving file data, both legacy MVC Action Result and modern Results APIs share the internal file processing implementation in the static `FileResultHelper` class.
 
 ### SetHeadersAndLog
 
@@ -135,7 +135,7 @@ Intermediate cache servers might cache partial content ranges and serve in respo
 
 Clients with poorly implemented range requests are at risk of exposing the system to the denial-of-service attacks because the effort required to request many overlapping ranges of the same data is tiny compared to the time, memory, and bandwidth consumed by attempting to serve the requested data in many parts.
 
-Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transfering a file in multiple pieces prevents security systems from to analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is imposible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
+Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transferring a file in multiple pieces prevents security systems from to analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is impossible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
 
 ## References
 
