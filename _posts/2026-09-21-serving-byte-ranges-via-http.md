@@ -1,12 +1,13 @@
 ---
 title: "How ASP.NET Core Handles Range Requests for File Results?"
 description: "Exploring how ASP.NET Core handles HTTP range requests for file results, with a practical overview of why range requests matter, protocol semantics, conditional headers, and the FileResultHelper pipeline from freshness validation and header setup to chunked responses, range processing, and debugging."
-date: 2026-07-29 00:00:01 +0200
+date: 2026-08-21 00:00:01 +0200
 categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request rfc7233 file-result-helper multipart byte-ranges
 image:
-  path: /assets/img/title/file-result-type-class-diagram.svg
+  path: /assets/img/title/http-range-request-response-pair.png
   alt: File Result Type Class Diagram
+mermaid: true
 ---
 
 <!-- 
@@ -34,6 +35,17 @@ There are multiple reasons for this functionality to extend rich HTTP specificat
 
 As the RFC7233 document explains, the main purpose of this feature is to handle sudden failures or interruptions in data transfers. Range requests are intended to provide a convenient mechanism for resuming the transfer of the remaining or missing parts of a large resource. It is suggested to resume content delivery starting from the missing part rather than requesting the entire resource once again.
 
+<!-- 
+Typical scenarios leading to an interrupted transfer include:
+
+- A mobile client switching between Wi-Fi and cellular networks mid-download, dropping the underlying TCP connection
+- A flaky or long-distance link, such as a satellite or rural broadband connection, timing out on a large file
+- A user closing a laptop lid or losing power before a download manager finishes writing to disk
+- A reverse proxy or load balancer enforcing an idle/read timeout shorter than the time needed to stream the full resource
+- A backend process restarting mid-response during a deployment or crash, cutting the connection before the last bytes are sent -->
+
+![Typical interrupted transfer scenarios](/assets/img/posts/http-range-request/typical-interrupted-transfer-scenarios.svg)
+
 Such behaviour is useful for systems implementing content delivery networks, document management systems and artifactories processing large binaries of custom types of content. The most obvious kinds of the large resourse are executable binaries, high-quality images or runtime-generated binary data.
 
 The approach does not quite fit for handeling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonable large in every round trip and resilience of your system is a requirement.
@@ -43,6 +55,17 @@ The approach does not quite fit for handeling relatively small binaries. The ove
 Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constrains or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design. Over passing of times it might seem like modern portable devices are not limited in resources, but it is true until you are developing a business-specific tool working in extreme conditions with restricted resources.
 
 The Range requests standard is designed with the ability to support both single-part and multi-part response body. There is a special `multipart/byteranges` media type allowing to put multiple ranges in a single response body separated by a boundary parameter. The advantage here is that the server can stream each part separately and the client can process each part one at a time as new content arrives.
+
+<!--
+Typical scenarios benefiting from range-based optimizations include:
+
+- A video player fetching only the next few seconds of a large video file instead of buffering it entirely
+- A PDF or e-book viewer downloading just the pages currently in view rather than the whole document
+- A software updater applying binary diffs by pulling only the changed byte ranges of an installer package
+- An image gallery requesting low-resolution previews first, then the remaining bytes for the full-resolution image on demand
+- An embedded or IoT device with tight memory constraints processing a firmware image in small chunks instead of loading it fully into RAM -->
+
+![Typical Optimization Scenarios](/assets/img/posts/http-range-request/typical-optimization-scenario.svg)
 
 Within the same response and without buffering the entire file application can benefit from reduced memory consumption and lowered latency by processing small binary chunks earlier. The same effect could be achived without keeping the conneciton alive via a sequence of single-part ranges. Processing in single range parts allows to simplify client behaviour and complete partial processings asynchronously.
 
