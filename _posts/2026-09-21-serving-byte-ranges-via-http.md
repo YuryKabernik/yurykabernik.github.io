@@ -81,11 +81,11 @@ First of all, client and server need to collaborate over the type and size of th
 
 The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformly without relying on its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom range type suitable for processing and transferring a data structure by the system.
 
-Once the decision over the "range unit" is secured, it is used to advertise support for range requests, delineate the parts of a representation that are requested, and to describe which part of a representation is being transferred.
+Once the decision over the "range unit" is secured, it is used to advertise support for range requests, delineate the parts of a resource that are requested, and to describe which part of a representation is being transferred.
 
 ### Headers
 
-The `Accept-Ranges` header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatinate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
+The `Accept-Ranges` request header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatinate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
 
 ```text
 // `byte` or a custom unit to advise a type of sub-range
@@ -96,7 +96,23 @@ Accept-Ranges: <range-unit>
 Accept-Ranges: none
 ```
 
-- **Headers**:  Accept-Ranges, Range, If-Range, Content-Range
+The `Range` request header serves to modify `GET` method semantics into transferring one or more sub-ranges rather than the entire representation. A client submits the header field with a byte ranges specifier as an inclusive `byte-offset` of the first and the last byte within full content length.
+
+```text
+// common syntax
+Range: bytes=<first-byte-pos> - <last-byte-pos>
+
+Range: bytes=0-999          // single sub-range
+Range: bytes=0-500,501-999  // two consequent ranges (valid, but not canonical)
+
+// final 500 bytes (byte offsets 500-999, inclusive)
+Range: bytes=-500 OR Range: bytes=500-
+
+// invalid range (content length 1000)
+Range: bytes=1000-1500      // start position beyond the resource length
+```
+
+- **Headers**: If-Range, Content-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
 ### Status Codes
@@ -152,7 +168,7 @@ Intermediate cache servers might cache partial content ranges and serve in respo
 
 Clients with poorly implemented range requests are at risk of exposing the system to the denial-of-service attacks because the effort required to request many overlapping ranges of the same data is tiny compared to the time, memory, and bandwidth consumed by attempting to serve the requested data in many parts.
 
-Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transferring a file in multiple pieces prevents security systems from to analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is impossible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
+Network security components like Firewalls might limit or event block partial requests. This comes from the fact that transferring a file in multiple pieces prevents security systems from analyzing the entire response contents. Until the document parts are combined on the client in a single file, it is impossible to detect a problem with the content and identify marlawe delivered alongside the file contents. 
 
 ## References
 
