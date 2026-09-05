@@ -85,7 +85,18 @@ Once the decision over the "range unit" is secured, it is used to advertise supp
 
 ### Headers
 
-- **Headers**: Range, Content-Range, Accept-Ranges, If-Range
+The `Accept-Ranges` header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatinate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
+
+```text
+// `byte` or a custom unit to advise a type of sub-range
+Accept-Ranges: byte
+Accept-Ranges: <range-unit>
+
+// `none` to advise not to attempt a range request
+Accept-Ranges: none
+```
+
+- **Headers**:  Accept-Ranges, Range, If-Range, Content-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
 ### Status Codes
