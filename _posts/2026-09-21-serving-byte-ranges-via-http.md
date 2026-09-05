@@ -52,9 +52,7 @@ The approach does not quite fit for handling relatively small binaries. The over
 
 ### Performance Optimizations
 
-Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constrains or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design. Over passing of times it might seem like modern portable devices are not limited in resources, but it is true until you are developing a business-specific tool working in extreme conditions with restricted resources.
-
-The Range requests standard is designed with the ability to support both single-part and multi-part response body. There is a special `multipart/byteranges` media type allowing to put multiple ranges in a single response body separated by a boundary parameter. The advantage here is that the server can stream each part separately and the client can process each part one at a time as new content arrives.
+Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constrains or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design.
 
 <!--
 Typical scenarios benefiting from range-based optimizations include:
@@ -67,19 +65,23 @@ Typical scenarios benefiting from range-based optimizations include:
 
 ![Typical Optimization Scenarios](/assets/img/posts/http-range-request/typical-optimization-scenario.svg)
 
+The Range requests standard is designed with the ability to support both single-part and multi-part response body. There is a special `multipart/byteranges` media type allowing to put multiple ranges in a single response body separated by a boundary parameter. The advantage here is that the server can stream each part separately and the client can process each part one at a time as new content arrives.
+
 Within the same response and without buffering the entire file application can benefit from reduced memory consumption and lowered latency by processing small binary chunks earlier. The same effect could be achived without keeping the conneciton alive via a sequence of single-part ranges. Processing in single range parts allows to simplify client behaviour and complete partial processings asynchronously.
 
-## HTTP Range Request Overview
+Over passing of times it might seem like modern portable devices are not limited in resources, but it is true until you are developing a business-specific tool working in extreme conditions with restricted resources.
 
-The HTTP protocol implements headers, status codes, and content type that enable delivering large file objects over the internet in smaller pieces.
+## HTTP Protocol Semantics
 
-### Content Type and Range Unit
+The HTTP protocol implements headers, status codes, media and content types defining HTTP level contract for range requests. It serves the purpose of delivering large binaries over the internet in relatively smaller pieces as single- and multi-part response body.
 
-First of all, client and server need to collaborate over the type and size of the transferred resource range. This is archived by abstracting it to a sequence of octets, or simply saying a continuous byte range. So that the `bytes` range unit is proposed for expressing sub-ranges of the data's octet sequence. At the same time, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
+### Range Units
 
-The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformly without knowing about its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom range type suitable for processing and transferring a data structure by the system.
+First of all, client and server need to collaborate over the type and size of the transferred data. This is archived by abstracting it to a sequence of octets, or simply saying a continuous byte range. For this purpose the `bytes` range unit is proposed for expressing sub-ranges of the data's sequence.
 
-Once the decision over the "range unit" is done, it used to advertise support for range requests, delineate the parts of a representation that are requested, and to describe which part of a representation is being transferred.
+The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformly without relying on its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom range type suitable for processing and transferring a data structure by the system.
+
+Once the decision over the "range unit" is secured, it is used to advertise support for range requests, delineate the parts of a representation that are requested, and to describe which part of a representation is being transferred.
 
 ### Headers
 
@@ -90,7 +92,11 @@ Once the decision over the "range unit" is done, it used to advertise support fo
 
 - **Status Codes**: 206 Partial Content, 416 Range Not Satisfiable
 
-## Range Response Processing in FileResultHelper
+### Content Type
+
+In single-part delivery scenario, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
+
+## FileResultHelper overview
 
 ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range Requests for serving large binaries in relatively small chunks.
 
