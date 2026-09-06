@@ -88,7 +88,7 @@ Once the decision over the "range unit" is secured, it is used to advertise supp
 The `Accept-Ranges` request header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatinate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
 
 ```text
-// `byte` or a custom unit to advise a type of sub-range
+// `byte` or a custom unit to advise a sub-range type
 Accept-Ranges: byte
 Accept-Ranges: <range-unit>
 
@@ -99,7 +99,6 @@ Accept-Ranges: none
 The `Range` request header serves to modify `GET` method semantics into transferring one or more sub-ranges rather than the entire representation. A client submits the header field with a byte ranges specifier as an inclusive `byte-offset` of the first and the last byte within full content length.
 
 ```text
-// common syntax
 Range: bytes=<first-byte-pos> - <last-byte-pos>
 
 Range: bytes=0-999          // single sub-range
@@ -115,15 +114,23 @@ Range: bytes=1000-1500      // start position beyond the resource length
 The `If-Range` request header is an optional conditional header. It serves as a precondition to apply the Range header field. The value can be either the Last-Modified validator or ETag, but not both. It indicates that the requested parts in Range are relevant for the client only if the resource has not been changed since the last session. Alternatively, server returns the entire representation when the resource has been modified.
 
 ```text
-// expected tag or date
 If-Range: <entity-tag / HTTP-date>
 
 If-Range: Wed, 02 Sep 2026 22:30:00 GMT  // Last-Modified validator
 If-Range: "87ab56"                       // ETag
 ```
 
-- **Headers**: Content-Range
-- **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
+The `Content-Range` response header indicates the range being enclosed in the response, alongside the unit type and the full size. For single-part requests, it normally describes what range is enclosed in the payload. For multi-part scenarios, it will be present in each byte-range transferred in the payload.
+
+```text
+Content-Range: <unit> <range>/<size>
+
+// When satisfied range requests
+Content-Range: bytes 501-999/1000
+
+// When cannot satisfy, '*' value indicates not a range
+Content-Range: bytes */1000
+```
 
 ### Status Codes
 
