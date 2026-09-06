@@ -112,7 +112,17 @@ Range: bytes=-500 OR Range: bytes=500-
 Range: bytes=1000-1500      // start position beyond the resource length
 ```
 
-- **Headers**: If-Range, Content-Range
+The `If-Range` request header is an optional conditional header. It serves as a precondition to apply the Range header field. The value can be either the Last-Modified validator or ETag, but not both. It indicates that the requested parts in Range are relevant for the client only if the resource has not been changed since the last session. Alternatively, server returns the entire representation when the resource has been modified.
+
+```text
+// expected tag or date
+If-Range: <entity-tag / HTTP-date>
+
+If-Range: Wed, 02 Sep 2026 22:30:00 GMT  // Last-Modified validator
+If-Range: "87ab56"                       // ETag
+```
+
+- **Headers**: Content-Range
 - **Conditional Headers**: If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since
 
 ### Status Codes
