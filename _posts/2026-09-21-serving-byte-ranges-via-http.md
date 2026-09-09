@@ -101,14 +101,16 @@ The `Range` request header serves to modify `GET` method semantics into transfer
 ```text
 Range: bytes=<first-byte-pos> - <last-byte-pos>
 
-Range: bytes=0-999          // single sub-range
-Range: bytes=0-500,501-999  // two consequent ranges (valid, but not canonical)
+Range: bytes=0-500          // first single sub-range
+Range: bytes=501-999        // next single sub-range
 
-// final 500 bytes (byte offsets 500-999, inclusive)
+Range: bytes=0-500,501-999  // multiple consequent ranges (valid, but not canonical)
+
+// shortcut: final 500 bytes (byte offsets 500-999, inclusive)
 Range: bytes=-500 OR Range: bytes=500-
 
-// invalid range (content length 1000)
-Range: bytes=1000-1500      // start position beyond the resource length
+// invalid range (file content length - 1000)
+Range: bytes=1000-1500      // start position beyond the full length
 ```
 
 The `If-Range` request header is an optional conditional header. It serves as a precondition to apply the Range header field. The value can be either the Last-Modified validator or ETag, but not both. It indicates that the requested parts in Range are relevant for the client only if the resource has not been changed since the last session. Alternatively, server returns the entire representation when the resource has been modified.
@@ -126,15 +128,42 @@ The `Content-Range` response header indicates the range being enclosed in the re
 Content-Range: <unit> <range>/<size>
 
 // When satisfied range requests
-Content-Range: bytes 501-999/1000
+Content-Range: bytes 0-500/1000          // first sub-range
+Content-Range: bytes 501-999/1000        // next sub-range
 
 // When cannot satisfy, '*' value indicates not a range
 Content-Range: bytes */1000
+
+// When the complete length is unknown
+Content-Range: bytes 501-999/*
 ```
 
 ### Status Codes
 
-- **Status Codes**: 206 Partial Content, 416 Range Not Satisfiable
+The `206` (Partial Content) status code indicates successful completion of the range request. The response contains one or more parts of the requested resource. Corresponds to the satisfied ranges collected from request header fiels described earlier. HTTP headers provide metadata describing `Content-Length`, `Content-Type` and `Content-Range` of the result data contained in the response payload.
+
+```text
+HTTP/1.1 206 Partial Content
+
+Date: Wed, 02 Sep 2026 22:30:00 GMT
+Last-Modified: Wed, 02 Sep 2026 22:30:00 GMT
+Content-Range: bytes 501-999/1000
+Content-Length: 499
+Content-Type: image/jpeg
+
+... 499 bytes of partial image data ...
+```
+
+The `416` (Range Not Satisfiable) status code indicates the request rejection due to invalid or an excessive request ranges. In response, server should add a `Content-Range` header specifying the full content length of the target representation.
+
+```text
+HTTP/1.1 416 Range Not Satisfiable
+
+Date: Wed, 02 Sep 2026 22:30:00 GMT
+Content-Range: bytes */1000              // indicates the current length of the resource 
+```
+
+Values from the `Range` header are considered invalid when the first byte greater than the full length or range boundaries do not meet `Range` header patterns. Since the client can request streaming several ranges at once, multiple small or overlapping ranges could be considered as a DDOS attack and rejected by the server.
 
 ### Content Type
 
