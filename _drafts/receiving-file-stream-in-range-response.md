@@ -12,7 +12,7 @@ image:
 Previously in the posts we’ve explored...
 
 
-
+HOW TO COMBINE RANGE RESPONSES ON THE CLIENT? https://datatracker.ietf.org/doc/html/rfc7233#section-4.3
 
 
 The backend article showed how ASP.NET Core prepares partial file responses. This third part moves to the browser side and focuses on what the frontend does with those responses. The important shift is simple: the server can speak HTTP Range, but the client still has to ask for a specific byte window, validate the response, and decide how to assemble or display the received data.

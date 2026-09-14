@@ -87,7 +87,7 @@ Once the decision over the "range unit" is secured, it is used to advertise supp
 
 The `Accept-Ranges` request header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatenate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
 
-```text
+```http
 // `byte` or a custom unit to advise a sub-range type
 Accept-Ranges: byte
 Accept-Ranges: <range-unit>
@@ -98,7 +98,7 @@ Accept-Ranges: none
 
 The `Range` request header serves to modify `GET` method semantics into transferring one or more sub-ranges rather than the entire representation. A client submits the header field with a byte ranges specifier as an inclusive `byte-offset` of the first and the last byte within full content length.
 
-```text
+```http
 Range: bytes=<first-byte-pos> - <last-byte-pos>
 
 Range: bytes=0-500          // first single sub-range
@@ -142,9 +142,8 @@ Content-Range: bytes 501-999/*
 
 The `206` (Partial Content) status code indicates successful completion of the range request. The response contains one or more parts of the requested resource. Corresponds to the satisfied ranges collected from request header fiels described earlier. HTTP headers provide metadata describing `Content-Length`, `Content-Type` and `Content-Range` of the result data contained in the response payload.
 
-```text
+```http
 HTTP/1.1 206 Partial Content
-
 Date: Wed, 02 Sep 2026 22:30:00 GMT
 Last-Modified: Wed, 02 Sep 2026 22:30:00 GMT
 Content-Range: bytes 501-999/1000
@@ -156,9 +155,8 @@ Content-Type: image/jpeg
 
 The `416` (Range Not Satisfiable) status code indicates the request rejection due to invalid or an excessive request ranges. In response, server should add a `Content-Range` header specifying the full content length of the target representation.
 
-```text
+```http
 HTTP/1.1 416 Range Not Satisfiable
-
 Date: Wed, 02 Sep 2026 22:30:00 GMT
 Content-Range: bytes */1000              // indicates the current length of the resource 
 ```
@@ -167,7 +165,42 @@ Values from the `Range` header are considered invalid when the first byte greate
 
 ### Content Type
 
-In single-part delivery scenario, the content type of the resource is expressed in the media type provided in the `Content-Type` header. 
+The range unit itself does not tell the client what type of content is transferred. As mentioned previously, the unit type is intended to abstract chunking from the actual content type of the resource. To recreate the binary object, the client needs to know the representation's actual type.
+
+In a single-part range delivery, the resource type is expressed by the media type value provided in the `Content-Type` header field. This allows the client to use the proper strategy to combine the received binary streams into the resource over multiple round trips.
+
+```http
+HTTP/1.1 206 Partial Content
+Date: Wed, 02 Sep 2026 22:30:00 GMT
+Last-Modified: Wed, 02 Sep 2026 22:30:00 GMT
+Content-Range: bytes 501-999/1000
+Content-Length: 499                      // the length of the response body
+Content-Type: image/jpeg                 // the representation's content type
+
+... 499 bytes of partial image data ...
+```
+
+When a multipart range delivery takes place, a special `multipart/byteranges` media type is used in the `Content-Type` header field, along with the required boundary parameter. Thus, the `multipart/*` response type contract is leveraged to transfer several parts at once, reducing the number of round trips and clearly separating the range boundaries.
+
+```http
+HTTP/1.1 206 Partial Content
+Date: Wed, 02 Sep 2026 22:30:00 GMT
+Last-Modified: Wed, 15 Nov 1995 04:58:08 GMT
+Content-Length: 700
+Content-Type: multipart/byteranges; boundary=ANY_UNIQUE_STRING_SEPARATOR
+
+--ANY_UNIQUE_STRING_SEPARATOR
+Content-Type: image/jpeg                 // the content type is the same
+Content-Range: bytes 200-499/1000        // the range is different
+
+...the first range...
+--ANY_UNIQUE_STRING_SEPARATOR
+Content-Type: image/jpeg                 // the content type is the same
+Content-Range: bytes 500-799/1000        // the range is different
+
+...the second range...
+--ANY_UNIQUE_STRING_SEPARATOR--
+```
 
 ## FileResultHelper overview
 
