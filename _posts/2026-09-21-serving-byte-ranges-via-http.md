@@ -204,9 +204,7 @@ Content-Range: bytes 500-799/1000        // the range is different
 
 ## FileResultHelper overview
 
-ASP.NET Core has evolved over years to become a mature platform for building web applications. File sharing and serving binaries from the backend are among the features implemented by the platform. Following HTTP protocol standards, ASP.NET Core supports HTTP Range Requests for serving large binaries in relatively small chunks.
-
-As we previously explored the result type hierarchy for serving file data, both legacy MVC Action Result and modern Results APIs share the internal file processing implementation in the static `FileResultHelper` class.
+Following HTTP protocol standards, ASP.NET Core supports HTTP Range Requests for serving large binaries in relatively small chunks. As we previously explored the result type hierarchy for serving file data, both legacy MVC Action Results and modern Results APIs share the internal file processing implementation in the static `FileResultHelper` class.
 
 ### SetHeadersAndLog
 
