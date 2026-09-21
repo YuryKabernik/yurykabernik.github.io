@@ -87,7 +87,7 @@ Once the decision over the "range unit" is secured, it is used to advertise supp
 
 The `Accept-Ranges` request header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatenate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
 
-```http
+```text
 // `byte` or a custom unit to advise a sub-range type
 Accept-Ranges: byte
 Accept-Ranges: <range-unit>
@@ -98,7 +98,7 @@ Accept-Ranges: none
 
 The `Range` request header serves to modify `GET` method semantics into transferring one or more sub-ranges rather than the entire representation. A client submits the header field with a byte ranges specifier as an inclusive `byte-offset` of the first and the last byte within full content length.
 
-```http
+```text
 Range: bytes=<first-byte-pos> - <last-byte-pos>
 
 Range: bytes=0-500          // first single sub-range
@@ -204,7 +204,7 @@ Content-Range: bytes 500-799/1000        // the range is different
 
 ## FileResultHelper overview
 
-Following HTTP protocol standards, ASP.NET Core supports HTTP Range Requests for serving large binaries in relatively small chunks. As we previously explored the result type hierarchy for serving file data, both legacy MVC Action Results and modern Results APIs share the internal file processing implementation in the static `FileResultHelper` class.
+Following HTTP protocol rules and semantics, ASP.NET Core implements support for HTTP range requests in the static `FileResultHelper` class. Both legacy MVC action results and modern Result Type models share this internal file-processing implementation.
 
 ### SetHeadersAndLog
 
@@ -214,7 +214,7 @@ The primary orchestration method that manages headers and response content accor
 (RangeItemHeaderValue? range, long rangeLength, bool serveBody)
 ```
 
-**Note**: An empty `range` value means the binary is processed as a single entity without chunking.
+> **Note**: An empty `range` value means the binary is processed as a single entity without chunking.
 
 ### Freshness Validation
 
@@ -234,6 +234,64 @@ Activated when `enableRangeProcessing` is enabled:
 2. **SetAcceptRangeHeader**: Sets `Accept-Ranges: bytes` 
 3. **Condition Check**: If preconditions pass and IfRange is valid, range processing proceeds
 4. **SetRangeHeaders + SetContentLength**: Main range handler, sets appropriate headers and response status (206 or 416) per RFC specifications
+
+### WriteFileAsync for File Streams and Memory Regions
+
+There are two methods responsible for writing the result bytes to the response body’s output stream: one accepts a `Stream`, and the other processes an immutable `ReadOnlyMemory<byte>` value.
+
+The first implementation operates on the `Stream fileStream` object. It uses the asynchronous `StreamCopyOperation.CopyToAsync(...)` method to buffer and copy the file contents. The copy parameters vary depending on whether `RangeItemHeaderValue? range` is present and on the value of the `long rangeLength` argument.
+
+If the range header value is present, the current stream’s position is set to the starting byte offset specified by the `range` item, and `rangeLength` bytes are read. Thus, the copied portion runs from `range.From` through `range.From + rangeLength - 1`. Otherwise, the entire file stream is written to the output, starting with the first byte.
+
+```csharp
+// Stream overload — seeks and copies only rangeLength bytes when a range is set
+internal static async Task WriteFileAsync(HttpContext context, Stream fileStream, RangeItemHeaderValue? range, long rangeLength)
+{
+    var outputStream = context.Response.Body;
+    using (fileStream)
+    {
+        if (range == null)
+        {
+            await StreamCopyOperation.CopyToAsync(fileStream, outputStream, count: null, bufferSize: 64 * 1024, cancel: context.RequestAborted);
+        }
+        else
+        {
+            fileStream.Seek(range.From!.Value, SeekOrigin.Begin);
+            await StreamCopyOperation.CopyToAsync(fileStream, outputStream, rangeLength, BufferSize, context.RequestAborted);
+        }
+    }
+}
+```
+
+The second implementation operates on the `ReadOnlyMemory<byte> buffer` value. It writes directly to the output stream asynchronously without intermediate buffers.
+
+When `RangeItemHeaderValue? range` is present, the method slices the memory region starting at `range.From` for a length of `rangeLength`. Otherwise, it writes the entire buffer to the output stream.
+
+```csharp
+// Memory overload — slices the buffer directly instead of seeking a stream
+internal static async Task WriteFileAsync(HttpContext context, ReadOnlyMemory<byte> buffer, RangeItemHeaderValue? range, long rangeLength)
+{
+    var outputStream = context.Response.Body;
+    if (range is null)
+    {
+      await outputStream.WriteAsync(buffer, context.RequestAborted);
+    }
+    else
+    {
+      var from = 0;
+      var length = 0;
+
+      checked
+      {
+          // Overflow should throw
+          from = (int)range.From!.Value;
+          length = (int)rangeLength;
+      }
+
+      await outputStream.WriteAsync(buffer.Slice(from, length), context.RequestAborted);
+    } 
+}
+```
 
 ### Debugging
 

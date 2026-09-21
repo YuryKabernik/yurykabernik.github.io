@@ -79,7 +79,7 @@ Because each result serves content from a different source type, one more type-s
 | `FileContents` | `ReadOnlyMemory<byte>` | Serves a binary array or memory region to be sent back as the response. | `FileContentHttpResult`                           |
 | `FileName`     | `string`               | Serves a file from the file path to be sent back as the response.       | `PhysicalFileHttpResult`, `VirtualFileHttpResult` |
 
-What is common among MVC and Minimal API file result types is that they share FileResultHelper for the low-level file and HTTP range-processing logic. In Minimal APIs, that logic is reached through helper methods such as HttpResultsHelper.WriteResultAsFileCore, but the core header and range handling still comes from the same shared implementation.
+What is common among MVC and Minimal API file result types is that they share `FileResultHelper` for the low-level HTTP range-processing logic. In Minimal APIs, that logic is reached through helper methods such as HttpResultsHelper.WriteResultAsFileCore, but the core header and range handling still comes from the same shared implementation.
 
 ## Conclusion
 
