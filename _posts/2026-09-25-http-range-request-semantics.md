@@ -1,7 +1,7 @@
 ---
 title: "HTTP Range Requests: Why They Matter and How They Work"
-description: "A practical introduction to HTTP range requests, including interrupted transfers, range units, request and response headers, status codes, and multipart byte ranges."
-date: 2026-08-14 00:00:01 +0200
+description: "An introduction to HTTP range request semantics: why range requests matter for resuming downloads from interrupted transfers. Basic range units, primary request and response headers, status codes, and multipart byte ranges."
+date: 2026-09-25 00:00:01 +0200
 categories: .NET
 tags: http http-range range-request rfc7233 multipart byte-ranges file-serving aspnet-core
 image:
@@ -11,7 +11,7 @@ image:
 
 Previously, in the post about the [Results type system of ASP.NET Core]({% post_url 2026-07-29-file-result-type-system %}), we’ve explored the abstract layer and the type system of the file data processing. This part explains why range requests are useful and how the HTTP protocol describes them. 
 
-<!-- The follow-up post, [How ASP.NET Core Handles Range Requests for File Results](./2026-10-25-serving-byte-ranges-via-http.md), connects these rules to the framework implementation. -->
+<!-- The follow-up post, [How ASP.NET Core Handles Range Requests for File Results](./2026-10-21-serving-byte-ranges-via-http.md), connects these rules to the framework implementation. -->
 
 ## Why range requests matter?
 
@@ -34,11 +34,11 @@ Typical scenarios leading to an interrupted transfer include:
 
 Such behaviour is useful for systems implementing content delivery networks, document management systems and artifactories processing large binaries of custom types of content. The most obvious kinds of the large resource are executable binaries, high-quality images or runtime-generated binary data.
 
-The approach does not quite fit for handling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonable large in every round trip and resilience of your system is a requirement.
+The approach does not quite fit for handling relatively small binaries. The overhead of implementing the protocol on both client and server might overcomplicate a simple resend of the full content on failure. Consider implementing it when the amount of data is reasonably large in every round trip and resilience of your system is a requirement.
 
 ### Performance Optimizations
 
-Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constrains or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design.
+Another use case suggested by the paper is inability of the client device to process excessive data all at once. Memory reduction, CPU constraints or low-latency requirements are examples of triggers pushing to adapt range requests into the solution design.
 
 <!--
 Typical scenarios benefiting from range-based optimizations include:
@@ -63,7 +63,7 @@ The HTTP protocol implements headers, status codes, media and content types defi
 
 ### Range Units
 
-First of all, client and server need to collaborate over the type and size of the transferred data. This is archived by abstracting it to a sequence of octets, or simply saying a continuous byte range. For this purpose the `bytes` range unit is proposed for expressing sub-ranges of the data's sequence.
+First of all, client and server need to collaborate over the type and size of the transferred data. This is achieved by abstracting it to a sequence of octets, or simply saying a continuous byte range. For this purpose the `bytes` range unit is proposed for expressing sub-ranges of the data's sequence.
 
 The `bytes` range unit is selected to abstract data at transit from the actual media type of the resource at rest. Such abstraction allows to transfer and negotiate about any range uniformly without relying on its internal structure. Anyway, RFC7233 does not limit users to the suggested unit type. The resource could be partitioned into any custom range type suitable for processing and transferring a data structure by the system.
 
@@ -71,11 +71,11 @@ Once the decision over the "range unit" is secured, it is used to advertise supp
 
 ### Headers
 
-The `Accept-Ranges` request header allows an origin server to indicate two things: acceptability of range requests and the unit type of the sub-range for the target resource. It helps the client to understand whether data chunking is worth to request and how to concatenate the resource from sub-ranges. While the engineering community suggests sending `HEAD` request to read `Accept-Ranges` contents, RFC7233 assumes that client may start generating requests beforehand receiving this header field.
+The `Accept-Ranges` response header allows an origin server to indicate whether it accepts range requests and which unit type it supports for sub-ranges. It helps the client to understand whether data chunking is worth requesting and how to concatenate the resource from sub-ranges. While the engineering community suggests sending a `HEAD` request to read `Accept-Ranges`, RFC7233 allows a client to start generating requests before receiving this header field.
 
 ```text
-// `byte` or a custom unit to advise a sub-range type
-Accept-Ranges: byte
+// `bytes` or a custom unit to advise a sub-range type
+Accept-Ranges: bytes
 Accept-Ranges: <range-unit>
 
 // `none` to advise not to attempt a range request
@@ -92,8 +92,9 @@ Range: bytes=501-999        // next single sub-range
 
 Range: bytes=0-500,501-999  // multiple consequent ranges (valid, but not canonical)
 
-// shortcut: final 500 bytes (byte offsets 500-999, inclusive)
-Range: bytes=-500 OR Range: bytes=500-
+// shortcut: final 300 bytes (byte offsets 600-999, inclusive)
+Range: bytes=-300
+Range: bytes=600-
 
 // invalid range (file content length - 1000)
 Range: bytes=1000-1500      // start position beyond the full length
@@ -126,7 +127,7 @@ Content-Range: bytes 501-999/*
 
 ### Status Codes
 
-The `206` (Partial Content) status code indicates successful completion of the range request. The response contains one or more parts of the requested resource. Corresponds to the satisfied ranges collected from request header fiels described earlier. HTTP headers provide metadata describing `Content-Length`, `Content-Type` and `Content-Range` of the result data contained in the response payload.
+The `206` (Partial Content) status code indicates successful completion of the range request. The response contains one or more parts of the requested resource. It corresponds to the satisfiable ranges collected from the request header fields described earlier. HTTP headers provide metadata describing `Content-Length`, `Content-Type` and `Content-Range` of the result data contained in the response payload.
 
 ```http
 HTTP/1.1 206 Partial Content
@@ -139,7 +140,7 @@ Content-Type: image/jpeg
 ... 499 bytes of partial image data ...
 ```
 
-The `416` (Range Not Satisfiable) status code indicates the request rejection due to invalid or an excessive request ranges. In response, server should add a `Content-Range` header specifying the full content length of the target representation.
+The `416` (Range Not Satisfiable) status code indicates that none of the syntactically valid requested ranges are satisfiable. In response, the server should add a `Content-Range` header specifying the full content length of the target representation. A syntactically invalid `Range` header is generally ignored, allowing the server to return the complete representation instead.
 
 ```http
 HTTP/1.1 416 Range Not Satisfiable
@@ -147,7 +148,7 @@ Date: Wed, 02 Sep 2026 22:30:00 GMT
 Content-Range: bytes */1000              // indicates the current length of the resource 
 ```
 
-Values from the `Range` header are considered invalid when the first byte greater than the full length or range boundaries do not meet `Range` header patterns. Since the client can request streaming several ranges at once, multiple small or overlapping ranges could be considered as a DDOS attack and rejected by the server.
+Values from the `Range` header are considered unsatisfiable when the first byte is equal to or greater than the full length, or when range boundaries do not meet `Range` header patterns. Since a client can request several ranges at once, multiple small or overlapping ranges could be considered a DDoS attack and rejected by the server.
 
 ### Content Type
 
@@ -194,7 +195,7 @@ At this point, we have covered the main parts of the HTTP range-request contract
 
 This knowledge is needed to understand the rules ASP.NET Core follows to turn a range request into a partial response. In the next post, I am going to show the embodiment of this semantics inside `FileResultHelper`. We will break down primary static methods validating the request conditions and preparing response headers for selecting and writing the requested bytes.
 
-<!-- [How ASP.NET Core Handles Range Requests for File Results](./2026-09-21-serving-byte-ranges-via-http.md). -->
+<!-- [How ASP.NET Core Handles Range Requests for File Results](./2026-10-21-serving-byte-ranges-via-http.md). -->
 
 ## References
 

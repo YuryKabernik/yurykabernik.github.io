@@ -6,7 +6,7 @@ categories: .NET
 tags: dotnet aspnet-core file-result result-types file-serving http http-range range-request rfc7233 file-result-helper multipart byte-ranges
 image:
   path: /assets/img/title/http-range-request-response-pair.png
-  alt: File Result Type Class Diagram
+  alt: HTTP range request and response pair
 ---
 
 Following the protocol concepts from [HTTP Range Requests: Why They Matter and How They Work]({% post_url 2026-09-25-http-range-request-semantics %}), this second part explores how ASP.NET Core implements range processing for file results. We will follow the `FileResultHelper` pipeline from conditional request validation and response headers to range selection and response-body streaming.
@@ -27,7 +27,8 @@ internal static (RangeItemHeaderValue? range, long rangeLength, bool serveBody)
     long? fileLength,
     bool enableRangeProcessing,
     DateTimeOffset? lastModified,
-    EntityTagHeaderValue? etag)
+    EntityTagHeaderValue? etag,
+    ILogger logger)
 ```
 
 Among the input arguments, `HttpContext`, `FileResultInfo`, and `bool enableRangeProcessing` play essential roles. They provide the original request data, the target file result, and the flag that controls the range-processing branch of the workflow. The method takes all required inputs for evaluating the request and preparing the response.
