@@ -83,7 +83,7 @@ What is common among MVC and Minimal API file result types is that they share `F
 
 ## Conclusion
 
-ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without requiring us to build the response logic from scratch. In the next parts of this series, I am going to elaborate on the range-request processing inside these helpers and showcase an example of how partial content can be handled on the frontend in practice.
+ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without requiring us to build the response logic from scratch. The next post, [HTTP Range Requests: Why They Matter and How They Work]({% post_url 2026-09-25-http-range-request-semantics %}), explains the HTTP range semantics, headers, and status codes that enable interrupted downloads to resume and large files to be delivered in partial responses.
 
 ## Additional links
 

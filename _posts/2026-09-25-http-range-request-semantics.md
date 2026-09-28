@@ -199,6 +199,6 @@ This knowledge is needed to understand the rules ASP.NET Core follows to turn a 
 
 ## References
 
-- [Hypertext Transfer Protocol (HTTP/1.1): Range Requests](https://datatracker.ietf.org/doc/html/rfc7233)
-- [HTTP Range Requests for partial content retrieval](https://http.dev/range-request)
-- [Introduction to HTTP Multipart](https://blog.adamchalmers.com/multipart/)
+- [Hypertext Transfer Protocol (HTTP/1.1): Range Requests](https://datatracker.ietf.org/doc/html/rfc7233): Definition of the HTTP range-request protocol, including range units, request and response headers, status codes, and multipart responses.
+- [HTTP Range Requests for partial content retrieval](https://http.dev/range-request): Provides a practical overview of requesting and serving only selected portions of a resource.
+- [Introduction to HTTP Multipart](https://blog.adamchalmers.com/multipart/): Explains multipart message structure and boundaries for responses containing multiple byte ranges.
