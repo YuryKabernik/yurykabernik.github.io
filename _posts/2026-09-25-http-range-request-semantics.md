@@ -92,9 +92,9 @@ Range: bytes=501-999        // next single sub-range
 
 Range: bytes=0-500,501-999  // multiple consequent ranges (valid, but not canonical)
 
-// shortcut: final 300 bytes (byte offsets 600-999, inclusive)
+// shortcut: final 300 bytes (byte offsets 700-999, inclusive)
 Range: bytes=-300
-Range: bytes=600-
+Range: bytes=700-
 
 // invalid range (file content length - 1000)
 Range: bytes=1000-1500      // start position beyond the full length
