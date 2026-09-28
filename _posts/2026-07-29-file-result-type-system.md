@@ -79,11 +79,11 @@ Because each result serves content from a different source type, one more type-s
 | `FileContents` | `ReadOnlyMemory<byte>` | Serves a binary array or memory region to be sent back as the response. | `FileContentHttpResult`                           |
 | `FileName`     | `string`               | Serves a file from the file path to be sent back as the response.       | `PhysicalFileHttpResult`, `VirtualFileHttpResult` |
 
-What is common among MVC and Minimal API file result types is that they share FileResultHelper for the low-level file and HTTP range-processing logic. In Minimal APIs, that logic is reached through helper methods such as HttpResultsHelper.WriteResultAsFileCore, but the core header and range handling still comes from the same shared implementation.
+What is common among MVC and Minimal API file result types is that they share `FileResultHelper` for the low-level HTTP range-processing logic. In Minimal APIs, that logic is reached through helper methods such as HttpResultsHelper.WriteResultAsFileCore, but the core header and range handling still comes from the same shared implementation.
 
 ## Conclusion
 
-ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without requiring us to build the response logic from scratch. In the next parts of this series, I am going to elaborate on the range-request processing inside these helpers and showcase an example of how partial content can be handled on the frontend in practice.
+ASP.NET Core gives us a broad set of result types that cover the common file-serving scenarios without requiring us to build the response logic from scratch. The next post, [HTTP Range Requests: Why They Matter and How They Work]({% post_url 2026-09-25-http-range-request-semantics %}), explains the HTTP range semantics, headers, and status codes that enable interrupted downloads to resume and large files to be delivered in partial responses.
 
 ## Additional links
 
