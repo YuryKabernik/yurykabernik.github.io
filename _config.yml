@@ -3,6 +3,9 @@
 # Import the theme
 theme: jekyll-theme-chirpy
 
+plugins:
+  - jemoji
+
 # The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
 # If it has the same name as one of the files in folder `_data/locales`, the layout language will also be changed,
 # otherwise, the layout language will use the default value of 'en'.
@@ -177,6 +180,9 @@ collections:
   tabs:
     output: true
     sort_by: order
+  weeklies:
+    output: true
+    sort_by: date
 
 defaults:
   - scope:
@@ -199,6 +205,14 @@ defaults:
     values:
       layout: page
       permalink: /:title/
+  - scope:
+      path: ""
+      type: weeklies
+    values:
+      layout: post
+      comments: false # Enable comments in weekly pages.
+      toc: true # Display TOC column in posts.
+      permalink: /weeklies/:path/
 
 sass:
   style: compressed
