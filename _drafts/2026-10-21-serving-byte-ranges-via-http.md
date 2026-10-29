@@ -1,5 +1,5 @@
 ---
-title: "How ASP.NET Core Handles Range Requests for File Results"
+title: "Internal implementation of File Result"
 description: "A source-level tour of ASP.NET Core's FileResultHelper pipeline, covering freshness validation, conditional headers, range processing, response status codes, and streaming file from memory regions."
 date: 2026-10-21 00:00:01 +0200
 categories: .NET

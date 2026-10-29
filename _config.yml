@@ -177,6 +177,9 @@ collections:
   tabs:
     output: true
     sort_by: order
+  weeklies:
+    output: true
+    sort_by: date
 
 defaults:
   - scope:
@@ -199,6 +202,14 @@ defaults:
     values:
       layout: page
       permalink: /:title/
+  - scope:
+      path: ""
+      type: weeklies
+    values:
+      layout: post
+      comments: false # Enable comments in weekly pages.
+      toc: true # Display TOC column in posts.
+      permalink: /weeklies/:path/
 
 sass:
   style: compressed
