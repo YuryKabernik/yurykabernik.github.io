@@ -28,9 +28,9 @@ Since HTTP supports many kinds of resource representations, ASP.NET Core provide
 - **SignalR** - a library for building real-time web applications over WebSockets, Server-Sent Events, and long polling
 - **gRPC** - a high-performance binary RPC framework built around a contract-first API model
 
-ASP.NET Core provides many public tools and internal mechanisms to help developers build complex business services.
+In addition, ASP.NET Core provides many more public types and implements internal mechanisms that help developers build complex business services.
 
-I’d like to discuss many of them in a series of posts, exploring how they relate to HTTP specifications. So join me as we explore the possibilities of ASP.NET Core through the lens of HTTP semantics.
+I’d like to demonstrate more of the framework tools in a series of posts. So, join me as we explore the possibilities of ASP.NET Core through the lens of HTTP semantics.
 
 What is your favorite ASP.NET Core framework? Why?
 
