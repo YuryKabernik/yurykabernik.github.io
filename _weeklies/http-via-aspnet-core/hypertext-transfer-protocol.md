@@ -1,6 +1,8 @@
 ---
 title: "HTTP via ASP.NET Core: Hypertext Transfer Protocol"
 description: "A basic explanation of HTTP and an overview of the ASP.NET Core tools and frameworks for building applications on top of it."
+tags: dotnet http aspnet-core webapi mvc minimal-api
+date: 2026-11-01 00:00:01 +0200
 ---
 
 The Hypertext Transfer Protocol (HTTP) is a stateless, application-level request/response protocol. It uses extensible semantics and self-descriptive messages to support flexible interaction across web applications.
@@ -29,8 +31,6 @@ Since HTTP supports many kinds of resource representations, ASP.NET Core provide
 - **gRPC** - a high-performance binary RPC framework built around a contract-first API model
 
 In addition, ASP.NET Core provides many more public types and implements internal mechanisms that help developers build complex business services.
-
-I’d like to demonstrate more of the framework tools in a series of posts. So, join me as we explore the possibilities of ASP.NET Core through the lens of HTTP semantics.
 
 What is your favorite ASP.NET Core framework? Why?
 
