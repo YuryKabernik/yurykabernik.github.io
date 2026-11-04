@@ -15,6 +15,9 @@ bundle install
 bundle exec jekyll serve
 ```
 
+The local build also publishes Markdown siblings for posts, tabs, and weeklies,
+plus `llms.txt` and `llms-full.txt` indexes for agent access.
+
 ## Check the Site
 
 ```bash

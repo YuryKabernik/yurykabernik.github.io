@@ -4,6 +4,10 @@ source "https://rubygems.org"
 
 gem "jekyll-theme-chirpy", "~> 7.6"
 
+group :jekyll_plugins do
+  gem "jekyll-agent-markdown", "~> 0.4"
+end
+
 gem "html-proofer", "~> 5.0", group: :test
 
 platforms :windows, :jruby do

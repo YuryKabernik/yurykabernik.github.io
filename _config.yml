@@ -21,6 +21,9 @@ tagline: Software Engineer, Engineering Enthusiast # It will display as the subt
 description: >- # used by seo meta and the atom feed
   Personal website and blog by Yury Kabernik-Berazouski with notes on software engineering, .NET, frontend, cloud, and system design.
 
+author:
+  name: Yury Kabernik-Berazouski
+
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://yurykabernik.tech"
@@ -158,6 +161,20 @@ paginate: 10
 
 # The base URL of your site
 baseurl: ""
+
+agent_markdown:
+  posts: true
+  pages: false
+  collections:
+    - tabs
+    - weeklies
+  llms_txt: true
+  llms_full_txt: false
+  include_descriptions: true
+  include_document_header: true
+  include_author: true
+  include_dates: true
+  sort: desc
 
 # ------------ The following options are not recommended to be modified ------------------
 
