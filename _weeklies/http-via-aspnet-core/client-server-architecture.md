@@ -1,6 +1,9 @@
 ---
 title: "HTTP via ASP.NET Core: Client-Server Architecture"
 description: "An overview of HTTP client-server architecture and the .NET components used to send, receive, and process HTTP messages."
+categories:
+  - Weeklies
+  - HTTP via ASP.NET Core
 tags: dotnet http aspnet-core http-client delegating-handler kestrel iis http-sys
 date: 2026-11-02 00:00:01 +0200
 ---

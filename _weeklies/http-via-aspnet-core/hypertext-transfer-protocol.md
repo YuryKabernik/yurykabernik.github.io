@@ -1,6 +1,9 @@
 ---
 title: "HTTP via ASP.NET Core: Hypertext Transfer Protocol"
 description: "A basic explanation of HTTP and an overview of the ASP.NET Core tools and frameworks for building applications on top of it."
+categories:
+  - Weeklies
+  - HTTP via ASP.NET Core
 tags: dotnet http aspnet-core webapi mvc minimal-api
 date: 2026-11-01 00:00:01 +0200
 ---

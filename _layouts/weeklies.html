@@ -1,0 +1,13 @@
+---
+layout: page
+---
+
+{% assign weeklies = site.weeklies | sort: "date" | reverse %}
+
+<ul>
+{% for weekly in weeklies %}
+  <li>
+    <a href="{{ weekly.url | relative_url }}">{{ weekly.title }}</a>{% if weekly.description %} — {{ weekly.description }}{% endif %}
+  </li>
+{% endfor %}
+</ul>

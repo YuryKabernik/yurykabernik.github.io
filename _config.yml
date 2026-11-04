@@ -206,9 +206,9 @@ defaults:
       path: ""
       type: weeklies
     values:
-      layout: post
-      comments: false # Enable comments in weekly pages.
-      toc: true # Display TOC column in posts.
+      layout: weekly
+      comments: false
+      toc: false
       permalink: /weeklies/:path/
 
 sass:
