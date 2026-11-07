@@ -1,10 +1,11 @@
 ---
+layout: weekly
 title: "HTTP via ASP.NET Core: Client-Server Architecture"
 description: "An overview of HTTP client-server architecture and the .NET components used to send, receive, and process HTTP messages."
 categories:
   - Weeklies
   - HTTP via ASP.NET Core
-tags: dotnet http aspnet-core http-client delegating-handler kestrel iis http-sys
+tags: dotnet http aspnet-core http-client delegating-handler kestrel iis http-sys rfc7230 rfc7231
 date: 2026-11-02 00:00:01 +0200
 ---
 
@@ -19,10 +20,10 @@ In .NET, the client-side functionality is provided by `HttpClient`, which abstra
 
 The main components include:
 
-- **HttpClient** — a high-level API that abstracts .NET applications from the transport-level processing of HTTP messages while allowing to customize connections and message handlers
-- **HttpMessageHandler** — a base type that defines the contract for HTTP message handlers
-- **DelegatingHandler** — a base type for handlers that delegate pre-request and post-request processing to the next handler in the chain
-- **SocketsHttpHandler** — the handler at the bottom of the chain that dispatches requests to the connection pool manager for HTTP transport operations
+- **HttpClient** - a high-level API that abstracts .NET applications from the transport-level processing of HTTP messages while allowing to customize connections and message handlers
+- **HttpMessageHandler** - a base type that defines the contract for HTTP message handlers
+- **DelegatingHandler** - a base type for handlers that delegate pre-request and post-request processing to the next handler in the chain
+- **SocketsHttpHandler** - the handler at the bottom of the chain that dispatches requests to the connection pool manager for HTTP transport operations
 
 Together, these components implement the **delegating handler pattern**. A series of message handlers passes the request down to `SocketsHttpHandler`, then passes the response back up the chain to the application.
 
@@ -30,9 +31,9 @@ These handlers can enrich outgoing requests with additional metadata or short-ci
 
 On the server side, ASP.NET Core uses HTTP server implementations to translate raw HTTP messages into an `HttpContext` object:
 
-- **IIS** (**Internet Information Services**) — a traditional Windows web server that can host applications in-process or out-of-process
-- **HTTP.sys** — a Windows-only server that leverages HTTP features provided by the operating system
-- **Kestrel** — a modern, cross-platform server for running .NET applications on Linux and Windows
+- **IIS** (**Internet Information Services**) - a traditional Windows web server that can host applications in-process or out-of-process
+- **HTTP.sys** - a Windows-only server that leverages HTTP features provided by the operating system
+- **Kestrel** - a modern, cross-platform server for running .NET applications on Linux and Windows
 
 In .NET terminology, a server is a program that runs an ASP.NET Core application, handles connections, and parses HTTP messages received from clients.
 
@@ -44,4 +45,4 @@ I’d love to hear about your experience! ❤️
 
 For more .NET notes, visit my website: [**{{ site.url | remove: "https://" | remove: "http://" }}**]({{ site.url }})
 
-#dotnet #http #webdevelopment #aspnetcore
+#dotnet #http #webdevelopment #aspnetcore #rfc7230 #rfc7231
