@@ -1,5 +1,4 @@
 ---
-layout: weekly
 title: "HTTP via ASP.NET Core: Hypertext Transfer Protocol"
 description: "A basic explanation of HTTP and an overview of the ASP.NET Core tools and frameworks for building applications on top of it."
 categories:
@@ -7,6 +6,9 @@ categories:
   - HTTP via ASP.NET Core
 tags: dotnet http aspnet-core webapi mvc minimal-api rfc7230 rfc7231
 date: 2026-11-01 00:00:01 +0200
+image:
+  path: /assets/img/title/aspnet-to-http-stack.png
+  alt: ASP.NET Core frameworks and HTTP features layered over the HTTP protocol
 ---
 
 The **Hypertext Transfer Protocol** (HTTP) is a stateless, application-level request/response protocol. It uses extensible semantics and self-descriptive messages to support flexible interaction across web applications.
@@ -38,7 +40,6 @@ Since HTTP supports many kinds of resource representations, ASP.NET Core provide
 In addition, ASP.NET Core provides many more public types and implements internal mechanisms that help developers build complex business services.
 
 What is your favorite ASP.NET Core framework? Why?
-
 I’d love to hear about your experience! ❤️
 
 For more .NET notes, visit my website: [**{{ site.url | remove: "https://" | remove: "http://" }}**]({{ site.url }})
