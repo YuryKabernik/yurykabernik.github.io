@@ -1,5 +1,4 @@
 ---
-layout: weekly
 title: "HTTP via ASP.NET Core: Client-Server Architecture"
 description: "An overview of HTTP client-server architecture and the .NET components used to send, receive, and process HTTP messages."
 categories:
@@ -7,6 +6,9 @@ categories:
   - HTTP via ASP.NET Core
 tags: dotnet http aspnet-core http-client delegating-handler kestrel iis http-sys rfc7230 rfc7231
 date: 2026-11-02 00:00:01 +0200
+image:
+  path: /assets/img/title/http-client-server-message-handler-chain.png
+  alt: HTTP client message handler chain sending requests through the network to IIS, Kestrel, or HTTP.sys and the ASP.NET Core pipeline
 ---
 
 HTTP is a stateless request/response protocol in which clients and servers exchange messages over a transport connection.
@@ -37,10 +39,7 @@ On the server side, ASP.NET Core uses HTTP server implementations to translate r
 
 In .NET terminology, a server is a program that runs an ASP.NET Core application, handles connections, and parses HTTP messages received from clients.
 
-What has been your most interesting use case for delegating handlers?
-
-Have you worked with IIS, HTTP.sys, or Kestrel?
-
+What’s the most unusual way you’ve used delegating handlers?
 I’d love to hear about your experience! ❤️
 
 For more .NET notes, visit my website: [**{{ site.url | remove: "https://" | remove: "http://" }}**]({{ site.url }})

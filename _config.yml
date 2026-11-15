@@ -223,7 +223,7 @@ defaults:
       path: ""
       type: weeklies
     values:
-      layout: weekly
+      layout: post
       comments: false
       toc: false
       permalink: /weeklies/:path/

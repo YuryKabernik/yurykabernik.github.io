@@ -1,5 +1,4 @@
 ---
-layout: weekly
 title: "HTTP via ASP.NET Core: Client-Server Messaging"
 description: "An overview of HTTP request and response messages and the .NET abstractions used to process them on the client and server."
 categories:
@@ -7,6 +6,9 @@ categories:
   - HTTP via ASP.NET Core
 tags: dotnet http aspnet-core client-server request-response http-client http-request http-response http-context http-request-message http-response-message rfc7230 rfc7231
 date: 2026-11-07 00:00:01 +0200
+image:
+  path: /assets/img/title/client-server-messaging.png
+  alt: HTTP client abstractions sending a request message to and receiving a response message from ASP.NET Core server abstractions
 ---
 
 HTTP is a stateless request/response protocol in which clients and servers exchange messages over a transport connection.
@@ -38,8 +40,7 @@ ASP.NET Core servers process requests and generate responses using these abstrac
 - **HttpRequest class** - represents an incoming HTTP request and exposes its message properties through an API suited to processing by .NET applications
 - **HttpResponse class** - represents the outgoing HTTP response and provides an object-oriented interface for setting its status code, headers, and result body
 
-How do you usually process requests and responses on the client and server sides?
-
+How often do you find yourself working with these abstractions?
 I’d love to hear about your experience! ❤️
 
 For more .NET notes, visit my website: [**{{ site.url | remove: "https://" | remove: "http://" }}**]({{ site.url }})
